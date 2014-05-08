@@ -1,0 +1,9 @@
+CROSSDIR = /dsrg/bammi/cross-minix
+HDIR = $(CROSSDIR)/h
+CC = mgcc
+CFLAGS=-DATARI_ST -I. -I$(HDIR)  -O -mshort
+OBJS=mdb.o mdbexp.o mdbdis.o strtol.o
+
+mdb: $(OBJS)
+	$(CC) -o $@ $(OBJS) -mshort -v -s
+	chmem =20000 $@

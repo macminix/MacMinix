@@ -1,0 +1,14 @@
+#	-DEXTENDED	#if you like to get paste & spaste macros.
+#	-DVOID 		#if your C compiler does NOT support void.
+#	-DGETOPT	#if you STILL do not have getopt in your library.
+#	-DDUFFCP	#if you do not have fast memcpy in your library.
+#
+CFLAGS = -DEXTENDED
+OBJS =  main.o eval.o serv.o look.o misc.o expr.o
+INCL =  mdef.h extr.h patchlevel.h
+m4: $(OBJS) $(INCL)
+	@$(CC) -o m4 $(OBJS)
+
+
+clean:	
+	@rm -f *.bak *.o m4

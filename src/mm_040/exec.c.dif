@@ -1,0 +1,8 @@
+39,41d38
+< #if USE_040
+< extern flush040();
+< #endif
+149,151d145
+< #ifdef USE_040
+<   flush040();
+< #endif

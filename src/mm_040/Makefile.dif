@@ -1,0 +1,8 @@
+6c6
+< CFLAGS=-T.
+---
+> CFLAGS=-T. -DUSE_040=1
+14c14
+< 	alloc.o utility.o table.o putc.o trace.o
+---
+> 	alloc.o utility.o table.o putc.o trace.o 040support.o

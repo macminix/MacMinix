@@ -1,0 +1,10 @@
+CFLAGS=-D_POSIX_SOURCE
+l=/lib
+
+shobj = sh1.o sh2.o sh3.o sh4.o sh5.o sh6.o
+sh:	$(shobj) sh.h
+	@$(CC) -o sh   $(shobj)
+	@chmem =14000 sh
+
+clean:	
+	@rm -f *.bak *.o sh

@@ -1,0 +1,19 @@
+This archive gives you, the proud user of MacMinix 1.5.10.7 (the base
+distribution), support for the 68040 processor with enabled caches.
+
+Just unpack this into /tmp or somewhere safe, apply the diffs that are
+included to the files Makefile, forkexit.c, and exec.c in the /usr/src/mm directory, add the file 040support.s to the same, and off you go!
+
+On my Centris 610, on the stock 1.5.10.7 kernel I was getting 2000
+dhrystones/second.  (Please, no flames about using dhrystone.  In this
+case it actually does reflect how fast my system feels.) Once I applied
+my little patch, which I'd actually worked out about 18 months ago and
+then put aside for some stupid reason, performance jumped to about 7000
+dhrystones/sec and my Centris feels correspondingly faster.
+
+Share and enjoy!
+
+TTFN,
+Chris Hanson
+<chanson@mcs.com>
+12/25/95

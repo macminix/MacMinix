@@ -1,0 +1,9 @@
+# Makefile for nroff
+CFLAGS=-D_MINIX -D_POSIX_SOURCE
+OBJS    = main.o command.o text.o io.o macros.o strings.o escape.o low.o
+
+nroff:	$(OBJS) nroff.h
+	$(CC) -o nroff $(OBJS)
+
+clean:	
+	@rm -f *.bak *.s nroff

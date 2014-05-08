@@ -1,0 +1,3 @@
+These include files have been derived from INSIDE MACINTOSH, volumes 1-4.
+The ROM interface routines in the libmac directory are generated
+automatically from these specifications.
