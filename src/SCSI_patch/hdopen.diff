@@ -1,0 +1,61 @@
+*** hdopen.c.orig	Tue May 13 23:22:56 1997
+--- hdopen.c	Wed May 21 18:54:38 1997
+***************
+*** 14,20 ****
+    int fid, fd;
+  
+    if (argc != 3) {
+!     fprintf(stderr, "usage: hdopen macfile /dev/?d?\n");
+      exit(1);
+    }
+    if ((fd = open(argv[2], O_RDONLY)) < 0) {
+--- 14,22 ----
+    int fid, fd;
+  
+    if (argc != 3) {
+!     fprintf(stderr, "usage: %s <macfile> /dev/?d?\n", argv[0]);
+!     fprintf( stderr, "     <macfile> = macintosh path, or\n" );
+!     fprintf( stderr, "                 <SCSI_ID>::<Minix_FS_Partition_name>\n" )
+      exit(1);
+    }
+    if ((fd = open(argv[2], O_RDONLY)) < 0) {
+***************
+*** 33,39 ****
+  {
+    int n;
+    char nbuf[255];
+!   int *err;
+  
+    strncpy(nbuf, name, sizeof(nbuf)-1);
+  
+--- 35,41 ----
+  {
+    int n;
+    char nbuf[255];
+!   int err;
+  
+    strncpy(nbuf, name, sizeof(nbuf)-1);
+  
+***************
+*** 44,53 ****
+    if (n < 0) {
+      extern int errno;
+      if (errno == EPERM)
+!        fprintf(stderr, "mac file already open on device\n");
+!     else if (errno == EIO) {
+!        err = (int *)nbuf;
+!        fprintf(stderr, "error setting file, mac error code %d\n", *err);
+      }
+      else 
+  	perror(name);
+--- 46,55 ----
+    if (n < 0) {
+      extern int errno;
+      if (errno == EPERM)
+!        fprintf(stderr, "Device already open with file or partition\n");
+!     else if (errno == EIO) {
+!        nbuf[254] = '\0';	/* Ensure there is a null somewhere */
+!        fprintf(stderr, "Error setting up device: %s\n", nbuf);
+      }
+      else 
+  	perror(name);

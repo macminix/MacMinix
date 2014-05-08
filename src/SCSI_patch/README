@@ -1,0 +1,358 @@
+README for SCSI patch for MacMinix...
+
+CONTENTS OF THIS FILE:
+o  Contents of Patch
+o  Disclaimer and warnings
+o  Information
+o  Installation Instructions
+o  Future Enhancements
+o  Getting in touch
+
+CONTENTS OF PATCH
+
+This patch contains:
+o  A replacement wini.c file (hard disk driver), which should
+   replace the current wini.c file in /usr/src/kernel.  Be sure
+   to keep a copy of the old wini.c file in case something goes
+   wrong.
+
+o  Patches (cdiffs) to floppy.c (in /usr/src/kernel) and
+   hdopen.c (in /usr/src/commands/mac).  Errors upon opening
+   a device are returned in a somewhat different manner, thus
+   forcing these changes.
+
+o  A header file scsistructs.h, which needs to be added to the
+   files in /usr/include/mac.  This contains the structures for
+   the partition map and block zero, as defined in various IM
+   books, and is referenced by the kernel patch.
+
+o  A directory containing the source and binary for a simple
+   repartitioning utility.  Avoid using this utility as much as
+   possible, as commercial programs are undoubtedly better
+   tested and easier to use.  If you do have to use this
+   utility, read its README (a separate file) first.  If you
+   are curious about how partitions may be re-arranged and
+   changed, the source code may be interesting.  I do not claim
+   the algorithms are the most effecient or best, but they do
+   (seem to) work.
+
+o  This file, which contains some hints and (reasonably)
+   detailed installation instructions.
+
+
+DISCLAIMER AND WARNINGS
+
+This software is public domain.  (MacMinix itself is NOT public
+domain; only the changes and additions contained in this patch
+are public domain.)  You use it entirely at your own risk.
+
+Under no circumstances will I be responsible for any damage
+which occurs due to the use or misuse of this software.  This
+includes any damage which is caused by bugs or oversights in
+the software, even if I knew of such bugs or oversights and
+failed to take corrective action.
+
+Should this software fail, the results could conceivably be
+unusually severe--large amounts of lost or inaccessible data,
+even data not at all realated to MacMinix.  Therefore, back up
+or physically disconnect ALL important data before attempting
+to use this patch.
+
+Please do not distribute this patch without these warnings.
+
+
+INFORMATION
+
+This patch allows one to use a dedicated partition on a SCSI
+disk drive as a MacMinix volume.  The usual MacOS file type of
+MacMinix volume is still fully supported.
+
+The patch works by calling the SCSI manager as appropriate to
+execute SCSI-I read and write commands to the disk drive.  It
+does not use the MacOS SCSI drivers, so it may be incompatible
+with exotic SCSI devices, or with exotic features (e.g.
+removing media) of less exotic devices.  It also does not allow
+the use of non-disk-drive SCSI devices; this includes tape
+drives, scanners, printers, ethernet adapters, and the like.
+They will continue to work (or not work) as before.
+
+Since only SCSI-I commands are used, only the first 2^21
+sectors (usually the first 1 GB) of disk space is accessible
+to MacMinix.
+
+Devices which don't use 512 byte sectors (which are quite rare)
+will almost assuredly not work without a few changes to the
+wini.c file (primarily in the w_open() function).
+
+Why use a SCSI partition?  Here are a few reasons:
+
+o  Speed--because the patch directly accesses the SCSI manager,
+   bypassing the MacOS file system and disk drivers, it avoids
+   several layers of software and ends up being significantly
+   faster.   Minix is a fairly disk-intensive environment, so
+   incereases in disk access speed are quite useful.  This is,
+   for most people, probably the best reason to use a partition
+   with MacMinix.
+
+o  Security--It is far harder to accidently remove a partition
+   than a MacOS file.  Data on a partition is also slightly
+   harder for casual observers to access without authroization.
+   Neither MacOS files nor partitions are secure from
+   technically inclined hackers, especially if they have
+   physical access to the computer.
+
+o  Coolness--MacMinix feels more like a real operating system
+   when it doesn't have to rely on MacOS for quite everything.
+
+o  Space savings--Partitions, in general, use disk space
+   slightly more effeciently than MacOS files do.  Every MacOS
+   file has some overhead for "administrative" use, which is
+   not required for a partition.  (Partitions do need space in
+   the partition map, but this is usually availible and cannot
+   easily be resized once the disk has been formatted.)
+
+Some excellent reasons not to use partitions are:
+
+o  Repartitioning--changing partitions around is often a bit
+   annoying, and carries a small risk of losing (access to)
+   data.  For most people, this would be the best reason not
+   to use a partition with MacMinix.
+
+o  Safety--directly accessing the disk means that errors can
+   perhaps cause greater data loss than simply manipulating
+   MacOS files.  Care has been taken, in this patch, to help
+   prevent data loss, but it is still possible.
+
+o  Interoperability--MacMint cannot use Minix_FS partitions,
+   but can (with an appropriate patch) use MacOS file-based
+   Minix file systems.  Unless you use both MacMinix and
+   MacMint, this shouldn't be a problem.
+
+
+INSTALLATION INSTRUCTIONS
+
+1. Back Stuff Up
+
+  If you are very daring, back up the old wini.c file in Minix.
+
+  If you are daring, back up the Minix file system files.
+
+  If you are normal, or will have to make a new partition for
+minix, back up everything on the disk you are planning to use
+with MacMinix.
+
+  If you are conservative, back up or disconnect every disk on
+your computer.  ("Blessed are the conservative, for they shall
+not lose their data in the day of ruin.")
+
+2. Make Minix Partitions
+
+  If you have a commercial partitioning program, use it.
+
+  If your commercial program does not allow you to set all the
+attributes listed below, use it as much as possible and then
+use the included utility to set the rest of the things.  Read
+the README for the included utility before using it.
+
+  If you have left your commercial partitioning program in your
+briefcase and your briefcase is in the car which is at being
+fixed at a garage, then use the included utility.  Be sure to
+read the README for this utility before using it.
+
+  Minix partitions must have the following attributes:
+   o Be entirely contained in the first 2^21 sectors of the disk
+     (generally, within the first 1MB of disk space).
+   o Have a type code of "Minix_FS" (without the quotes, but
+     with the capitalization indicated).
+   o Be no larger than 64 MB if the included mkfs program is to
+     be used to make a file system.  As distributed, mkfs is the
+     only way to make a new file system in MacMinix.
+   o Have a partition name which is unique among all Minix_FS
+     partitions on the SCSI device.
+   o Be an even multiple of 1024 bytes long (typically, an even
+     number of sectors).
+
+3. Patch the hdopen Program
+
+  Move the file hdopen.diff to /usr/src/commands/mac/ and then
+execute the command (in the /usr/src/commands/mac/ directory)
+    patch hdopen.c hdopen.diff
+which will change the hdopen source file.  A backup of the old
+source file is automatically created.  Next, rebuild the hdopen
+program with the new source file using the commands
+    make hdopen
+    chmem =8192 hdopen
+and move the newly-created hdopen program to /etc, where the
+old version lived.  (If you are using a ramdisk for the root
+device, anything you move to /etc will be lost when the system
+is rebooted.  You will have to either disable the ramdisk and
+reboot before moving the new hdopen, or mount the root file
+system at some other mount point and move it there.)  Preserve
+a copy of the old hdopen program on the root filesystem in case
+the new one does not work properly.
+
+4. Install the scsistructs.h header file
+
+  Move the file scsistructs.h to /usr/include/mac/ and set its
+owner and permissions to something reasonable.  This file is
+referenced by the new wini.c file.
+
+5. Patch and rebuild the kernel
+
+  Make a backup copy of /usr/src/kernel/wini.c and move the new
+wini.c file to /usr/src/kernel to take its place.  Also move
+floppy.diff to /usr/src/kernel and patch floppy.c much as you
+did hdopen.c in step 3.
+
+  If you made any changes to the old wini.c file (such as
+increasing the number of hard drive devices availible), make
+analogous changes to the new file.
+
+  If you don't want blind reads or writes, comment out the
+appropriate #define lines in wini.c.  Blind reads and writes
+are generally a bit faster and less robust when (if) an error
+occurs.  On most Macs, a SCSI bus problem (e.g. bad cable, slow
+device) when blind reads or writes are used will cause a bus
+error, forcing you to reboot your computer.  On a Mac Plus, no
+bus error will occur but incorrect data will be transferred.
+Under most conditions, blind reads and writes will work without
+any difficulty, even with very slow SCSI devices.
+
+  Type make while in /usr/src/kernel and wait awhile.  You may
+want to get a bagel and a cup of coffee while you wait, or take
+a shower, or watch a couple of innings of baseball, or ....
+
+  Make sure that no fatal errors prevented the compile from
+finishing.
+
+6. Build a NEWMacBoot
+
+  Execute a make command in /usr/src/mm and in /usr/src/fs.
+You may wish to get another bagel or watch another inning if
+you have never built these things before.
+
+  If you have enough RAM availible to MacMinix, it is okay to
+run these at the same time.  Doing so doesn't really make
+anything faster, but it does mean you don't have to come back
+in the middle of everything.
+
+  Once the makes in /usr/src/mm, /usr/src/fs, and
+/usr/src/kernel have completed, run a make in /usr/src/tools.
+This usually does not take as long as the other directories.
+This will create a new MacOS program called 'NEWMacBoot' which
+contains the new kernel.
+
+7. Quit and boot MacMinix with the NEWMacBoot program
+
+  Get out of MacMinix, by logging out and quitting.  (Always
+log out before quitting; otherwise, some changes may not be
+written to disk.)
+
+  Start up MacMinix with the NEWMacBoot program.  Note that any
+changes to the Minix setup ("Preferences") that you made will
+have to be made again, as they are not transferred over.  Also
+note that the memory allocation for the new program may need
+to be changed (under MultiFinder or System 7) to be like the
+old macboot program.
+
+  Minix should boot exactly as it always has, give or take a
+couple of K in the kernel.  Log in as usual (probably as root,
+if you will be mucking with partitions much, so you can copy
+file trees properly and make special files and the like).
+
+8. Open a minix partition
+
+  Using the new hdopen command, open a minix partition on an
+unused hard disk device (the df command generally shows which
+ones are in use) in this manner:
+     hdopen '<id>::<partition_name>' /dev/hd<n>
+where <id> is the SCSI ID of the drive with the partition, 
+<partition_name> is the unique name assigned to the partition,
+and <n> is the unused hard disk device.
+
+9. Use the minix partitions
+
+  To create a file system, use the mkfs command.  mkfs expects
+two arguments, a device (/dev/hd<n>) and a prototype file.  To
+obtain a prototype file, either use the mkproto command or make
+one yourself, using the four lines below as a guide:
+
+boot
+<blocks> <inodes>
+d--755 2 2
+$
+
+  The first line is the name of a boot file; it is ignored.
+
+  The second line contains two very important numbers:  <blocks>
+is the number of 1K blocks on the device (e.g. the size, in K,
+of the partition), and <inodes> is the number of inodes.  Every
+file on the device requires one inode (actually, this is a bit
+of a simplification), but every eight inodes take up a 1K
+block.  In general, it is best to err by having too many inodes
+than by having too few.  A reasonable guide is to have one
+inode per 5K of disk space.  You may have no more than 65536
+inodes.
+
+  The third like says to generate the file system's root
+directory with the specified permissions, and userid 2 (bin),
+and group id 2 (bin).  The fourth line indicates that no more
+files are to be put in the root directory.  (Here, we are
+putting zero files in the root directory.)
+
+  Invoke mkfs something like this:
+      mkfs -lo /dev/hd<n> <prototype>
+The -l indicates a more verbose output, and the -o indicates
+that this is not a floppy disk.  (Since floppy disks are not
+directly supported on the Mac, this flag may be ignored.)
+
+  Once a file system has been made, the partition may be
+mounted like any other Minix file system.  To copy a directory
+tree, use the cpdir command, probably with the -s flag
+(preserve the UID, GID, and permissions of the files).
+
+  If you wish to use a partition as the root disk for Minix,
+you will have to change the CONF resource in the NEWMacBoot
+program, either using something like ResEdit, or by changing
+the /usr/src/tools/minix.rc file.  If you use ResEdit, be sure
+you don't change the size of the resource.
+
+
+FUTURE ENHANCEMENTS
+
+I suppose I could have called this section "Current Bugs," but
+that did not sound as good.
+
+o  Support for SCSI-II devices--specifically, SCSI-II commands
+   for access to data beyond 1 MB.
+
+o  Better support for devices with other than 512 bytes per
+   sector; these changes will need to be made primiarily in the
+   w_open function in the wini.c file, as the rest of the patch
+   supports these devices.
+
+o  Better handling of errors.  SCSI problems generally cause
+   the immediate return of an EIO error condition; instead,
+   the driver ought to retry the failed operation a couple of
+   times before giving up.  Also, if the error occurs in the
+   middle of a transaction, the driver returns zero bytes as
+   having been transferred rather than a partially coplete
+   transfer.  If something else is using the SCSI bus, the
+   driver does not wait a bit and retry but immediately returns
+   an error.  (Generally, nothing else will be using the SCSI
+   bus when the driver is active.)  Since SCSI errors are very
+   uncommon, the error handling is generally adequate.
+
+o  The partition program is somewhat rough; its README file has
+   more details on enhancements and improvemetns which could be
+   made there.
+
+
+GETTING IN TOUCH
+
+Email (preferred): aje9383@rit.edu
+Snail mail: Andrew Erickosn
+            409 Fairwood Circle
+            Rochester, NY   14623
+USENET: I generally read comp.os.minix; if I can't help you
+        there, someone else probably can.

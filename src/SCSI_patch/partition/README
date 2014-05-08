@@ -1,0 +1,409 @@
+README for the Minix parititoning utility
+
+IMPORTANT WARNINGS AND CONDITIONS
+
+Use this program at your own risk only.  This program
+has the potential to render all the data on your hard disk
+inaccessible and therefore useless.  The Author (Andrew
+Erickson) is NOT responsible for any damage or loss which
+occurs through the use of this program, even if such damage
+or loss is due to errors or oversights in the program and even
+if such errors or oversights were known to the author.
+
+Please, please, please:  Back up or disconnect ALL your hard
+disk drives before using this program.  The partition map,
+which this program is designed to muck with, describes where
+the data on your hard drives is stored.  Changing things
+indiscriminately (or even with extreme care) can cause your
+data to be impossible to retrieve.
+
+DO NOT attempt to repartition a drive which has mounted
+partitions, whether these partitions are mounted under MacOS
+or under MINIX.  The partition program does not check for this
+situation; it is up to YOU to ensure that it is met.
+
+This software is public domain.  (Minix itself is not public
+domain, but this partitioning program is public domain.)  If
+it is used, perhaps in a modified form, in a commercial
+program, I request that you give reasonable credit where credit
+is due.
+
+OVERVIEW
+
+Partitioning is the process of dividing a hard disk drive up
+into sections, each with a specific use.  These sections
+(partitions) contain different kinds of data; for example,
+different partitons contain disk drivers, MacOS volumes,
+PRODOS volumes, Minix file systems, or no useful information
+(e.g. unused space).
+
+Disks are conceptually organized as a series of sectors, each
+typically 512 bytes long.  (This program will only work if your
+disk has 512 byte sectors.)  Each sector is assigned a unique
+numerical address, ranging from zero to the "top" sector on the
+disk.  Precisely how these sectors are arranged on the disk is
+a matter which the drive manufacturer decides; the user has no
+certain way of determining this for a SCSI drive.
+
+On a Macintosh system, sector 0 of a hard disk always contains
+some important information about the disk, such as the number
+of sectors on the disk, the size of a sector, and where the
+device drivers for the disk are located.  Every sector except
+sector zero is contained in exactly one partition.
+
+The partition starting at sector one contains the partition
+map, which describes all the partitions on the disk (including
+the partion map partition).  Each entry in the map occupies
+one sector, and each contains several more or less important
+pieces of information--which sector the partition begins on,
+how long it is, what type of information it holds, and so on.
+
+INVOKING THE PROGRAM
+
+The partition program requires one command line argument--the
+SCSI ID of the disk to be partitioned.  Upon startup, it will
+attempt to read the existing partition table, check its
+validity, and print it out.  It then prompts you for a command.
+
+The following are the recognized commands, entered by their
+first letters only (case is generally ignored throughout the
+program):
+
+Command	Description
+-------	-------------------------------------------------------
+Read	re-read the partition table from the disk; any unsaved
+	changes are lost without warning.
+
+Write	Write the (possibly changed) partition table to the
+	disk.  You will be asked to confirm the write before
+	any changes are made.
+
+Print	Print out a summary of the partition table, as when the
+	program started.  The order of the entries in the
+	printed table is their physical order in the partition
+	table on disk, and not necessarily the order of the
+	partitions themselves.  Furthermore, the ordering and
+	numbering of partitions changes as partitions are added
+	and deleted.  Therefore, you'll probably want to print
+	a fresh copy of the table before editing an entry.
+
+Check	Verify the validity of the partition table.  There are
+	three general kinds of messages which may be returned:
+	Errors, Warnings, and Notes.  Errors are things which
+	are definitely wrong; Warnings are not, in themselves,
+	wrong, but are quite likely not what you really want;
+	Notes are curiousities.  A perfect partition map will
+	typically not cause any messages.  Note that not every
+	possible problematic situation is checked for, only
+	most of those which I have thought of.  Correcting most
+	of the errors reported requires careful use of the
+	Update command (or a more advanced program).
+
+Misc.	Useful functionality which will, with any luck, be
+	implemented some time in the future.  If you want to
+	code some of these features, feel free to do so--and to
+	send the changes and additions to me, for future
+	revisions.  (The command does list the upcoming
+	attractions which I thought might be added.  None of
+	these exist in the current version.)
+
+Format	Erase the entire disk; this is not yet implemented.  In
+	addition to actually formatting the disk, this command
+	should eventually create a reasonable block 0 for the
+	disk; this requires  divining the sector size and
+	number of sectors on the disk, which isn't as simple
+	as it could be.  SCSI-I does not define any particular
+	command which directly gives this information (although
+	I suspect SCSI-II might), so a proper formatter needs
+	to be able to determine these through trial and error.
+
+New	Create a partition table from scratch--not yet
+	implemented.  Use a real program for this.  Most
+	partitioning programs do this as part of formatting a
+	disk.
+
+Insert	Add a partition, taking the space from an unused area
+	of the disk.  The name 'Insert' is a bit of a misnomer;
+	the command actually just changes the name and type of
+	an unused partition and generates new partitions for
+	any leftover space (if the entire unused partition is
+	not allocated).  A brief description of what is going
+	on is printed; you may see either zero, one, or two new
+	partitions added, none of which will actually be the
+	inserted partition.
+
+Block_0	Prints out the information contained in sector 0.
+	(Block is an alternate term for sector, which I have
+	generally been trying to avoid using in this document.
+	Under MINIX, a block can also refer to a logical 1K
+	chunk of a file system, which sometimes leads to
+	confusion.  Here, it refers to physical sector zero on
+	the SCSI disk.)  Currently, this information cannot be
+	changed.
+
+Quit	Exit the program; any changes which are not saved are
+	lost without warning.
+
+Help	Prints out the availible commands.  In the event of a
+	discrepency between the help and this document, believe
+	the help.
+
+Types	Prints out the known partition types with descriptions.
+	This listing is not complete--Linux, NetBSD, and
+	perhaps even some AUX partition types are not listed.
+	Minix_Boot is not used by anything right now.  Ignore
+	it.  It is meaningless.  (No, I don't have anything
+	like a directly bootable Minix system.  No, I won't
+	anytime in the near future.  Yes, I might some day, but
+	I don't know when.)
+
+The following commands require one argument, the partition
+number (from the Print command) of interest:
+
+Delete	Delete the specified partition.  Since all the sectors
+	on the disk must be part of a partition, this command
+	may or may not actually remove the partition from the
+	drive.  It changes the partition to an unallocated
+	partition type, and attempts to join this partition
+	with any other unallocated partitions which happen to
+	be immediately before or after it on the disk.  This
+	joining operation I call "folding."  If this causes any
+	holes in the partition table, other partition table
+	entries are moved to fill the holes.  This process I
+	call "scrunching".
+
+Show	Prints out all the information in the partition map
+	entry.
+
+Update	Allows one to change any parameter in the partition map
+	entry; indiscriminately changing things can lead to
+	some really nasty situations.  Use care, especially
+	when doing low-level changes.  Changing the name of a
+	partition is generally okay.  Keep in mind that Minix
+	uses this name to locate its partitions; MacOS does
+	not use the name for anything.  Apple_driver partitions
+	do use the name a bit, but it is more academic than
+	really useful.  Changing other things is typically not
+	a really great idea unless you have a reason to be
+	doing so.
+
+Several flags are associated with each partition.  These falgs
+are, according to Apple, ignored by MacOS but used by A/UX.
+Minix uses the Write flag but ignores the others (for now).
+
+Valid	The partition map entry is valid (according to Apple).
+	I don't know how this flag and the next are different;
+	I set or clear both together in the partition program.
+
+Allo-	This partition is used for something.  Note that all
+cated	partition map entries are actually used for something,
+	and the map itself is resized.  Thus, the use of this
+	flag is pretty mysterious to me.
+
+InUse/	This partition is currently in use.  This flag gets
+Mounted	cleared at boot or when the file system is dismounted.
+	Minix probably ought to use this flag, but currently it
+	doesn't (it uses another method to check for attempts
+	to mount a partition twice.)
+
+Boot	This partition contains valid boot information.
+
+Read	This partition allows reading.
+
+Write	This partition allows writing.  Theoretically, you 
+	could have a write-only partition, but that would be
+	of little practical use.
+
+PIC	The boot code in this partition may be loaded at any
+	address (it is Position Independant Code).
+
+Unused	This flag is ignored.
+
+These flags may be manually changed with the update partition
+command.
+
+MINIX PARTITIONS
+
+Minix, with the SCSI patch, uses Minix_FS partitions.  (This
+particlar partition type has not been officially registered or
+anything like that; it just seemed like a reasonable type for
+what we are doing.)
+
+Minix_FS partitions contain a Minix file system.  Unlike most
+other partitions, the name of these partitions is important--
+the Minix driver uses this name, along with the SCSI ID of
+the drive, to determine which Minix_FS to open.  Therefore, it
+is essential to use an unique name for each Minix_FS partition
+on a drive.  If duplicates exist, the Minix driver won't detect
+this fact and choose one of them in an "undefined" manner.
+(Which one it chooses is actually deterministic, but I'll let
+you figure out exactly how.)  Keep Minix_FS partition names
+separate within a disk.  I generally name my partitions after
+their mount point; you may wish to do the same thing.
+
+Minix_FS partitions should additionally meet these criteria:
+   o They should be an even multiple of 1024 bytes long; this
+     usually means they are an even number of sectors long.
+   o They must be entirely contained within the first 2^21
+     sectors of the disk.
+   o If the mkfs program is used to make a file system, they
+     must be no larger than 64 MB.  As far as I know, the mkfs
+     program is the only (reasonable) way to make a file system
+     for MacMinix.
+
+The program also claims to know about Minix_Boot partitions;
+currently, this serves no purpose.  There is currently no way
+to boot into MacMinix without booting MacOS, and I can't see
+this changing any time in the near future.  
+
+LIMITATIONS
+
+In general, the partition program is designed to be fairly
+robust (in terms of avoiding corrupting the data on disk).  If
+it encounters an error from which it cannot recover, it exits
+without writing the (possibly changed) data to disk.
+
+There are, however, some situations which are not handled very
+well and which may cause undetected problems.
+
+1.  Due to the way the Minix C compiler and library work,
+having more than 63 partitions MAY cause difficulties, which
+are *not* handled gracefully by the program.  (This is not the
+same as having more than 63 sectors allocated for the partition
+table.)  The technical reason for this has to do with array
+addressing using 16-bit displacemets from the array base; this
+is a limitation of certain addressing modes on the 68000
+processor.  I honestly don't know if this does actually cause
+problems; disks with more than a few (five or ten) partitions
+are very unusual.
+
+The disk I/O operations will fail if more than 256 sectors are
+read from or written to the disk; hence, having more than 256
+partitions will certainly cause erroneous behavior.
+
+2.  In various points throughout the program, gets() is used
+for input; therefore, exceptionally long (>250 characters)
+input strings will cause trouble.  Should you enter a
+really long line (e.g. if a key gets stuck), quit and restart
+the program to ensure data is uncorrupted.
+
+3.  The program is naive about other processes accessing the
+disk; reading or writing may fail (and cause the program to
+exit) if other disk operations take place.  I haven't found
+this to generally be a problem, however.  Note that errors
+caused by this are detected but not handled well.
+
+4.  The program is naive about partitions which are in use.  It
+is up to you, the user, to ensure you never change partitions
+which are mounted.  This goes for both MacOS and Minix
+partitions.  If a partition is mounted, it is in use.  Be very
+careful about this.  In general, you shouldn't be fiddling with
+the partitions on a disk which has ANY partitions in use.
+
+5.  The program will allow you to write an invalid partition
+map to disk.  Doing so could lead to strange or bad behaviors.
+The write command will automatically perform a check command
+and then ask you if you are sure you want to write; if any
+errors (and/or warnings) come up, you probably oughtn't
+continue writing the map.
+
+RUNNING FROM A FLOPPY DISK
+
+On most macs, you can run Minix (and thus the partition
+program) from a floppy disk.  This means, among other things,
+you can safely use the partition program on a system with only
+a single hard drive.  Here's how to set up such a floppy:
+
+1.  Obtain the largest floppy you can for your computer--a high
+density floppy, if possible, or an 800K floppy.  (An 800K
+disk may have trouble, I don't know).
+
+2.  Obtain the smallest system folder you can find.  Remove
+everything possible--DA's, Control panels, printers, prefs,
+and such.  Remove all unneeded fonts and sounds from the system
+file.  A system tools disk is a reasonable place to start, and
+System 6 is typically easier to manage with than System 7.
+
+3.  Remove the Finder from the disk.  In its place, put the
+macboot program.  Rename the macboot program Finder.  This will
+cause the computer to boot directly into macboot.  If you are
+using System 7, set the memory size of the macboot to something
+reasonable.
+
+4.  Put a ROOT image where Macboot will find it.  You may have
+to make a pared-down root file system.  I'll let you figure out
+precisely what you need (since I don't know), but do be
+sure to put the partition program in the root image.  Change
+the /etc/rc file to not mount other file systems.
+
+5.  Boot with this disk; you will be launched directly into
+MacMinix.  Do your stuff.  When you quit MacMinix, it is as
+if you selected shut down from the finder (or nearly so).  Note
+that MacOS disk volumes may still be mounted, but typically not
+used at all.
+
+PARTITIONING FOR MINIX
+
+This really isn't too hard.  Use your existing Minix 'drives'
+(files) as guides to how much space you'll need.  For most
+things, 15-20 MB is probably more than enough; if it isn't for
+you, you already know that.
+
+Minix_FS partitions must be contained within the first 2^21
+sectors of the hard drive; if you have 512 byte sectors, this
+means within the first 1 GB.  You'll receive a warning if you
+create one which extends beyond this point.
+
+Minix_FS partitions should be an even multiple of 1024 bytes
+long; with 512 sectors, this means the length should be even.
+The driver probably handles non-even-length partitions
+correctly (stopping one sector short of the end, instead of
+running over the end), but I don't suggest taking chances.  In
+fact, it isn't a bad idea to leave a few sectors between
+partitions to allow a bit of "wiggle room" in the event of some
+error.
+
+Minix_FS partitions must have a partition type of 'Minix_FS'
+(without quotes); leading and trailing spaces are not allowed,
+and the capitalization and spelling must be exact.  The
+partition name must be unique within the disk, and is limited
+to a maximum of thirty-two characters.  It's probably wise to
+avoid names which are the starting substrings of other Minix_FS
+partition names; the driver probably does the right thing in
+this case, but it may not.  I haven't tried or checked to be
+sure.
+
+Minix_FS partitions should be no more than 64MB, at least until
+you get a version of mkfs which will operate when the zone size
+does not equal the block size.  The one included with the
+MacMinix distribution does NOT handle this situation.
+
+One thing to consider is whether to have one big Minix
+partition or several smaller partitions.  Having one big
+partition is easier to work with and allows you to create links
+arbitrarily within the directory tree.  It also means you can
+use disk space more effeciently--with several partitions, you
+may fill up one and have room on another where you don't need
+it.  Having several small trees allows the use of a ramdisk for
+the root file system, a good speed booster, and helps constrain
+damage to the file system.  It also allows you to continue
+doing things if one partition fills up--an out-of-control
+program cannot (easily) take up all the filesystem space in
+the system.  Having multiple partitions also allows you to have
+sections of the file system which are completely read-only at
+the driver level.
+
+If you need more than 64 MB on-line, you will probably need
+more than one partition; see the bit above about the mkfs
+program.
+
+COMMENTS? BUGS? IMPROVEMENTS?
+
+Send these via Email (preferred) to aje9383@rit.edu or via
+snail mail to:
+
+	Andrew Erickson
+	409 Fairwood Circle
+	Rochester, NY  14623
+
+(Both valid as of Summer, 1997)

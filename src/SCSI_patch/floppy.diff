@@ -1,0 +1,34 @@
+*** floppy.c	Wed Jun 18 20:47:34 1997
+--- floppy.new	Wed Jun 18 20:42:08 1997
+***************
+*** 266,272 ****
+  		phys_copy(nme, fname, (long) sizeof(fname));
+       		err =  f_open(f, fname);
+  		if (err != 0) {
+! 		   phys_copy(&err, nme, (long) sizeof(err));
+  		   return(EIO);
+  		}
+  		break;
+--- 266,287 ----
+  		phys_copy(nme, fname, (long) sizeof(fname));
+       		err =  f_open(f, fname);
+  		if (err != 0) {
+! 		   strcpy(fname, "MacOS Error " );
+! 		   if( err < 0 ) {
+! 			strcat( fname, "-00000" );
+! 			n = fname + 5;
+! 			err = 0 - err;
+! 		   } else {
+! 			strcat( fname, "00000" );
+! 			n = fname + 4;
+! 		   }
+! 		   for( len = 10000; len <= 1; len /= 10, n++ ) {
+! 			if( err > len ) {
+! 			   	*n = '0' + (char) (err / len );
+! 				err %= len;
+! 			}
+! 		   }
+! 		   phys_copy(fname, nme, (long) strlen(fname));
+  		   return(EIO);
+  		}
+  		break;
