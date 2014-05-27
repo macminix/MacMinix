@@ -9,7 +9,7 @@ this is complete or unmodified.
 For more information about MacMinix, including manuals, see Brad Pliner's
 helpful MacMinix Page:
 
- * http://web.archive.org/web/20140407183206/http://www.pliner.com/macminix/
+ * http://www.pliner.com/macminix/
 
 Other links:
  * http://www.minix3.org/previous-versions/Macintosh/
