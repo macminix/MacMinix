@@ -1,0 +1,9 @@
+Command:        expand - convert tabs to spaces
+Syntax:         expand [-tab1,tab2,...] [file,...]
+Flags:          -#,#, ...       tab stop positions
+Example:        expand -10,20,30,40     # Expand standard input with these tabs
+
+     Expand replaces tabs in the named files with the equivalent numbers of
+spaces.  If no files are listed, standard input is given. If only one tab is
+given, the rest are multiples of it.  The default is a tab every 8 spaces.
+

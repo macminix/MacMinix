@@ -1,0 +1,50 @@
+File:   man - manual for commands and system
+
+     /usr/man/man{0,1,2,3,4,5,6,7} are ASCII files which contain the Minix
+manual.  They are used by the man command, which automatically builds an
+index whenever a man file is updated.  The man files entries are multi-line
+records separated by index lines, which are lines starting with # and
+containing one word.
+
+Man 0 contains a description of the manual as a whole.
+
+Man 1 describes publicly-accessible commands, and has sub-sections:
+
+  (1)  Commands of general utility.  
+  (1C) Commands for communication with other systems.
+  (1G) Commands for graphics and CAD.
+  (1M) Commands for maintenance and administration.
+
+Man 2 describes Minix system calls and error numbers.
+
+Man 3 describes functions in various libraries, and has sub-sections:
+
+  (3C) Functions that form the Standard C Library libc, which also includes
+       the functions of (3S) and Section 2. 
+  (3M) Functions forming the Math Library, searched with the -lm option.
+  (3S) Functions forming the stdio package, included in libc.
+  (3X) Various specialised libraries.
+
+Man 4 describes the format of various files.
+
+Man 5 describes miscellaneous facilities such as macro packages.
+
+Man 6 describes games.
+
+Man 7 describes special files.
+
+     The following man files are available for PC Minix 1.5.0:
+
+        man0, man1, man1c, man1m, man2, man3, man4, man5
+
+     A typical Minix /usr/man/man1 entry is:
+
+ # banner
+ Command:      banner - print a banner
+ Syntax:       banner arg ...
+ Flags:        (none)
+ Examples:     banner happy birthday   # Print a banner saying happy birthday
+
+      Banner prints its arguments on standard output using a matrix of 6 x 6 
+ pixels per character.  The @ sign is used for the pixels.
+

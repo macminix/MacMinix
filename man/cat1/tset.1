@@ -1,0 +1,13 @@
+Command:        tset - set the $TERM variable
+Syntax:         tset [device]
+Flags:          (none)
+Example:        eval `tset`             # In .profile, logs into any terminal
+                eval `tset dev_typ`     # Change $TERM during a session
+
+     Tset is used almost exclusively to set the shell variable TERM from 
+inside .profile files.  If an argument is supplied it is used as the value
+of TERM.  Otherwise tset looks in /etc/ttytype for the value associated with
+the current port.
+
+     Files used: /etc/ttytype
+

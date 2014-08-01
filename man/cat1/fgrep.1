@@ -1,0 +1,17 @@
+Command:        fgrep - fast grep
+Syntax:         fgrep [option] ... [file] [string] [file] ...
+Flags:          -c      count matching lines and print only count
+                -e      take string from next argument 
+                -f      take strings from file named in next argument
+                -h      omit file headers from printout
+                -l      list file names once only
+                -n      each line is preceded by its line number
+                -s      status only, no output
+                -v      print only lines not matching
+Examples:       fgrep # prog.c                  # Print lines containing # sign
+                fgrep -f pattern prog.c         # Take strings from 'pattern'
+
+     Fgrep is essentially the same as grep, except that it only searches for 
+lines containing literal strings (no wildcard characters), and it is much 
+faster.  
+

@@ -1,0 +1,17 @@
+
+NAME
+	  getarg - return FORTRAN command-line argument
+SYNTAX
+	  character*N c
+	  integer i
+	  getarg(i, c)
+DESCRIPTION
+	  Getarg returns the i-th command-line argument	of the current
+	  process. Thus, if a program were invoked via
+	       foo arg1	arg2 arg3
+	  getarg(2, c) would return the	string ``arg2''	in the
+	  character variable c.
+SEE ALSO
+	  getopt(3C).
+				  
+ 

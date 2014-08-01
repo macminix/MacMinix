@@ -1,0 +1,883 @@
+.pn 59
+.if \nh=0 .so macros
+.ds Mm \\s-2MACMINIX\\s0
+.ds Mo \\s-2MAC OS\\s0
+.ds Rm ROMs
+.ds Mc Macintosh
+.LP
+.CP 5 "\*(M0 ON THE APPLE MACINTOSH"
+.PP
+In this chapter we will describe how to boot and install \*(Mm on the 
+Apple \*(Mc.  It is assumed that the reader is already familiar
+with \*(Mm in general, and has at least some knowledge of
+.Ux .
+Readers not at all familiar with
+.Ux
+should probably begin by looking at one of the many introductory articles
+and books about it, as this manual does not contain any tutorial material
+on
+.Ux .
+.PP
+If you plan on running multifinder with \*(Mm, be sure to read the multifinder
+section below.
+.SE "MACMINIX HARDWARE REQUIREMENTS"
+.PP
+.MX
+will run on any \*(Mc with at least one megabyte of memory and
+128K (or larger) \*(Rm. \*(Mm has been tested most extensively with
+system software version 6.0 or later. Earlier versions may present
+some problems.
+.SE "THE MACMINIX DISTRIBUTION"
+.PP
+The \*(Mm distribution consists of eight double-sided 800K diskettes.
+One of them contains the boot application and the root file system, and
+is used for booting \*(Mm. Since \*(Mm file systems are also ordinary
+\*(Mc operating system files, all of the diskettes are readable by
+the normal \*(Mc operating system.
+Here is the list of the diskettes:
+.sp 1
+.HS
+.TS
+center,box;
+c c c c
+l l l l.
+Name	Size	File system	Description
+_
+00.BOOT	800K	\*(Mo/\*(M2	Used for booting \*(M2
+01.USR1	800K	\*(Mo/\*(M2	Commands
+02.USR2	800K	\*(Mo/\*(M2	Commands
+03.ACK	800K	\*(Mo/\*(M2	C compiler
+04.SRC1	800K	\*(Mo/\*(M2	Sources of \*(M2
+05.SRC2	800K	\*(Mo/\*(M2	Sources of commands
+06.SRC3	800K	\*(Mo/\*(M2	Sources of commands
+07.SRC4	800K	\*(Mo/\*(M2	Editors
+.TE
+.sp
+We will refer to these diskettes in the rest of this chapter by
+their name in the first column of this table, for example, 00.BOOT.
+.PP
+Before you start working with these diskettes we strongly advise you
+to make copies of them.  You can use normal \*(Mc procedures to make
+these copies.  If you are not familiar with how to copy a diskette, 
+refer to your \*(Mc owner's guide.  Keep the original disks write
+protected under all circumstances. \fIMake sure that the copies are
+named identically to the originals\fR, since the following procedures
+depend on this. Once you have made the copies,
+place the originals in a safe place and use the copies. Please note
+that if you use write protected floppies in the following installation
+procedures, you will occasionally get write errors on device 2/0.
+These messages can safely be ignored.
+.SE "NATIONAL KEYBOARDS"
+.PP
+The \*(Mc has different keyboards for different countries.
+When booting, \*(Mm uses the Toolbox to assist in
+the creation of the virtual key code to ASCII translation table,
+so assuming that the international resources have been properly
+configured for your machine, the table will be correct for your country.
+.SE "BOOTING MACMINIX"
+.PP
+This section presents a boot procedure for \*(Mm that
+works on all \*(Mc configurations.
+Following sections describe how to
+adapt the set of diskettes so that you can use \*(Mm
+effectively on your particular combination
+of memory and disk drives.
+For example, if you have more than 1 megabyte of memory but no hard
+disk, you may wish to increase the size of the RAM disk to 475K.
+If you have a hard disk, all of the diskettes can be copied
+onto one or more of its partitions.
+Finally, some of the options for booting \*(Mm will be explained.
+But first, the procedure for booting that works on all configurations.
+.PP
+Throughout the discussion below, lines printed in the
+\s-2\f5Helvetica typeface\fR\s0
+are either commands you should type on the keyboard or lines that
+the computer will display for you.
+In a few of the examples, \fIitalics\fR characters or words appear in 
+a command.
+These represent values that you are to fill in.
+.PP
+Booting is a three-stage procedure. First the operating system
+itself is loaded into memory. The root file system is then copied
+to a RAM disk allocated in memory. Finally, the script
+.I /etc/rc
+is executed and you are asked to log on.
+.PP
+To boot \*(Mm, proceed as follows:
+.HS
+.LI
+.IT
+Follow your normal booting conventions to boot your \*(Mc.
+.IT
+Place the boot diskette, 00.BOOT in drive 0, and launch the Macboot
+application by double clicking on it.
+A window will appear, and the \*(Mm boot application will exhibit
+a status line as it loads each of the initial software components of \*(Mm:
+the \fIkernel\fR, memory management (\fImm\fR), the file system (\fIfs\fR), and 
+process 0 (\fIinit\fR). When loading is complete, this window will disappear.
+.IT
+The main console window will then display (approximately):
+.HS
+.DS
+.Cx "Booting MACMINIX 1.5.  Copyright 1990 Prentice-Hall, Inc."
+.br
+.Cx "Memory size\^=\^775  MINIX\^=\^165  RAM disk\^=\^190K  Available\^=\^475K"
+.DE
+.ad
+.HS
+for a system with 1M of RAM.  The memory not accounted for is left for
+the \*(Mc operating system to use. The amount of memory left
+can be configured by you.  See the Configuration section below.
+.IT
+A fourth line will be displayed that reads:
+.HS
+.DS
+.Cx "RAM disk. To load:   190K           Loaded:   0K"
+.DE
+.HS
+Again, the number may vary. In rapid succession the number 0
+will be increased in steps of 5K, until the whole line is replaced by:
+.HS
+.DS
+.Cx "RAM disk loaded."
+.DE
+.IT
+When the RAM disk is loaded, the system initialization
+file,
+.I /etc/rc,
+is executed.
+It ejects the boot diskette (00.BOOT) and asks you to insert the
+.I /usr
+file system (01.USR1) in a drive and type a RETURN.
+Do so.
+.IT
+After
+.I /usr
+has been mounted, you will now get the message:
+.HS
+.DS
+.Cx "login:"
+.DE
+.HS
+on the screen.
+Type:
+.HS
+.DS
+.Cx "root"
+.DE
+.HS
+and wait for the system to ask for your password.
+When it does, type:
+.HS
+.DS
+.Cx "Geheim"
+.DE
+.HS
+being careful to type the first letter in upper case.
+Lower and upper case letters are always distinct in \*(Mm.
+Alternatively, you could have used the name \*(OQast\*(CQ together
+with the password \*(OQWachtwoord\*(CQ.
+This is much preferred when you use the system normally, but for now
+it is troublesome.
+.IT
+If you have successfully logged in, the shell will display a prompt 
+(sharp sign for root, dollar sign otherwise) on the screen.
+Try typing:
+.HS
+.DS
+.Cx "ls  \(enl"
+.DE
+.HS
+to see what is in the root directory.
+Note that you need six 
+keystrokes: \*(OQl\*(CQ, \*(OQs\*(CQ, space, \*(OQ\(en\*(CQ, \*(OQl\*(CQ, and a RETURN.
+Then type:
+.HS
+.DS
+.Cx "ls  \(enl  /bin"
+.DE
+.HS
+to see what is in the
+.I /bin
+directory on the root device (RAM disk).
+After that, try:
+.HS
+.DS
+.Cx "ls  \(enl  /usr/bin"
+.DE
+.HS
+to see what is on the drive 0 diskette.
+To stop the display from scrolling out of view, type CTRL-S; to restart it,
+type CTRL-Q.
+(Note that CTRL-S means depress the \*(OQControl\*(CQ key on the keyboard
+and then hit the 
+.I S
+key while \*(OQcontrol\*(CQ is still depressed. If your keyboard does not
+have a control key, you may use the option key instead.)
+.DE
+.IT
+You can now edit files, compile programs, or do many other things.
+The reference manuals given in chapters 8 and 9 of this manual 
+give a brief description of the programs available.
+However, before rushing off we advise you to adapt the system to your
+hardware configuration first, as described in the next section.
+.IT
+When you are finished working and want to log out, type CTRL-D.
+.HS
+.DS
+.Cx "login:"
+.DE
+.HS
+will appear, and you or another user can log in again.
+.IT
+When you want to leave \*(Mm, make sure all processes
+have finished, if need be, by killing them with
+.I kill .
+Then type:
+.I sync
+or just log out.
+Your can then select the \*(OQQuit\*(CQ menu item from the ``File'' menu,
+and this will return you to your familiar \*(Mc desktop.
+Never quit without first running
+.I sync
+or logging out (which does an implied
+.I sync ).
+Failure to obey this rule will generally result in a garbled file system
+and lost data.
+.LX
+.HS
+.SE "INCREASING THE SIZE OF YOUR RAM DISK"
+.SP 0.5
+.PP
+If you have more then 1M of memory, and are not planning on using
+a hard disk, we advise you to increase the size of the RAM disk from
+190K to 475K.
+This allows you to use the RAM disk to copy complete or partial
+file systems from one diskette to another.
+It also gives you plenty of space to add a few more utilities
+to the root file system. Finally, it allows you to compile much
+larger programs without running out of disk space for the intermediate
+results.
+However, it leaves you with somewhat less memory to run your
+\*(Mm applications. Even so, that is more than sufficient to recompile most
+the sources and perform many other complicated tasks.
+.PP
+To install a 475K RAM disk, you must first make a 475K root file system
+diskette as described below.
+When \*(Mm is booted, it looks at the size of the root file system and sets
+its size accordingly.
+To do this, proceed as follows.
+.LI
+.IT
+Take an empty, formatted, 800K diskette, name it TEMP, and copy the
+Macboot application file from your original 00.BOOT onto the
+new diskette (in the normal \*(Mc way).
+.SP 1.0
+.IT
+Boot \*(Mm with the original 00.BOOT disk and login as root.
+Then type:
+.HS
+.Cx "for  i  in  maccreate mkfs  mknod  chmod;  do  cp  /usr/bin/$i  /bin;  done"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.br
+.Cx "/etc/hdclose  /dev/fd0"
+.br
+.Cx "/etc/eject"
+.br
+.SP 1.0
+.IT
+Insert the \fInew\fR TEMP diskette in drive 0 and type:
+.HS
+.Cx "maccreate  475  TEMP:ROOT"
+.br
+.Cx "/etc/hdopen  TEMP:ROOT  /dev/fd0"
+.br
+.Cx "mkfs  /dev/fd0  475"
+.br
+.Cx "/etc/mount  /dev/fd0  /user"
+.br
+.Cx "cpdir  \(enmsv  /  /user"
+.SP 1.0
+.IT
+Logout by typing CTRL-D.
+.IT
+Quit from \*(Mm by selecting \*(OQQuit\*(CQ from the ``File'' menu.
+Rename your TEMP diskette 00.BOOT like the original.
+Restart \*(Mm using the above booting procedure, but use your newly
+created 00.BOOT diskette in place of the original 00.BOOT diskette.
+.LX
+.PP
+The program
+.I cpdir
+is able to copy the devices in
+.I /dev .
+.I Cpdir
+also will tell you that it skipped the directory
+.I /user
+to avoid recursion.
+.PP
+By changing the argument
+.I 475
+to
+.I maccreate
+and
+.I mkfs
+you can adapt the size of the RAM disk.
+Note that a copy of the programs
+.I maccreate ,
+.I mkfs ,
+.I mknod
+and
+.I chmod
+will be present in
+.I /bin
+on the new 00.BOOT.
+.SE "ADAPTING PROGRAMS TO USE EXTRA RAM"
+.PP
+As distributed, the C compiler is tuned to work on even with the
+smallest \*(Mc memory configuration.  This may cause problems
+if you want to compile large source files.  The first part of the
+C compiler proper,
+.I /usr/lib/cem ,
+as distributed, will compile most source files, but you
+may need to increase its memory allocation for larger source files.
+.PP
+You are strongly advised to execute the following procedure now
+if you have more than the minimal 1M of memory.
+.LI
+.IT
+Boot \*(Mm and login as root.
+.IT
+Type:
+.HS
+.Cx "cp  /usr/bin/chmem  /bin"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.br
+.Cx "/etc/hdclose  /dev/fd0"
+.br
+.Cx "/etc/eject"
+.br
+.IT
+Insert 03.ACK in drive 0 and type:
+.HS
+.Cx "/etc/hdopen  03.ACK:ACK    /dev/fd0"
+.br
+.Cx "/etc/mount  /dev/fd0  /user"
+.br
+.Cx "chmem  +50000  /user/usrlib/cem"
+.LX
+.HS
+.PP
+A similar procedure can be executed if you encounter any other
+program that needs more memory.
+\fIchmem\fR takes a little getting use to, but it is difficult to
+avoid in a general-purpose multiprogramming system for a machine without
+a proper memory management unit.
+.SE "USING A HARD DISK"
+.PP
+The \*(Mc version of \*(Mx is quite different from the other
+versions in that it is not a
+.I stand-alone
+operating system.  That is, the IBM and other versions completely
+take over the hardware once they begin execution, while \*(Mm 
+runs in tandem with the normal \*(Mc operating system, even
+depending on it for certain services, like accessing the hard disk,
+drawing and manipulating the menus, and drawing the tty windows.
+This has some drawbacks, especially with regard to speed, but
+it has the attraction that you can still have some of the things that
+\*(Mc owner's like about their machine, such as menus and windows.
+In addition, if you have enough memory, you can run multifinder and
+simultaneously still use all your other \*(Mc software.
+.PP
+However, the \*(Mc file system is completely incompatible with
+the \*(Mx file system for a number of reasons, and therefore they
+do not share the same file name space. Instead, \*(Mm uses the
+\*(Mc operating system to request it to set aside some number
+of (if possible, contiguous) disk blocks into a \*(Mc file.
+The logical blocks of this file are then used as a \*(Mm
+disk partition. 
+.PP
+You can have up to nine of these \*(Mc
+files (as distributed; you can recompile the system
+to get more), and together they make up a logical \*(Mm disk. A 
+\*(Mm partition can then be mapped onto the file by means of the \fIhdopen\fR
+\*(Mm utility program.
+.PP
+If you so desire, the \*(Mc files that make up the disk
+can also be backed up onto your
+tape or diskette with the rest of your \*(Mc files, using your
+normal \*(Mc backup software.
+However, if you choose to do your backups in this way, you must
+remember that the \fIentire\fR \*(Mc file will be backed up when
+any new information is written, so be careful where you put
+where you put things.
+.PP
+Therefore, if you have a hard disk and have some available disk
+space, you can use it to keep (part of) the distributed diskettes on line.
+This section describes the steps to set up \*(Mm on such a system.
+.SS "Step 1: Decide How Much of Your Disk Space to Devote to MINIX"
+.PP
+The first decision you must make is how much of your disk
+you want to give over to \*(Mm.  It is really not all that
+crucial that you be right the first time, since you can reclaim
+file space for the \*(Mc operating system by
+using the finder to remove one or more of the files that
+correspond to your \*(Mm \*(OQpartitions.\*(CQ (Of course, you also
+lose the information on that ``partition'').
+.PP
+You can also create a new ``partition'' at any time (assuming
+you have the free disk space), make a \*(Mm file system on it,
+and then mount it for use by \*(Mm (see the \fImaccreate\fR,
+\fIhdopen\fR, \fImkfs\fR, \fImount\fR, and \fIhdclose\fR manual pages).
+Keep in mind,
+however, that as distributed, \*(Mm allows you to mount a maximum of
+five such partitions simultaneously.
+.SS "Step 2: Decide How to Logically Partition Your Disk Space"
+.PP
+Once you have decided how much disk space you want to use, you must decide
+how to split the space into logical disk partitions.  This is
+entirely up to you, but you should probably create at least one
+small partition to hold the root file system that is copied to the
+RAM disk at boot time.
+.PP
+Remember that how you logically partition your \*(Mm disk, and what
+you put on each partition, has potentially great impact on
+backing up your disk if you plan on doing so
+with ordinary \*(Mc backup software. 
+Also remember that as distributed, \*(Mm will
+allow a maximum of five of these partitions to be mounted
+simultaneously.
+.SS "Step 3: Build a \*(Mc File for Each Partition"
+.PP
+For each partition that you want, you must create the
+\*(Mc file that will correspond to that partition. 
+If, for example, you want a \*(Mm partition that is 225
+blocks and your hard disk is named ``harddisk'',
+boot \*(Mm and type:
+.HS
+.DS
+.Cx "maccreate 225 harddisk:file"
+.DE
+.ad
+.HS
+This will set aside a \*(Mc file of 225 blocks (assuming you have
+225 free blocks) that can be used a \*(Mm disk partition.
+When you are running the finder with the normal \*(Mc operating system,
+these 225 blocks will belong to the \*(Mc file called \fIharddisk:file\fR
+and will have a \*(Mm file system icon on the desktop.
+.PP
+Follow this procedure for each logical \*(Mm partition you wish
+to create, changing the second and third parameters to
+\fImaccreate\fR as appropriate.  For example, let us assume that
+you are going to want three partitions:
+a root partition of 225 blocks that will contain the RAM disk image,
+a \fI/usr\fR partition of 10000 blocks that will be mounted on \fI/dev/hd1\fR,
+and a \fI/tmp\fR partition of 1000 blocks that will be
+mounted on \fI/dev/hd2\fR. Furthermore, the Macintosh files are to be
+called ROOT, USR, and TMP respectively and are to go into an existing
+folder called ``MINIX'' on your hard disk.  To do this, you would type:
+.HS
+.DS
+.Cx "maccreate 225  harddisk:MINIX:ROOT"
+.br
+.Cx "maccreate 10000 harddisk:MINIX:USR"
+.br
+.Cx "maccreate 1000 harddisk:MINIX:TMP"
+.br
+.DE
+.ad
+.HS
+.PP
+.SS "Step 4: Make a MINIX File System on Each MINIX Partition"
+.PP
+Now that your \*(Mm disk is partitioned, you must put 
+a file system on each.
+.PP
+The first thing to do is to inform \*(Mm that it should set up
+a correspondence between a given Macintosh file created with
+\fImaccreate\fR and a \*(Mm hard disk device (\fI/dev/hd?\fR). 
+This is done with \fIhdopen\fR. Then \fImkfs\fR is
+used to create the file system.  So, assuming \fImaccreate\fR
+was used to create a 225 block Macintosh file called "harddisk:MINIX:ROOT" (as
+described in the previous example), type:
+.HS
+.DS
+.Cx "hdopen  harddisk:MINIX:ROOT  /dev/hd4"
+.br
+.Cx "mkfs  /dev/hd4  225"
+.DE
+.ad
+.HS
+Continuing with our example, you would type:
+.HS
+.DS
+.Cx "hdopen  harddisk:MINIX:USR  /dev/hd1"
+.br
+.Cx "mkfs  /dev/hd1  10000"
+.br
+.Cx "hdopen  harddisk:MINIX:TMP  /dev/hd2"
+.br
+.Cx "mkfs  /dev/hd2  1000"
+.br
+.DE
+.ad
+.HS
+You can verify that the file systems have been made by typing:
+.HS
+.Cx "df  /dev/hd1"
+.br
+.Cx "df  /dev/hd2"
+.br
+.Cx "df  /dev/hd4"
+.br
+.HS
+which will report on the i-nodes and blocks present on each file system.
+The total number of blocks should agree with the number you used in the
+\fImkfs\fR command.
+.SS "Step 5: Initialize the Root File System"
+.PP
+When 
+.MX
+boots, it needs a root file system.
+This file system is the RAM disk (\fI/dev/ram\fR) when one is being used,
+or hard disk partition 0 (\fI/dev/hd0\fR) if not.
+Either way, certain directories and special files must be created on
+the partition.
+In the discussion below, we will assume that a RAM disk is being used,
+and that the new root file system has been created with \fImaccreate\fR,
+and has been associated with \fI/dev/hd4\fR with the \fIhdopen\fR command
+(just as was done in the last step).
+.PP
+The root file system normally has certain standard directories in it, to
+be described later.
+One of these, \fI/dev\fR, contains all the character and block special
+files.
+To create the directories and special files, change to the
+root directory and use the setup_root command:
+.HS
+.Cx "/etc/setup_root  /dev/hd4  \fI\s+2ram  hd1  hd2  hd3  hd4\fR\s0"
+.HS
+\fRwhere \fIram\fR is the size of the RAM disk in blocks (1K), and the next
+four numbers are the sizes of the four hard disk partitions, also in
+blocks.  You must be logged in as root to run \fI/etc/setup_root\fR.
+You must also specify all four partition sizes.
+If a partition has size zero, use 0.
+.PP
+In our example, the Macintosh file ROOT (225 blocks)
+is to be the ram disk image, USR (10000 blocks) is to be \fI/dev/hd1\fR, 
+and TMP (1000 blocks) is to be \fI/dev/hd2\fR, so we would type:
+.HS
+.Cx "/etc/setup_root  /dev/hd4  225  10000  1000  0 0
+.HS
+.PP
+At this point, the new hard disk root will contain the same files as the
+root file system diskette.
+To try it out, type \fIsync\fR, select \*(OQQuit\*(CQ from 
+the \*(OQFile\*(CQ menu,
+copy the boot application into the MINIX folder on the hard disk,
+eject the floppy, and launch the boot application from the hard disk.
+Be certain that the Macintosh file that corresponds to your root file
+system is named ROOT because this is what the application expects.
+.SS "Step 6: Initialize \f4/usr\fR"
+.PP
+The next step is creating all the directories.
+A shell script called \fI/etc/setup_usr\fR has been provided to do most of the
+work.
+It mounts the main hard disk partition and creates
+a large number of directories.
+Next, it copies files from the root file system and from diskettes
+to the \fI/usr\fR tree on the hard disk.
+When it is finished, it asks for more diskettes to be inserted so it can copy
+files from them to the hard disk. 
+Just follow the instructions that appear on the screen until the 
+\*(OQInstallation completed\*(CQ message appears.
+To perform the installation be sure you are logged in as \fIroot\fR.
+.PP
+For instance, with our example, the Macintosh file USR is to
+be the \fI/usr\fR partition.  To set it up, type:
+.HS
+.SP -0.25
+.Cx "/etc/hdopen  harddisk:MINIX:USR  /dev/hd1"
+.br
+.Cx "/etc/setup_usr  /dev/hd1"
+.br
+.HS
+.SP -0.25
+and follow the instructions displayed by the \fIsetup_usr\fR script.
+.PP
+Loading all the diskettes requires 9 megabytes of disk space for the
+\fI/usr\fR partition.  You can have a smaller partition if you install only
+the binaries (4MB) onto the hard disk. In order to do so you should
+change the value of STOP on the third line of the \fI/etc/setup_usr\fR
+script to 4, before issuing the commands above. 
+.PP
+When this shell script finishes, the entire
+.MX
+file system will be installed on the hard disk.
+Most of the files on the distribution diskettes are compressed files
+(with suffix \fI.Z\fR) or compressed archives (with suffix \fI.a.Z\fR).
+If, for some reason, installation fails part way through, you may be left
+with some \fI.a.Z\fR, \fI.a\fR or \fI.Z\fR files on the disk.
+See the ``UNPACKING THE SOURCES'' section below for information
+on how to deal with these files.
+.SP -0.25
+.SS "Step 7: Modifying /etc/rc"
+.SP 0.25
+.PP
+Now that the hard disk partitions have been created and initialized,
+they need to be mounted whenever \*(Mm is booted.  This is done
+by making a small change in
+.I /etc/rc
+found on the root file system.
+.PP
+First mount the new root file system, which in our example is
+``harddisk:MINIX:ROOT,'' by typing:
+.HS
+.SP -0.25
+.Cx "/etc/hdopen  harddisk:MINIX:ROOT  /dev/hd4"
+.br
+.Cx "/etc/mount  /dev/hd4  /user"
+.br
+.HS
+.SP -0.25
+Use an editor
+(e.g. \fImined\fR) to change the
+lines of the file \fI/user/etc/rc\fR that read:
+.HS
+.Cx "/etc/eject"
+.br
+.Cx ""
+.br
+.Cx "# Mount the floppy disk"
+.br
+.Cx "/bin/getlf  \(fm\(fmPlease insert /usr diskette in drive 0.  Then hit RETURN.\(fm\(fm"
+.br
+.Cx "/etc/hdopen  01.USR1:USR1  /dev/fd0"
+.br
+.Cx "/etc/mount  /dev/fd0  /usr"
+.HS
+with other text.  For our example, a suitable replacement text would be
+the following:
+.HS
+.Cx "/etc/hdopen  harddisk:MINIX:USR  /dev/hd1"
+.br
+.Cx "/etc/mount  /dev/hd1  /usr"
+.br
+.Cx "/etc/hdopen  harddisk:MINIX:TMP  /dev/hd2"
+.br
+.Cx "/etc/mount  /dev/hd2  /tmp"
+.br
+.HS
+Inserting diskette 01.USR1 will no longer be necessary at boot time. 
+.SS "Step 8: Removing the RAM disk"
+.PP
+This step is optional.  Since you have a hard disk, you may no longer
+want to have a RAM disk.  You can remove the RAM
+disk by selecting the ``Configuration'' menu item in the ``File'' menu
+and deselecting the ``Use RAM disk'' check box.
+If you do this, you must modify \fI/etc/rc\fR (as described in the last
+step) and remove the line that reads:
+.HS
+.Cx "/etc/hdclose  /dev/fd0"
+.HS
+The next time you start \*(Mm, the RAM disk will not be used
+and the root file system will be mounted on \fI/dev/hd0\fR.
+.SP -1
+.SE "UNPACKING THE SOURCES"
+.PP
+All \*(Mm sources, except the sources for the compiler and the 
+editor, can be found on the SRC disks. 
+These disks are normal \*(Mm file systems, which you can mount using
+the \fIhdopen\fR and \fImount\fR commands:
+For example, you can mount the 04.SRC1 inserting it in the
+drive and typing:
+.HS
+.Cx "/etc/hdopen  04.SRC1:SRC1  /dev/fd1"
+.br
+.Cx "/etc/mount  /dev/fd1  /user"
+.HS
+The files on the distribution diskettes are
+compressed archives (with suffix \fI.a.Z\fR).
+If you want to extract the sources from 
+a file \fIfile.a.Z\fR you should first copy this file to either an empty floppy, or
+to the ram disk, if the latter is large enough. 
+Your copy of \fIfile.a.Z\fR can be decompressed using:
+.HS
+.Cx "compress \(end file.a.Z"
+.HS
+After decompressing you can remove your copy of \fIfile.a.Z\fR.
+Now you can extract the
+files from the archive with the \fIar\fR command, for example:
+.HS
+.Cx "ar x file.a"
+.HS
+At this point all files from the archive are extracted, and 
+the file \fIfile.a\fR can be removed.
+.SP 0.1
+.SE "THE MENUS"
+.SP 0.125
+.PP
+There are five menus available to \*(Mm user.  They are
+generally self-explanatory, but this section gives
+a brief description of each.
+.SS "The Apple Menu"
+.SP 0.1
+.PP
+The Apple menu is similar to every other apple menu you have seen.
+Selecting the first item on the menu will bring up a simple dialog box,
+describing \*(Mm, while the rest of the items are for your
+desk accessories.
+.SS "The Edit Menu"
+.SP 0.1
+.PP
+The Edit menu exists for the benefit of those desk accessories that can
+use it.  None of the menu items are used by \*(Mm.
+.SS "The File Menu"
+.SP 0.05
+.PP
+The File menu is used primarily to quit from \*(Mm or to
+configure various aspects of \*(Mm operation. Remember to sync
+the disks before quitting.  A detailed explanation of your
+configuration options is given below.
+.SS "The Windows Menu"
+.SP 0.05
+.PP
+The Windows menu is used to manipulate your windows. For example, there are
+menu items to enable you to rotate the windows, reopen them once you
+have closed them, or selecting individual windows to bring to the front.
+.SS "The Debug Menu"
+.SP 0.05
+.PP
+Once you have \*(Mm running, some of the internal
+.MX
+tables can be inspected by selecting items from this menu.
+.SE "SETTING CONFIGURATION OPTIONS"
+.SP 0.9
+.PP
+Selecting the \*(OQConfiguration\*(CQ menu item in the "File" menu
+will bring up a dialog box that allows you to set various
+operating parameters of \*(Mm. This section describes each
+of your options.
+.SP 0.6
+.SS "Heap Space"
+.SP 0.6
+.PP
+The dialog item entitled \*(OQHeap Space\*(CQ allows you to specify
+how much of the application
+heap should be left by \*(Mm to support normal \*(Mc
+operation, such as desk accessories and dialog boxes.
+The smaller you make this number, the more memory you
+will have available for \*(Mm processes.  On the other hand,
+if this number is too small, the \*(Mc operating
+system may run out of heap space, in which case the
+machine will crash.
+As distributed, this number is fairly generous
+so that it has the best chance of working with your
+configuration.  You may want to experiment to see what
+is best for you.
+If you plan on using multifinder with \*(Mm, you can get away
+with making this number somewhat smaller, since desk accessories
+are not generally loaded into the currently running application's
+heap under multifinder.
+.SP 0.6
+.SS "Keyboard Mappings"
+.SP 0.6
+.PP
+There is also a check box labeled \*(OQUse Builtin Keyboard Mappings.\*(CQ
+As noted earlier, \*(Mm uses the \*(Mc \*(Rm to set up
+the initial virtual keycode to ASCII mapping. If you prefer, however,
+you can select this check box and \*(Mm will use the
+mapping that has been compiled into the kernel. You may
+want to try this if you experience problems with your keyboard.
+As distributed, the US keyboard mapping has been compiled into the
+kernel.
+.SP 0.6
+.SS "The ROOT Partition"
+.SP 0.6
+.PP
+The final option you may set in this dialog box have to do with
+what \*(Mc file is initially mapped to the \*(Mm fd0 disk
+partition. This is the partition used to initially read the root
+file system.  As distributed, this is set to \*(OQ00.BOOT:ROOT\*(CQ
+meaning that it will attempt to use the \*(Mc file called
+ROOT on the volume named 00.BOOT. Clicking the mouse button
+on top of the box that displays the name will bring up a
+standard file dialog box, and you can select a new \*(Mc file
+to use as the root partition.
+.SS "Effecting The Changes"
+.PP
+Once you have made the desired changes to he configuration,
+the new configuration take effect the next time you boot \*(Mm.
+The \*(OQCancel\*(CQ button will cause any changes you made to be
+ignored.
+.PP
+You may also configure \*(Mm previous to booting by holding
+down the mouse button as you launch the boot application. If you
+do this, the configuration dialog box appears immediately,
+and you can set the various items as above. In this case,
+the new configuration is used immediately.
+.SP 0.5
+.SE "MACINTOSH SYSTEM CALLS"
+.SP 0.5
+.PP
+Supplied with \*(Mm is a partial interface with the \*(Mc
+\*(Rm. You can find the include files in \fI/usr/include/mac\fR,
+and the interface routines in \fI/usr/lib/mac\fR.  The library
+routines were built automatically from a program that uses the
+include file prototypes as a guide. A complete interface will
+be available sometime in the future.
+.PP
+A \*(Mm process may make calls to the \*(Rm,
+but please keep in mind that \*(Mm will not preempt a
+\*(Mm process when it has made a ROM call, since the \*(Rm are
+non-reentrant, and preempting may cause major problems.
+.SP 0.15
+.SE "RUNNING MACMINIX WITH MULTIFINDER"
+.SP 0.15
+.PP
+Before multifinder, there was not much of a distinction
+between the currently running application and the operating system.
+Since only one application could run at a time, the \*(Mc operating system
+could be viewed simply as a set of support routines for the application.
+With the introduction of multifinder, this view changed somewhat, since
+now a \*(Mc could have several applications in memory at any one
+time. The \*(Mc operating system would transparently switch
+between them, although it could only do so at times when the
+application agreed to \*(OQgive up\*(CQ the processor. 
+.PP
+\*(Mm will work with multifinder, giving up the processor at various times
+so that your other applications may run.  In order to give \*(Mm a
+larger multifinder memory partition, set the memory size of the boot
+application the same way you do for any other application (see your
+owner's guide for a more complete description). There is one
+thing to remember here however and that is that \*(Mm does not
+run \fIat all\fR while another \*(Mc application is running,
+so you may find that you have inconsistent results when running
+\*(Mm programs if they are time dependent. 
+.SE "TROUBLESHOOTING"
+.PP
+As a user of \*(Mm you may be confronted with some of the error messages
+the system can produce.  The following sections gives some guidelines
+on you how to react.
+.SS "Exhausted Heap Space"
+.PP
+If you experience some unexplainable crashes, especially when
+you do simple things like selecting a menu, the \*(Mc operating
+system may be running out of usable heap space. You can increase
+this with the \*(OQConfiguration\*(CQ menu item, described above.  Since
+you might be having a problem getting running in the first place,
+you can bring up the configuration dialog box before anything else
+happens if you hold down the mouse button when you initially launch \*(Mm.
+.SS "System Software Incompatibilities"
+.PP
+If you are running an old version of the \*(Mc
+system software, you may want to bring it up to date in order
+to minimize incompatibility problems.
+.SS "Init and Screen Saver Incompatibilities"
+.PP
+If you experience unexplained crashes and are using some \fIinits\fR
+and/or \fIscreensavers\fR on your system, you may wish to temporarily 
+disable or remove them to see if it solves your problem.  One or more
+of them may be incompatible with \*(Mm.

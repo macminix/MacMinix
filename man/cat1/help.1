@@ -1,0 +1,15 @@
+Command:        help - give help about a command
+Syntax:         help [name]
+Flags:          (none)
+Example:        help uuencode
+
+     Help gives help about a given command name (or help itself, if none is
+specified).  It gets its information from /usr/lib/helpfile, which should be
+linked to doc/man_pages.  To improve performance, it builds an index file,
+/usr/lib/helpfile.idx; this is automatically updated when it becomes older
+than /usr/lib/helpfile.  Lines in the helpfile beginning with # contain the
+keywords for help.
+
+     Files used: /usr/lib/helpfile
+                 /usr/lib/helpfile.idx
+

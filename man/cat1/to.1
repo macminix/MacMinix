@@ -1,0 +1,20 @@
+Command:        to - output half of a connection
+Syntax:         to port
+Flags:          (none)
+Example:        cat f1 f2 | to mach4    # Send the catted files to port
+
+     To and from are used together to provide connection-oriented service.  On 
+the sending machine, the last member of a pipeline is 'to port'.  On the 
+receiving machine, the first member of a pipe line is 'from port'.  The net 
+result is that the output of the sending pipeline goes into the input of the 
+receiving pipeline, making pipelines work across the network.  As a simple 
+example, consider:
+        on machine1:    cat f1 f2 | to Johnny
+        on machine2:    from Johnny | sort >x
+
+     The effect of these two commands is that the files f1 and f2 are 
+concatenated, transferred to machine 2, and sorted their, with the output 
+going to a file x on machine 2.  The string Johnny is used by the transaction 
+system to identify which sender goes with which receiver; any unique string 
+can be used.
+

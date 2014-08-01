@@ -1,0 +1,28 @@
+Command:        getty - get the terminal line parameters for login
+Syntax:         getty line [-c file] [-h] [-k] [-t] [speed]
+Flags:          -c fn   use file fn as gettydefs file
+                -h      do not hang up phone after reset
+                -k      do not use speed selection
+                -t      do not time-out at login prompt
+Examples:       getty /dev/tty1 1200            # Connect to tty1
+                getty /dev/tty1 console         # Connect to console
+
+     The getty program allows a terminal port to be used for both dialin and
+dialout.  It can also detect user speed, and set various line parameters. On
+startup, getty searches the gettydefs file for an entry which matches the
+given speed parameter, and sets up the terminal line in accordance with the
+initial parameters of that gettydef entry.  If no match is found, or getty
+is called without a second argument, the first entry in the file is used.
+     Once the terminal is set up, getty waits for a carrier detect signal, and
+when one is received it prints the contents of the /etc/issue file, usually
+the system name.  It then prompts for a login name, and on receipt of this
+resets the terminal parameters to the final gettydef entry parameters, and
+calls login with the given username as an argument.
+     If it is called as uugetty, getty will prepare the line for uucp.  If
+/etc/utmp and /usr/adm/wtmp exist, getty will handle user accounting.
+
+     Files used: /etc/gettydefs
+                 /etc/issue
+                 /etc/utmp
+                 /usr/adm/wtmp
+

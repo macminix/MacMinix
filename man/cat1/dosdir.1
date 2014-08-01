@@ -1,0 +1,16 @@
+Command:        dosdir - list an MS-DOS diskette directory
+Syntax:         dosdir [-lr] drive [path]
+Flags:          -l       long listing
+                -r       recursively descend and print subdirectories
+Example:        dosdir -l C tmp         # Show files in MSDOS directory C:\TMP
+
+     Dosdir reads standard IBM PC diskettes or hard disk partitions in MS-DOS 
+format, and lists their contents on standard output.  Directory names should 
+contain slashes to separate components, even though MS-DOS uses backslashes.  
+The names dosdir, dosread, and doswrite are all links to the same program.  
+The program sees which function to perform by seeing how it was called.  The 
+program uses device files named dosX, where X is A, B, C, etc. which must be
+linked to the appropriate standard device file.
+
+     This is used in the Intel versions of Minix only.
+

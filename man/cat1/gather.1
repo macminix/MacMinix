@@ -1,0 +1,20 @@
+Command:        gather - gather up the files in a directory for transmission
+Syntax:         gather [-s source_dir] [-d dest_dir] [-b max_size] [-f file]
+Flags:          -b      desired number of bytes per output file (default 60Kb)
+                -d      destination directory for the archives (default ./)
+                -f      base name for the archives
+                -s      source directory for the files (default ./)
+Examples:  gather                       # Put files in ./ into 60K archives
+           gather -d dir                # Put the archives in dir
+           gather -b 90000              # Try to produce 90K archives
+
+     It is often useful to collect all the files in a directory into one or
+more archives for transmission by mail.  This program collects all the files
+in the source directory and puts them into a shar archive.  The shar archive
+is then compressed and uuencoded.  An attempt is made to have the final .uue
+file be about the given size, but since gather cannot really predict how much
+shar will add to the file, how much compress will reduce the file, and how
+much uue will add again, the final sizes can fluctuate.  If the -f file flag
+is given, the archives will be given the names file_00.uue, file_01.uue etc.
+If -f is not given, the name of the source directory is used as the base name.
+

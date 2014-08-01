@@ -1,0 +1,10 @@
+88
+Command:   dis88 - disassembler
+Syntax:    dis88 [-o] infile [outfile]
+Flags:     -o  List the object code along with the assembly code
+Examples:  dis88 a.out >listing         # Disassemble a.out
+           dis88 -o a.out listing       # Ditto, but with object code
+   Dis88 is a disassembler.  It takes an executable file and prints the symbolic
+assembly  code that corresponds to it.  If the executable file contains a symbol
+table (added by the program ast), the symbol table information is used to give a
+more readable asembly listing.

@@ -1,0 +1,11 @@
+Command:        crc - print the checksum of a file
+Syntax:         crc
+Flags:          (none)
+Examples:       crc *.c                 # print checksums of all C programs
+
+     The checksum of each argument is computed and printed, along with the 
+file length and its name, one file per line.  This program is useful for
+seeing if a file transmitted to another machine has arrived correctly.  It is 
+conceptually similar to sum, except that it uses a strong checksum algorithm 
+and also prints the length.  The filename '-' may be used for standard input.
+

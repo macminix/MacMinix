@@ -1,0 +1,72 @@
+.TH man 1
+.SH NAME
+man \- find & format online manuals
+.SH SYNTAX
+man [section] title
+.SH DESCRIPTION
+.B Man
+finds an online manual of the given title, formats it (if necessary), and
+displays it on the screen. If the title occurs in several sections of
+the online manuals,
+the section argument specifies which section.
+.PP
+.B Man
+looks in the users environment for two variables,
+.B MANPATH
+and
+.B PAGER.
+The first holds a list of directories where manuals are kept; directories
+should be absolute and be separated by spaces, tabs, or colons. It can be
+set up from shell like
+.PP
+$ MANPATH="/usr/man /usr/local/man" ; export MANPATH
+.PP
+If no
+.B MANPATH
+variable is found,
+.B man
+defaults to
+.I /usr/man.
+.PP
+The
+.B PAGER
+variable indicates which pager should be used to display the manual. If
+none is found,
+.B man
+defaults to
+.I /usr/local/bin/less.
+.PP
+.B Man
+searches through the
+.I whatis
+file in each of the directories in
+.B MANPATH
+for an appropriate manual. This file is described in
+.I whatis(5).
+.B Man
+then looks for the manual in a
+.I catx
+directory; if it is there,
+.B man
+directly displays it with the pager. Otherwise,
+.B nroff
+is used to format the manual from the
+.I manx
+directory, and the output is passed to the pager.
+.PP
+If no manual is found in
+.I whatis,
+or the manual does not exist etc.,
+.B man
+will give an error message and fail.
+.SH FILES
+/usr/man \- usual directory for manuals
+
+/usr/man/whatis \- file which lists all the manuals
+
+/usr/man/catx \- directories of pre-nroffed manuals
+
+/usr/man/manx \- directories of non-nroffed manuals
+.SH SEE ALSO
+nroff(1), less(1), whatis(5)
+

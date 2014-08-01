@@ -1,0 +1,1579 @@
+.pn 112
+.if \nh=0 .so macros
+.LP
+.ds St \d\s+3*\s0\u
+.CP 8 "RECOMPILING MINIX"
+.PP
+This chapter is intended for those readers who wish to modify 
+.MX
+or its utilities.
+In the following pages we will tell what the various files do and how
+the pieces are put together to form the whole.
+It should be emphasized that if you simply intend to use 
+.MX
+as distributed, then you do not have to recompile the system and you
+do not have to read this chapter.
+However, if you want to make changes to the core of the operating system
+itself, for example, to add a device driver for a streamer tape, then
+you should read this chapter.
+.SP 1
+.SE "REBUILDING MINIX ON THE IBM PC"
+.SP 1
+.PP
+Although this section is specifically for IBM PC users, it should also
+be read carefully by everyone interested in recompiling 
+.MX .
+Most of what is said here applies to all versions of 
+.MX .
+The sections about other processors mostly discuss the differences between
+recompiling 
+.MX
+on an IBM PC and on another system.
+.PP
+The 
+.MX
+sources are contained in the following directories, normally all subdirectories
+of \fI/usr/src\fR except for \fIinclude\fR which goes in \fI/usr/include\fR:
+.HS
+.TS
+center allbox;
+l l.
+\fBDirectory	Contents\fR
+include	The headers used by the commands (has two subdirectories)
+kernel	Process, message, and I/O device handling
+mm	The memory manager
+fs	The file system
+tools	Miscellaneous tools and utilities
+test	Test programs
+lib	Libraries (has several subdirectories)
+commands	The utility programs (has many subdirectories)
+.TE
+.fi
+.HS
+Some of the directories contain subdirectories.
+If you are working on a hard disk, be sure that all these directories
+have been set up, and all files copied there from the distribution diskettes
+and decompressed and dearchived.
+If you do not have a hard disk, format and make empty file systems on five
+diskettes.
+On the first one, make a directory \fIkernel\fR and copy all the kernel files
+to it.
+In a similar way, prepare diskettes for \fIfs\fR, \fImm\fR, \fItools\fR, 
+and \fItest\fR as well.
+If you do not have a hard disk, there are still three ways you can recompile
+the system.
+First, if you have two diskette drives, use drive 0 to hold the root file
+system, including the compiler, \fI/usr/lib\fR and \fI/usr/include\fR.
+Diskettes with programs to be compiled are mounted on drive 1.
+.PP
+Second, if you have a sufficiently large RAM disk (at least 512K), you can
+put the root file system there, along with the compiler, \fI/usr/lib\fR
+and \fI/usr/include\fR.
+.PP
+Third, if you have no hard disk,
+one diskette drive and insufficient memory for a 512K
+RAM disk, you should have at least a 1.2M diskette drive in which you can
+put the root file system, although in a pinch a 720K diskette might work
+with a lot of shoehorning.
+If you use this approach, each of the five diskettes made above must contain
+enough of \fI/usr/bin\fR, \fI/usr/lib\fR, and \fI/usr/include\fR to allow
+compilation of the kernel, file system, or whatever other files are on that
+disk.
+With only 640K RAM and a single 360K diskette, it is not possible to recompile
+the system.
+Expanded memory (LIM standard) is not supported and cannot be used as a
+RAM disk.
+.PP
+As a test to see if everything is set up properly,
+type in, compile, and run the following program:
+.SP 1.2
+.HS
+.nf
+.Cx "#include <limits.h>"
+.Cx "main()"
+.Cx "{"
+.Cx "    printf(\(fm\(fmPATH_MAX = %d  n\(fm\(fm, PATH_MAX);"
+.Cx "}"
+.HS
+..SP 1.2
+.fi
+It should print out the value 255 for \fIPATH_MAX\fR.
+If it fails to compile, be sure that the file
+\fI/usr/include/limits.h\fR is installed and readable.
+.SS "Configuring the System"
+.PP
+The file \fI/usr/include/minix/config.h\fR contains some user-settable
+parameters.
+Examine this file and make any changes that you require.
+For example, if
+.I LINEWRAP
+is set to 0, then lines longer than 80 characters will be truncated;
+with nonzero values they will be wrapped.
+If you want more information than is provided in this file, examine the
+system sources themselves, for example, using \fIgrep\fR to locate the
+relevant files.
+In any event, be sure
+.I MACHINE
+is set to
+.I IBM_PC 
+(or one of the 68000 types if you have one).
+If you have an 80386-based processor, use
+.I IBM_PC ,
+not
+.I IBM_386 ,
+as that is intended for a future 32-bit version of
+.MX ,
+and will not work at present.
+The current 16-bit version works fine on 80386s, but initializes all
+segment descriptors to 16-bit mode.
+.PP
+The kernel directory contains a shell script \fIconfig\fR.
+Before starting to compile the system, examine this file using your
+favorite editor.
+You will see that it begins with a \fBcase\fR statement that switches on
+the first argument.
+Each of the clauses defines some variables that are used later.
+The idea here is that you need files called \fImpx.x\fR, \fIklib.x\fR, and
+\fIwini.c\fR.
+For each of these there are several candidates.
+Which one you use depends on the your system configuration.
+.PP
+If you have a PC/AT with a PC/AT hard disk controller, type:
+.HS
+.Cx "config  at"
+.HS
+to set up the files.
+On the other, if you have a PC/XT (8088), use \fIxt\fR instead of \fIat\fR
+as the argument.
+For a PS/2, use \fIps\fR.
+If none of these produce working systems, run
+\fIconfig\fR again using \fIbios\fR as the argument this time.
+If you happen to have a PC with a PC/AT disk controller or a PC/AT with an
+XT disk controller, you will have to build the configuration by hand.
+.SS "Compiling the Pieces"
+.PP
+Once everything has been set up, actually compiling the pieces is easy.
+First go to the \fIkernel\fR directory on you hard disk
+(or mount the \fIkernel\fR diskette and go to it).
+Then type:
+.HS
+.Cx "make \(enn"
+.HS
+to see what \fImake\fR is planning to do.
+Normally it will list a sequence of compilations to be done.
+If it complains that it cannot find some file, please install the file.
+.PP
+Now do it for real by typing:
+.HS
+.Cx "make"
+.HS
+The kernel will be compiled.
+On a 33 MHz 80386 with a fast hard disk, it will take under 3 minutes.
+On a 4.77 MHz 8088 with two diskette drives it will take rather longer.
+When it is finished, you will be left with a collection of \fI.s\fR files,
+all of which can now be removed if space is tight, and a file \fIkernel\fR, 
+which will be needed.
+.PP
+If you have a small system, it is possible that there will not be enough
+room for \fImake\fR and the C compiler simultaneously.
+In that case type:
+.HS
+.Cx "make  \(enn >script"
+.br
+.Cx "sh script"
+.HS
+If even that fails due to lack of memory, examine \fIscript\fR
+and type in all the commands by hand, one at a time.
+.PP
+Now go to \fIfs\fR.
+If you are using diskettes, first unmount the one containing the kernel
+sources and mount the one containing the file system sources.
+Now type
+.HS
+.Cx "make  \(enn"
+.HS
+to see if everything is all right, followed by:
+.HS
+.Cx "make"
+.HS
+to do the work.
+Again here, the \fI.s\fR can be removed, but the file \fIfs\fR must be
+kept.
+In a similar way, go to \fImm\fR and use \fImake\fR to produce the \fImm\fR
+file.
+.PP
+Finally, go to \fItools\fR and type:
+.HS
+.Cx "make"
+.HS
+to produce \fIinit\fR, \fIbootblok\fR, \fIbuild\fR, and \fImenu\fR.
+(Actually a binary version of \fIbootblok\fR is provided since it is so
+short, but making a new one does not take very long.)
+Check to see that all of them have been made.
+If one is missing, use \fImake\fR to produce it, for example:
+.HS
+.Cx "make init"
+.HS
+.SS "Building the Boot Diskette"
+.PP
+In this section we will describe how the six independently compiled and
+linked programs,
+.I kernel ,
+.I fs ,
+.I mm ,
+.I init ,
+.I bootblok ,
+and
+.I menu 
+are forged together to make the boot diskette using \fIbuild\fR.
+.PP
+The boot diskette contains the six programs mentioned above, in the order
+given.
+The boot block occupies the first 512 bytes on the disk.
+When the computer is turned on, the ROM gets control and tries to read
+the boot block from drive 0 into memory (at address 0x7C00 on the IBM PC).
+If this read succeeds, the ROM jumps to the boot block to begin the load.
+.PP
+The 
+.MX
+boot program first copies itself to an address just below 256K, to get itself
+out of the way.
+Then it calls the BIOS repeatedly to load cylinders of data into
+low core.
+This data is the bootable image of the operating system, followed directly by
+.I menu 
+(on the IBM PC).
+When the loading is finished, the boot program jumps to the start of
+.I menu ,
+which then displays the initial menu.
+If the user types an equal sign, 
+.I menu 
+jumps to an address in low core to start
+.MX .
+.PP
+The boot diskette is generated by 
+.FI tools/build .
+It takes the six programs listed above and concatenates them in a special
+way.
+The first 512 bytes of the boot diskette come from 
+.I bootblok .
+If need be, some zero bytes are added to pad
+.I bootblok
+out to 512.
+.I Bootblok
+does not have a header, and neither does the boot diskette because when the
+ROM loads the boot block to address 0x7C00, it expects the first byte to be
+the start of the first instruction.
+.PP
+At position 512, the boot diskette contains the kernel, again without
+a header.
+Byte 512 of the boot diskette will be placed at memory address 1536 by the
+boot program, and will be executed as the first
+.MX
+instruction when
+.I menu
+terminates.
+After the kernel comes
+.I mm ,
+.I fs ,
+.I init ,
+and
+.I menu ,
+each padded out to a multiple of 256 bytes so that the next one begins at
+a click boundary.
+.PP
+Each of the programs may be compiled either with or without separate I and D
+space (on the IBM PC; the 68000 versions do not have this feature).
+The two models are different, but 
+.I build
+explicitly checks to see which model each program uses and handles it.
+In short, what
+.I build
+does is read six files, stripping the headers off the last five of them,
+and concatenate them onto the output, rounding the first one up to 512
+bytes and the rest up to a multiple of 16 bytes.
+.PP
+After concatenating the six files, 
+.I build 
+makes three patches to the output.
+.LI
+.IT
+The last 4 words of the boot block are set to the number of cylinders to
+load, and the DS, PC, and CS values to use for running
+.I menu .
+The boot program needs this information so that it can jump to
+.I menu
+after it has finished loading.
+Without this information, the boot program would not know where to jump.
+.IT
+.I Build
+loads the first 8 words of the kernel's data segment 
+with the CS and DS segment register values for
+.I kernel ,
+.I mm ,
+.I fs ,
+and
+.I init.
+Without this information, the kernel could not run these programs when the
+time came: it would not know where they were.
+It also sets word 4 of the kernel's text segment to the DS value needed to
+run the kernel.
+.IT
+The origin and size of
+.I init
+are inserted at address 4 of the file system's data space.
+The file system needs this information to know where to put the RAM disk,
+which begins just after the end of
+.I init ,
+exactly overwriting the start of
+.I menu .
+.LX
+.PP
+To have \fIbuild\fR actually construct the new boot diskette, insert a blank,
+formatted diskette in drive 0 and type:
+.HS
+.Cx "make image"
+.HS
+It will run, build the boot diskette, and display the sizes of the pieces on
+the screen.
+When it is finished, kill any background processes, do a \fIsync\fR, and
+reboot the system.
+After logging in, go the \fItest\fR directory and type:
+.HS
+.Cx "run"
+.HS
+to run all the test programs, assuming they have already been compiled.
+If they have not been, log in as root and type:
+.HS
+.Cx "make all"
+.HS
+.PP
+If you do not have a hard disk, the above procedure has to be modified
+slightly.
+You will have to copy the \fIkernel\fR, \fIfs\fR, and \fImm\fR files to
+the \fItools\fR directory and change \fIMakefile\fR accordingly.
+.SS "Installing New Device Drivers"
+.PP
+Once you have successfully reached this point, you will now be able to
+modify 
+.MX .
+In general, if a modification only affects, say, the file system, you will
+not have to recompile the memory manager or kernel.
+If a modification affects any of the files in \fI/usr/include\fR
+you should recompile the entire system, just to be safe.
+.PP
+It is conceivable that your modification has increased the size of some
+file so much that the compiler complains about it.
+If this occurs, try to determine which pass it is using the \fB\(env\fR
+flag to \fIcc\fR, and then give that pass more memory using
+the \fIchmem\fR program.
+.PP
+One common modification is adding new I/O devices and drivers.
+To add a new I/O device to
+.MX ,
+it is necessary to write a driver for it.
+The new driver should use the same message interface as the existing ones.
+The driver should be put in the directory
+.I kernel 
+and
+.I Makefile
+updated.
+In addition, the entry point of the new task must be added to the list
+contained in the array
+.I task
+in 
+.FI kernel/table.c .
+.PP
+Two changes are also required in
+.DI /usr/include/minix .
+In
+.FI const.h ,
+the constant
+.I NR_TASKS
+has to be increased by 1, and the new task has to be given a name in
+.FI com.h .
+.PP
+A new special file will have to be created for the driver using \fImknod\fR.
+.PP
+To tell the file system which task is handling the new special file, a line
+has to be added to the array
+.I dmap
+in
+.FI fs/table.c .
+.SS "Troubleshooting"
+.PP
+If you modify the system, there is always the possibility that you will
+introduce an error.
+In this section, we will discuss some of the more common problems and how
+to track them down.
+.PP
+To start with, if something is acting strange, turn the computer off,
+wait about one minute, and reboot from scratch.
+This gets everything into a known state.
+Rebooting with CTRL-ALT-DEL may leave the system in a peculiar state,
+which may be the cause of the trouble.
+.PP
+If a message like
+.CC "Booting \*(M0 1.5"
+does not appear on the screen after the power-on self-tests have completed
+(on the IBM PC), something is wrong with the boot block.
+The boot block prints this message by calling the BIOS.
+Make a dump of the first block of the boot diskette and examine it by hand
+to see if it contains the proper program.
+.PP
+If the above message appears, but the initial menu does not, it is likely
+that
+.I menu
+is not being started, since the first thing
+.I menu
+does is print the menu.
+Check the last 6 bytes of the boot block to see if the segment and offset
+put there by
+.I build
+correspond to the address at which 
+.I menu 
+is located (right after
+.I init ).
+.PP
+If the menu appears, but the system does not respond to the equal sign,
+.MX
+is probably being started, but crashing during initialization.
+One possible cause is the introduction of print statements into the kernel.
+However, it is not permitted to display anything until after the terminal task has
+run to initialize itself.
+Be careful about where you put the print statements.
+.PP
+If the screen has been cleared and the message giving the sizes has appeared,
+the kernel has initialized itself, the memory manager has run and blocked
+waiting for a message, and the file system has started running.
+This message is printed as soon as the file system has read the super-block
+of the root file system.
+.PP
+If the system appears to hang before or after reading the root file system,
+some help can be obtained by hitting the F1 or F2 function keys (unless
+the dump routines have been removed).
+By hitting F1 twice a few seconds apart
+and noting the times in the display, it may be possible
+to see which processes are running.
+If, for example, 
+.I init
+is unable to fork, for whatever reason, or cannot open
+.I /etc/ttys ,
+or cannot execute
+.I /bin/sh
+or
+.I /bin/login ,
+the system will hang, but process 2
+(\fIinit\fR) may continue to use CPU cycles.
+If the F1 display shows that process 2 is constantly running, it is a
+good bet that 
+.I init
+is unable to make a system call or open a file that is essential.
+The problem can usually be localized by putting statements in the
+main loops of the file system and memory manager to print a line 
+describing each incoming message and each outgoing reply.
+Recompile and test the system with the new output.
+.SE "REBUILDING MINIX ON THE ATARI ST"
+.PP
+It is possible to rebuild \*(Ms
+on any system with at least 1 MB of memory and a 720K disk drive.
+However such a configuration is the bare minimum. Additional hardware greatly
+speeds up the process.
+.PP
+.SS "Configuring the System"
+.PP
+In order to rebuild \*(Ms you must first prepare your system.
+What you must do depends on your system.
+If you have a hard disk, you should install all the sources and binaries
+on your disk.
+Chapter 3 describes how to achieve this.
+.PP
+If you do not have a hard disk, you should create 4 720K disks.
+These disks should contain the unpacked mm, fs, kernel and tools sources
+respectively. Chapter 3 describes how to unpack the sources.
+.PP
+If you want to reconfigure the system you should examine the files
+\fIinclude/minix/config.h\fR and \fIinclude/minix/boot.h\fR. 
+These files are found on
+06.ACK, and contain a number of tunable system parameters. 
+For instance if you keep your root partition on \fI/dev/hd3\fR,
+but you do not want
+to load this partition into the RAM disk upon startup, you could change the
+line
+.HS
+.Cx "#define DROOTDEV  (DEV_RAM + 0)"
+.HS
+in \fIinclude/minix/boot.h\fR into
+.HS
+.Cx "#define DROOTDEV  (DEV_HD0 + 3)"
+.HS
+If you do not want to copy the root partition, but you want to keep a RAM
+disk, you should modify the value of the constant \fIDRAMSIZE\fR in 
+\fIinclude/minix/boot.h\fR as well. 
+.PP
+If you have a system with a United Kingdom or German keyboard,
+it is recommended to go to the directory
+with the kernel sources, and substitute in the file \fIMakefile\fR,
+the string \fIus\fR in the line:
+.CC "KEYMAP	= keymap.us.h"
+by \fIuk\fR or \fIge\fR respectively.
+If you do this you will generate
+.MX 
+for use with your native keyboard instead of a US one.
+By doing so, you do not need to run
+.I fixkeys
+on your boot disk any more.
+.PP
+If you have a system with a real time clock on the disk controller
+it is recommended to go to the directory
+with the kernel sources, and modify the first few lines of the file
+\fIMakefile\fR so that they read:
+.nf
+.HS
+.Cx "CLOCKS = \(enDCLOCKS"
+.br
+.Cx "#CLOCKS ="
+.HS
+.fi
+.SS "Rebuilding MINIX Using a Hard Disk"
+.PP
+Rebuilding 
+.MX
+is fairly simple when you have a hard disk. Assuming that you have installed
+the sources in \fI/usr/src\fR, and that there is enough free space 
+on your hard disk to accommodate all object files and results, type:
+.nf
+.HS
+.Cx "chmem =110000 /usr/lib/cem"
+.Cx "cd /usr/src/mm"
+.Cx "make"
+.Cx "cd /usr/src/fs"
+.Cx "make"
+.Cx "cd /usr/src/kernel"
+.Cx "make"
+.Cx "cd /usr/src/tools"
+.Cx "make"
+.HS
+.fi
+If disk space is tight you can remove all \fI.o\fR files after each make.
+If everything succeeds, you will have a file called \fIminix.img\fR 
+in
+\fI/usr/src/tools\fR. You can either write this file to \s-2TOS\s0 using the
+.I toswrite
+command, or create a new boot diskette by inserting an empty, formatted
+disk into the disk drive and issuing the command:
+.HS
+.Cx "cp /usr/src/tools/minix.img /dev/fd0"
+.HS
+.PP
+Now you can logout and reboot the system to try your new boot disk.
+If required run the \s-2TOS\s0 program
+.I fixkeys
+to modify the keyboard tables to reflect your hardware.
+It is advised to generate a new file \fI/etc/psdatabase\fR, which is
+used by the \fIps\fR program. The command:
+.HS
+.Cx "ps \(enU"
+.HS
+will make this file for you. Do not forget to copy
+\fI/etc/psdatabase\fR to your root disk!
+.SP 1
+.SS "Rebuilding MINIX Using 1 MB or Two 720K Disk Drives"
+.SP 1
+.PP
+If your have more than 1 MB of memory, your should create a huge RAM disk.
+The size of the RAM disk is not critical. A RAM disk of 1 MB will do, but more
+does not harm you. 
+In addition to the usual contents of the RAM disk, you should also
+copy disk 06.ACK onto the RAM disk. Take care that the various compiler passes
+are found in \fI/usr/lib\fR or \fI/lib\fR.
+.PP
+If you have two disk drives you should use one drive to hold the 06.ACK disk.
+This disk should be mounted on \fI/usr\fR.
+The other drive will be used to hold the
+disks with the sources. You will also need a RAM disk which has at least 150
+KB free.
+.PP 
+In both cases after setting up, execute the following steps:
+.HS
+.nf
+.Cx "cd /"
+.br
+.Cx "chmem =110000 /usr/lib/cem"
+.HS
+Insert 03.USR1 into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "cp /user/bin/dd /bin/dd"
+.Cx "cp /user/bin/make /bin/make"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the mm sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "cd /user/src/mm"
+.Cx "make"
+.Cx "cp mm.mix /tmp/mm.mix"
+.Cx "cd /"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the tools sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "mkdir /user/src/mm"
+.Cx "cp /tmp/mm.mix /user/src/mm/mm.mix"
+.Cx "rm /tmp/mm.mix"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the fs sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "cd /user/src/fs"
+.Cx "make"
+.Cx "cp fs.mix /tmp/fs.mix"
+.Cx "cd /"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the tools sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "mkdir /user/src/fs"
+.Cx "cp /tmp/fs.mix /user/src/fs/fs.mix"
+.Cx "rm /tmp/fs.mix"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the kernel sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "cd /user/src/kernel"
+.Cx "make"
+.Cx "cp kernel.mix /tmp/kernel.mix"
+.Cx "cd /"
+.Cx "umount /dev/dd0"
+.HS
+Insert the disk with the tools sources into the disk drive and type:
+.HS
+.Cx "mount /dev/dd0 /user"
+.Cx "mkdir /user/src/kernel"
+.Cx "cp /tmp/kernel.mix /user/src/kernel/kernel.mix"
+.Cx "rm /tmp/kernel.mix"
+.Cx "cd /user/src/tools"
+.Cx "make"
+.Cx "cp minix.img /tmp/minix.img"
+.Cx "cd /"
+.Cx "umount /dev/dd0"
+.HS
+.fi
+.PP
+If everything succeeds, you will have a file called \fIminix.img\fR
+in \fI/tmp\fR. 
+You can either write this file to \s-2TOS\s0 using the
+.I toswrite
+command, or create a new boot diskette by inserting a blank, formatted
+diskette into the disk drive and then typing:
+.HS
+.Cx "cp /tmp/minix.img /dev/fd0"
+.HS
+.PP
+Now you can log out and reboot the system to try your new boot disk.
+If required run the \s-2TOS\s0 program
+.I fixkeys
+to modify the keyboard tables to reflect your hardware.
+It is advised to generate a new file \fI/etc/psdatabase\fR, which is
+used by the \fIps\fR program. The command:
+.HS
+.Cx "ps \(enU"
+.HS
+will make this file for you. Do not forget to copy
+\fI/etc/psdatabase\fR to your root disk!
+.PP
+Refer to Sec. 3.12 if your new boot disk does not function properly.
+.SS "Rebuilding MINIX Using 1 MB and a 720K Disk Drive"
+.PP
+Rebuilding
+.MX
+with only one 720K disk drive and 1 MB of memory is somewhat more complicated.
+Therefore it is highly recommended to study this subsection completely before
+even attempting to rebuild \*(Mx.
+First you have to prepare a compiler disk. This is done by making a copy
+of 06.ACK. Remove all but the following files from your newly created compiler
+disk:
+.I
+bin/as,
+bin/cc,
+lib/cem,
+lib/cg,
+lib/crtso.o,
+lib/cv,
+lib/end.o,
+lib/head.o,
+lib/ld,
+lib/libc.a,
+lib/opt,
+include/*,
+.R
+(all files in \fIinclude\fR and its subdirectories)
+Now mount the USR1 disk and copy the following programs to \fI/tmp\fR:
+\fImake, mined, dd, cpdir\fR.
+Then mount your compiler disk, and copy these programs onto the bin directory
+of the compiler disk. After doing so you should remove them from \fI/tmp\fR.
+.PP
+Make a set of source disks as specified in the previous subsection.
+Reboot the system with a root disk which contains a 400 KB RAM disk.
+Log in as root. Unmount the usr filesystem, and mount your compiler disk
+on /usr.
+.PP
+Now we are ready to start the compilation process.
+By and large, the 
+next steps are similar to the one from the previous subsection.
+However, since you have only one drive, which holds the compiler disk,
+the sources are going to be kept in the RAM disk.
+During the remainder of this subsection we will assume that your sources are
+kept in \fI/tmp/src\fR.
+.PP
+Whenever it is stated that you should insert a disk with sources you
+should unmount your compiler disk. Mount the disk which contained the sources
+on which you were working. Then copy the contents of \fI/usr/src\fR back
+to the disk where the sources came from. This is most easily done through
+the command:
+.HS
+.Cx "cpdir \(enmsv /tmp/src /usr/src"
+.HS
+Now erase your source directory by issuing the command:
+.HS
+.Cx "cd /tmp/src; rm \(enrf \*(St"
+.HS
+Unmount your old source disk and mount the new one.
+Copy the sources to the RAM disk by typing:
+.HS
+.Cx "cpdir \(enmsv /usr/src /tmp/src"
+.HS
+Whenever the steps tell you to issue the command
+.I make ,
+you should type:
+.HS
+.Cx "make \(enn >script"
+.HS
+followed by the command:
+.HS
+.Cx "sh \(env script"
+.HS
+Now the sources are being compiled. This can take a substantial amount of
+time. It is possible that during the compilation process your RAM disk runs
+out of space. This is reported by the message:
+.HS
+.Cx "No space left on device 1/0"
+.HS
+If that happens, you should delete all source files
+with extension \fI.c\fR that are already compiled. Do NOT remove files with 
+a \fI.h\fR or \fI.o\fR extension or files that are not yet compiled.
+Modify the file script using 
+.I mined .
+Remove all lines preceding the line on which your RAM disk ran
+out of space. Do not remove the line on which the error occurred, since that
+file is not yet completely processed. After modifying the file script, restart
+the compilation process by re-issuing the command:
+.HS
+.Cx "sh \(env script"
+.HS
+Notice again that all sources which are compiled reside on the RAM disk in
+the directory \fI/tmp/src\fR.
+Whenever issuing commands like \fImake\fR and \fIrm\fR, be sure
+that you are indeed on the RAM disk, and that you are not accidently cluttering
+up your compiler disk or one of your source disks.
+.SS "Installing New Device Drivers"
+.PP
+Once you have successfully reached this point, you will now be able to
+modify 
+.MX .
+In general, if a modification only affects, say, the file system, you will
+not have to recompile the memory manager or kernel.
+If a modification affects any of the files in \fI/usr/include\fR
+you should recompile the entire system, just to be safe.
+.PP
+It is conceivable that your modification has increased the size of some
+file so much that the compiler complains about it.
+If this occurs, try to determine which pass it is using the \fB\(env\fR
+flag to \fIcc\fR, and then give that pass more memory using \fIchmem\fR.
+.PP
+One common modification is adding new I/O devices and drivers.
+To add a new I/O device to
+.MX ,
+it is necessary to write a driver for it.
+The new driver should use the same message interface as the existing ones.
+The driver should be put in the directory
+.I kernel 
+and
+.I Makefile
+should be updated.
+In addition, the entry point of the new task must be added to the list
+contained in the array
+.I task
+in 
+.FI kernel/table.c .
+.PP
+Two changes are also required in the
+.DI /usr/include/minix
+directory.
+In
+.FI const.h ,
+the constant
+.I NR_TASKS
+has to be increased by 1, and the new task has to be given a name in
+.FI com.h .
+.PP
+A new special file will have to be created for the driver.
+This can be done with \fImknod\fR.
+.PP
+To tell the file system which task is handling the new special file, a line
+has to be added to the array
+.I dmap
+in
+.FI fs/table.c .
+.SS "Recompiling Commands and Libraries"
+.PP
+The procedure for recompiling the commands and the library is similar to
+the one for recompiling the kernel.
+.PP
+A major difference between recompiling commands and recompiling the kernel
+is that each command (and each library module) can be recompiled
+independently of all the others, so that less RAM disk is needed.
+.PP
+In order to run \fImake\fR in the commands directory you should give 
+\fImake\fR 35000 bytes of memory by issuing the command:
+.HS
+.Cx "chmem =35000 /usr/bin/make"
+.HS
+.PP
+A few command source files are so big that the compiler complains about it.
+If this occurs, try to determine which pass it is using the \fI\(env\fR
+flag to \fIcc\fR, and then give that pass more memory using \fIchmem\fR.
+.PP
+Should the compiler run out of temporary space during a compilation you can
+either use a larger RAM disk, or you can tell the compiler to put its
+temporary files in another directory (on disk). Add \fB\(enT\fIdir\fR to the
+compile command if you want to create the temporary files in directory
+\fIdir\fR.
+.SE "REBUILDING MINIX ON THE COMMODORE AMIGA"
+.PP
+To rebuild
+.MX
+on the Amiga, you need at least 1M of memory.
+The procedure is the same as for a 1M Atari, as described earlier in this
+chapter.
+The only difference is that instead of copying the \fIminix.img\fR file
+to \fI/dev/fd0\fR you have to transfer \fIminix.img\fR to an AmigaDOS
+floppy, using \fItransfer\fR. The exact details are given in the manual
+page of \fItransfer\fR in chapter 8.
+.SE "REBUILDING MINIX ON THE MACINTOSH"
+.PP
+This section describes the procedure for building the boot application
+and the kernel programs for the Macintosh version of
+.MX .
+Before continuing, see section 7.1 for a description of
+the source directories. 
+.PP
+If you are working on a hard disk, be sure that all these directories
+have been set up, and all files copied there from the distribution diskettes
+and decompressed and dearchived.
+.PP
+If you do not have a hard disk, there are a couple of ways you can recompile
+the system.  First, if you have two diskette drives, use one drive to hold
+the root file system, including the compiler, \fI/usr/lib\fR and
+\fI/usr/include\fR.  Diskettes with programs to be compiled are mounted
+on the other drive.
+.PP
+Second, if you have enough memory for a sufficiently large RAM disk, you can
+put the root file system there, along with the compiler, \fI/usr/lib\fR
+and \fI/usr/include\fR.
+.PP
+If you a system with only one diskette drive, no hard disk, and insufficient
+memory for a large RAM disk, it is probably not possible to recompile the
+system.
+.PP
+As a test to see if everything is set up properly,
+type in, compile, and run the following program:
+.HS
+.nf
+.Cx "#include <limits.h>"
+.Cx "main()"
+.Cx "{"
+.Cx "    printf(\(fm\(fmPATH_MAX = %d  n\(fm\(fm, PATH_MAX);"
+.Cx "}"
+.HS
+.HS
+.fi
+It should print out the value 255 for \fIPATH_MAX\fR.
+.SS "Configuring the System"
+.PP
+The file \fI/usr/include/minix/config.h\fR contains some user-settable
+parameters.
+Examine this file and make any changes that you require.
+For example, if
+.I LINEWRAP
+is set to 0, then lines longer than 80 characters will be truncated;
+with nonzero values they will be wrapped.
+If you want more information than is provided in this file, examine the
+system sources themselves, for example, using \fIgrep\fR to locate the
+relevant files.
+In any event, be sure
+.I MACHINE
+is set to
+.I MACINTOSH .
+.SS "Compiling the Pieces"
+.PP
+Once everything has been set up, actually compiling the pieces is easy.
+First go to the \fIkernel\fR directory on you hard disk
+(or mount the \fIkernel\fR diskette and go to it).
+Then type:
+.HS
+.Cx "make \(enn"
+.HS
+to see what \fImake\fR is planning to do.
+Normally it will list a sequence of compilations to be done.
+If it complains that it cannot find some file, please install the file.
+.PP
+Now do it for real by typing:
+.HS
+.Cx "make"
+.HS
+The kernel will be compiled.
+.PP
+Now go to \fIfs\fR.
+If you are using diskettes, first unmount the one containing the kernel
+sources and mount the one containing the file system sources.
+Now type
+.HS
+.Cx "make  \(enn"
+.HS
+to see if everything is all right, followed by
+.HS
+.Cx "make"
+.HS
+to do the work.
+In a similar way, go to \fImm\fR and use \fImake\fR to produce the \fImm\fR
+file.
+.PP
+Finally, go to \fItools\fR and type
+.HS
+.Cx "make"
+.HS
+to produce \fIinit\fR.
+Check to see that all of them have been made.
+If one is missing, use \fImake\fR to produce it.
+.SS "The Boot Sequence"
+.PP
+In this section we will describe how the four independently compiled and
+linked programs,
+.I kernel ,
+.I fs ,
+.I mm ,
+and
+.I init ,
+are used in conjunction with the boot application to
+boot
+.MX
+on the Macintosh.
+.PP
+Basically, the boot application does the following:
+.LI
+.IT 
+It requests some memory from the the Macintosh operating system.
+This memory will be used to load the 
+.MX
+kernel programs. Anything remaining after these are loaded will be
+used by the
+.MX
+kernel to run
+.MX
+programs.
+.IT
+The
+.I kernel
+program is loaded first. The boot application
+reads this program from the
+.I resource
+fork (Macintosh resources are explained below)
+of the boot application, loads it into memory and relocates it so that
+the addresses that the kernel use correspond correctly to the place
+where it has been loaded in memory.
+.IT
+Similarly,
+.I mm
+is loaded, followed by
+.I fs
+and
+.I init.
+As each program is loaded, the boot application reports
+where in memory it has been loaded and how much memory has been consumed
+(text and data are shown separately, and each is padded to a multiple
+of 256 bytes).
+.LX
+.PP
+After having loaded the four files, the boot application jumps to
+the first instruction of the kernel, where execution proceeds normally.
+Since the kernel needs to know where each program (mm, fs, and init) has
+been loaded, the boot application passes this information on the stack.
+.SS "The Boot Application"
+.PP
+The boot application is a relatively small program that is executed
+by the Macintosh operating system.
+Every application that is executable by the Macintosh operating system
+is composed of a number of
+.I resources.
+Each of these resources describes some aspect of the application.
+For instance, CODE resources are compiled source code, MENU
+resources describe menu bars, ICON resources describe the
+icon of the program when it is displayed on the desktop, and so on. The
+Macintosh operating system contains many system calls to support the
+use and manipulation of resources.  There are many, many different types of
+resources.  The idea behind all of this was that the executable code of the
+application could be divorced from the user interface aspects, and the
+application could be easily customized for different countries and languages.
+.PP
+The boot application, then, consists of three categories of resources:
+the code for the boot application itself (CODE resources), a resource
+for each of the kernel programs (BOOT resources), and other peripheral
+resources.  Included in this latter category are things like the
+picture that is displayed when you select the "About MINIX"
+menu item (the PICT resource). Note that the structure of resource files
+is not even slightly related to the structure of a normal
+.MX
+executable, and they cannot be executed by the
+.MX
+operating system.
+.SP 0.5
+.SS "Building and Testing a New Boot Application"
+.SO 0.5
+.PP
+Once you understand resources, the process of building the boot application
+becomes rather straight forward.  First the boot code itself is compiled, then
+each of the kernel programs are compiled, and then a utility program called
+.I rmaker
+composes the actual boot application from a textual description of 
+the resources.
+.I Rmaker
+is called a resource compiler; it is a very simple minded one and only knows
+how to build a resource file from a limited number of resource types, but
+it should be sufficient for most needs.
+.PP
+To build a new boot application, make a copy of the BOOT.00 diskette
+and set it aside. Now boot
+.MX,
+make the new kernel programs if you have
+not already done so, go to the tools directory and type:
+.HS
+.Cx "make boot"
+.HS
+This will compile the code of boot program (if necessary),
+and then it will run the
+.I rmaker
+utility.  The rmaker utility reads the resource descriptions from
+.I boot.r
+and builds the
+new boot application on the diskette (replacing the
+old one if necessary, so only use a COPY of BOOT.00).
+When the make is finished, kill any background
+processes, do a \fIsync\fR, and reboot the system with the new diskette.
+After logging in, go to the \fItest\fR directory and type:
+.HS
+.Cx "run"
+.HS
+to run all the test programs, assuming they have already been compiled.
+If they have not been, log in as root and type:
+.HS
+.Cx "make all"
+.HS
+.PP
+If you do not have a hard disk, the above procedure has to be modified
+slightly.
+You will have to copy the \fIkernel\fR, \fIfs\fR, and \fImm\fR files to
+the \fItools\fR directory and change \fIboot.r\fR to reflect
+the change.
+.SS "Installing New Device Drivers"
+.PP
+Follow the procedure outlined in the IBM PC section.
+.SS "Troubleshooting"
+.PP
+If you modify the system, there is always the possibility that you will
+introduce an error.
+In this section, we will discuss some of the more common problems and how
+to track them down.
+.PP
+To start with, if something is acting strange, turn the computer off,
+wait about one minute, and reboot from scratch.
+This gets everything into a known state.
+Rebooting with CTRL-ALT-DEL may leave the system in a peculiar state,
+which may be the cause of the trouble.
+.PP
+If a message like
+.CC "Booting \*(M0 1.5"
+does not appear on the screen after the power-on self-tests have completed
+(on the IBM PC), something is wrong with the boot block.
+The boot block prints this message by calling the BIOS.
+Make a dump of the first block of the boot diskette and examine it by hand
+to see if it contains the proper program.
+.PP
+If the above message appears, but the initial menu does not, it is likely
+that
+.I menu
+is not being started, since the first thing
+.I menu
+does is print the menu.
+Check the last 6 bytes of the boot block to see if the segment and offset
+put there by
+.I build
+correspond to the address at which 
+.I menu 
+is located (right after
+.I init ).
+.PP
+If the menu appears, but the system does not respond to the equal sign,
+.MX
+is probably being started, but crashing during initialization.
+One possible cause is the introduction of print statements into the kernel.
+However, it is not permitted to display anything until after the terminal task has
+run to initialize itself.
+Be careful about where you put the print statements.
+.PP
+If the screen has been cleared and the message giving the sizes has appeared,
+the kernel has initialized itself, the memory manager has run and blocked
+waiting for a message, and the file system has started running.
+This message is printed as soon as the file system has read the super-block
+of the root file system.
+.PP
+If the system appears to hang before or after reading the root file system,
+some help can be obtained by hitting the F1 or F2 function keys (unless
+the dump routines have been removed).
+By hitting F1 twice a few seconds apart
+and noting the times in the display, it may be possible
+to see which processes are running.
+If, for example, 
+.I init
+is unable to fork, for whatever reason, or cannot open
+.I /etc/ttys ,
+or cannot execute
+.I /bin/sh
+or
+.I /bin/login ,
+the system will hang, but process 2
+(\fIinit\fR) may continue to use CPU cycles.
+If the F1 display shows that process 2 is constantly running, it is a
+good bet that 
+.I init
+is unable to make a system call or open a file that is essential.
+The problem can usually be localized by putting statements in the
+main loops of the file system and memory manager to print a line 
+describing each incoming message and each outgoing reply.
+Recompile and test the system using the new output as a guide.
+.if \nh=0 .so macros
+.LP
+.SE "REBUILDING MINIX ON THE SUN SPARCSTATION 1"
+.PP
+It is possible to rebuild \*(Ma on any SparcStation with at least 4 MB of
+main memory and a hard disk. Some hints are given to rebuild \*(Ma on a
+SparcStation with only a diskette drive and at least 8 MB of RAM.
+.SS "Configuring the System"
+.PP
+In order to rebuild \*(Ma you must first prepare your system.
+What you must do depends on your system.
+If you have a hard disk, you should install all the sources and binaries
+on your disk.
+.PP
+If you want to reconfigure the system you should first examine the files
+\fIinclude/minix/config.h\fR and \fIinclude/minix/boot.h\fR.
+These contain a number of tunable system parameters.
+For instance if you keep your root partition on \fI/dev/sd15\fR,
+but you do not want to load this partition into the RAM disk upon startup,
+you could change the line
+.HS
+.Cx "#define  DROOTDEV    (DEV_RAM  +  0)"
+.HS
+in \fIinclude/minix/boot.h\fR into
+.HS
+.Cx "#define  DROOTDEV    (DEV_HD0  +  15)"
+.HS
+If you do not want to copy the root partition, but you want to keep a RAM
+disk, you should modify the value of the constant \fIDRAMSIZE\fR in
+\fIinclude/minix/boot.h\fR as well.
+.PP
+The file \fIconfig.h\fR contains some user-settable parameters. Examine this
+file and make the changes you require. The macro \fIMACHINE\fR should be
+\fISUN_4\fR on the SparcStation. You should change the value of
+\fINR_BUFS\fR to a bigger value, like 1536, but only if your SparcStation
+has at least 8 MB of main memory. The file system process gets only a maximum
+of 1792 KB of memory, in which the FS code, data and stack should fit. So
+do not make the FS buffer cache too big or else the system will crash.
+.SS "Rebuilding MINIX Using a Hard Disk"
+.PP
+Rebuilding \*(Mx is fairly simple when you have a hard disk. Assuming that
+you have installed the sources in \fI/usr/src\fR, and that there is enough
+free space on your hard disk to accommodate all object files and results,
+type:
+.HS
+.Cx "cd  /usr/src/kernel"
+.br
+.Cx "make"
+.br
+.Cx "cd  /usr/src/mm"
+.br
+.Cx "make"
+.br
+.Cx "cd  /usr/src/fs"
+.br
+.Cx "make"
+.br
+.Cx "cd  /usr/src/tools"
+.br
+.Cx "make"
+.HS
+If disk space is tight you can remove all \fI.o\fR files after each make.
+If everything succeeds, you will have a file called \fIminix.img\fR in
+\fI/usr/src/tools\fR. You can create a new boot diskette by inserting an
+empty, formatted disk into the disk drive and issuing the command:
+.HS
+.Cx "cp  /usr/src/tools/minix.img  /dev/rfd0"
+.HS
+If the diskette was not yet formatted, you have to \fIfdformat\fR it first.
+If you want to boot \*(Mx from hard disk, you should
+copy the \*(Ma boot image to a previously prepared hard disk partition. 
+To copy the image, construct a shell sript containing the following line:
+.HS
+.Cx "dd  if=/usr/src/tools/minix.img  of=/dev/sd\fI\s+1n\s0\fP  skip=1  seek=1  conv=sync"
+.HS
+\fRwhere \fIn\fR is the ASCII representation of the minor partition number.
+It is wise to triple check this command when you have typed it, as it writes
+on the given hard disk partition without checking whether there was already
+a \*(Mx or SunOS filesystem on it. The point of putting it in a
+shell script is that you can examine it carefully after typing it.
+If you just type it in and make a mistake, you can wipe out your hard disk.
+After you are convinced that it is correct, execute the shell script.
+.PP
+Now you can logout and reboot the system to try your new boot disk.
+It is advised to generate a new file \fI/etc/psdatabase\fR, which is
+used by the \fIps\fR program. The command:
+.HS
+.Cx "ps  \(enU"
+.HS
+will make this file for you. Do not forget to copy
+\fI/etc/psdatabase\fR to your root disk.
+.PP
+.SP 0.5
+.SS "Rebuilding \*(Mx Using a Floppy Diskette Drive"
+.SP 0.5
+.PP
+It is possible to rebuild \*(Ma on a SparcStation with at least 8 MB of
+main memory but without a hard disk. This section gives hints on how to
+create an environment to rebuild \*(Mx without using a hard disk, but is
+not quite exhaustive in explaining everything step-by-step. When you
+want to rebuild \*(Mx with only a diskette, you have to be creative.
+.PP
+To create the environment, you should format four 1.44M diskettes. The first
+diskette will be used for a big 4MB root filesystem, which should contain
+the normal root filesystem files plus the C compiler, editor, include files,
+etc. The second will be used for the kernel, the third for the memory
+manager, the file system and tools sources. The last diskette will
+be the new boot diskette.
+You should create a ROOT file system of 4 MB. A 3MB filesystem should do
+as well but that is the minimum. This is how you should create the ROOT
+file system. First reboot \*(Mx. Then log in as \fIroot\fR and type:
+.HS
+.Cx "for  i  in  ar  cpdir  df  rmdir  mkfs  fdformat  chmod  compress"
+.br
+.Cx "do  cp  /usr/bin/$i  /bin;  done"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.HS
+Next, insert a new diskette, format it, create a \*(Mx file system on it
+and copy the ROOT file system to it:
+.HS
+.Cx "fdformat"
+.br
+.Cx "mkfs  \(ent  /dev/fd0  4096"
+.br
+.Cx "/etc/mount  /dev/fd0  /user"
+.br
+.Cx "cpdir  \(enmsv  /  /user"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.HS
+Reboot \*(Mx again with the new ROOT diskette. To compile programs,
+you will need \fIcc, as, ld, /usr/include, cpp, cc1\fR and \fIlibc.a\fR. You'll
+probably also want a program editor and \fImake\fR.
+.HS
+.Cx "/etc/umount  /dev/fd0		# unmount the /usr/disk"
+.br
+.Cx "/etc/mount  /dev/fd0  /user	# insert 04.USR2"
+.br
+.Cx "cp  /user/bin/elvis  /bin/vi	# copy elvis (or mined)"
+.br
+.Cx "cp  /user/bin/make  /bin"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.br
+.Cx "/etc/mount  /dev/fd0  /user	# insert 05.CSYS"
+.br
+.Cx "cp  /user/bin/\*(St  /bin		# get cc, as and ld"
+.br
+.Cx "cd  /bin;  compress  \(end  \*(St.Z;  rm  \*(St.Z"
+.br
+.Cx "mkdir  /usr/lib;  cd  /usr/lib	# create the lib directory"
+.br
+.Cx "cp  /user/lib/[cehl]\*(St  ."
+.br
+.Cx "compress  \(end  \*(St.Z;  rm  \*(St.Z"
+.br
+.Cx "cpdir  /user/include  /usr/include;  cd  /usr/include"
+.br
+.Cx "compress  \(end  \*(St.Z;  rm  \*(St.Z;  ar  x  \*(St.a;  rm  \*(St.a"
+.br
+.Cx "(cd  minix;  compress  \(end  \*(St.Z;  rm  \*(St.Z;  ar  x  \*(St.a;  rm  \*(St.a)"
+.br
+.Cx "(cd  sys;  compress  \(end  \*(St.Z;  rm  \*(St.Z;  ar  x  \*(St.a;  rm  \*(St.a)"
+.br
+.Cx "mkdir  /usr/tmp			# vi and the C compiler want /usr/tmp"
+.br
+.Cx "mkdir  /usr/src"
+.HS
+You could copy your current ram device to the root diskette, but you
+should make sure, that it fits (i.e., no more than 1440 used blocks on
+\fI/dev/ram\fR; check this with \fIdf\fR).
+.PP
+Now, you need to copy and unpack the kernel sources:
+.HS
+.Cx "/etc/umount /dev/fd0		# unmount  05.CSYS"
+.br
+.Cx "/etc/mount  /dev/fd0  /user	# insert 07.SRC2"
+.br
+.Cx "cp  /user/src/kernel/\*(St  /tmp	# temporarily store kernel sources in tmp"
+.br
+.Cx "/etc/umount  /dev/fd0		# unmount diskette and insert empty diskette"
+.br
+.Cx "fdformat				# format the diskette"
+.br
+.Cx "mkfs  /dev/fd0  1440		# create an empty filesystem"
+.br
+.Cx "/etc/mount  /dev/fd0  /usr/src"
+.br
+.Cx "mkdir  /usr/src/kernel		# create kernel directory on the diskette"
+.br
+.Cx "cp  /tmp/\*(St  /usr/src/kernel	# copy the kernel files to it"
+.br
+.Cx "cd  /usr/src/kernel;  compress  \(end  \*(St.Z;  rm  \*(St.Z;  ar  x  \*(St.a;  rm  \*(St.a"
+.br
+.Cx "cd  /;  /etc/umount  /dev/fd0	# remove the diskette"
+.br
+.Cx "rm  /tmp/\*(St			# and the temporary files"
+.HS
+The same needs to be done for the MM/FS/tools diskette:
+.HS
+.Cx "/etc/mount  /dev/fd0  /user	# insert 07.SRC2"
+.br
+.Cx "for  i  in  mm  fs  tools;  do  cpdir  \(enmv  /user/src/$i  /tmp/$i;  done"
+.br
+.Cx "/etc/umount /dev/fd0		# unmount 07.SRC2 and insert empty diskette"
+.br
+.Cx "fdformat				# format the diskette"
+.br
+.Cx "mkfs  /dev/fd0  1440		# create an empty filesystem"
+.br
+.Cx "/etc/mount  /dev/fd0  /usr/src"
+.br
+.Cx "for  i  in  mm  fs  tools"
+.br
+.Cx "do  cpdir  \(enmv  /tmp/$i  /usr/src/$i;  cd  /usr/src/$i"
+.br
+.Cx "compress  \(end  \*(St.Z;  rm  \*(St.Z;  ar  x  \*(St.a;  rm  \*(St.a;  rm  \(enrf  /tmp/$i
+.br
+.Cx "done"
+.br
+.Cx "mkdir  /usr/src/kernel"
+.br
+.Cx "/etc/umount  /dev/fd0		# remove the diskette"
+.HS
+Now, you can rebuild the \*(Ma kernel in three phases. First recompile the
+kernel, then recompile MM and FS and merge them producing a new bootable
+\*(Mx image and finally copy this image to a diskette. To start, insert the
+\fIkernel\fR diskette, you just created:
+.HS
+.Cx "/etc/mount  /dev/fd0  /usr/src	# mount the kernel diskette"
+.br
+.Cx "cd  /usr/src/kernel;  make"
+.br
+.Cx "cp  /usr/src/kernel/kernel.out  /tmp"
+.HS
+The last command copies the linked kernel image to the RAM device. Now
+unmount the \fIkernel\fR diskette, replace it with the diskette,
+containing the \fImm\fR, \fIfs\fR and \fItools\fR, and mount it. Compile
+the sources:
+.HS
+.Cx "/etc/umount  /dev/fd0		# unmount the kernel diskette"
+.br
+.Cx "/etc/mount  /dev/fd0  /usr/src	# mount the mm/fs/tools diskette"
+.br
+.Cx "cd  /usr/src/mm;  make		# make mm.out"
+.br
+.Cx "cd  /usr/src/fs;  make		# make fs.out"
+.br
+.Cx "cp  /tmp/kernel.out  /usr/src/kernel"
+.br
+.Cx "cd  /usr/src/tools"
+.br
+.Cx "make				# make minix.img"
+.br
+.Cx "cp  minix.img  /tmp"
+.br
+.Cx "cd  /tmp"
+.br
+.Cx "/etc/umount  /dev/fd0"
+.HS
+\fRRemove the diskette and insert an empty, formatted diskette. Copy the \*(Mx
+image to it:
+.HS
+.Cx "cp  minix.img  /dev/rfd0"
+.HS
+If space is getting scarce, remove as much temporary and `\fI.o\fR' files
+as necessary.
+.SS "Installing New Device Drivers"
+.PP
+Once you have successfully reached this point, you will now be able to
+modify \*(Mx. In general, if a modification only affects, say, the file
+system, you will not have to recompile the memory manager or kernel.
+If a modification affects any of the files in \fI/usr/include\fR
+you should recompile the entire system, just to be safe.
+.PP
+It is conceivable that your modification has increased the size of some
+file so much that the compiler complains about it.
+If this occurs, try to determine which pass it is using the \fB\(env\fR
+flag to \fIcc\fR, and then give that pass more memory using \fIchmem\fR.
+.PP
+One common modification is adding new I/O devices and drivers.
+To add a new I/O device to \*(Mx, it is necessary to write a driver for it.
+The new driver should use the same message interface as the existing ones.
+The driver should be put in the directory \fIkernel\fR and \fIMakefile\fR
+should be updated. In addition, the entry point of the new task must be
+added to the list contained in the array \fItask\fR[] in
+.FI kernel/table.c .
+.PP
+Two changes are also required in the
+.DI /usr/include/minix
+directory.
+In
+.FI const.h ,
+the constant \fINR_TASKS\fR has to be increased by 1, and the new task has
+to be given a name in
+.FI com.h .
+.PP
+A new special file will have to be created for the driver.
+This can be done with \fImknod\fR.
+.PP
+To tell the file system which task is handling the new special file, a line
+has to be added to the array \fIdmap\fR[] in
+.FI fs/table.c .
+.PP
+Writing device drivers for \*(Ma is somewhat more difficult than writing
+device drivers for the PC or Atari versions of \*(Mx. The first problem
+is that the internal hardware of the SparcStation is not well documented.
+Secondly, the SparcStation 1, 1+ and IPC use an MMU with contexts and a cache.
+A context is a translation table of virtual to physical addresses. Of the 8
+available contexts, \*(Ma uses only the first 3 contexts. The \*(Mx memory
+manager runs at virtual address 0 in context 0, the file system at virtual
+address 0 in context 1 and the currently (or last) running user process is
+mapped at virtual address 0 in context 2. The kernel is mapped in \fBall\fR
+contexts in high virtual memory at address 0xE0004000. When a device
+driver wants to access data in the memory of another process, it has to map
+that memory in its own address space. But by double mapping of the same
+physical memory, the cache of the SparcStation could present problems.
+Therefore, a device driver should carefully flush the cache. If you want
+to write a device driver, study the present device drivers closely, until
+you understand them.
+The file
+.FI /usr/src/kernel/const.h
+gives information on the Sparc and SparcStation specific constants.
+.SS "Recompiling Commands and Libraries"
+.PP
+The procedure for recompiling the commands and the library is similar to
+the one for recompiling the kernel.
+.PP
+A major difference between recompiling commands and recompiling the kernel
+is that each command (and each library module) can be recompiled
+independently of all the others, so that less RAM disk is needed.
+.PP
+In order to run \fImake\fR in the commands directory you should give
+\fImake\fR 60000 bytes of memory by issuing the command:
+.HS
+.Cx "chmem  =60000  /usr/bin/make"
+.HS
+.PP
+A few command source files are so big that the compiler complains about it.
+If this occurs, try to determine which pass it is using the \fI\(env\fR
+flag to \fIcc\fR, and then give that pass more memory using \fIchmem\fR.
+Especially the GNU C-compiler proper (\fI/usr/lib/cc1\fR) is known to
+require a gap of 1200000 bytes to compile some programs. When compiling
+the libraries via
+.HS
+.Cx "cc  \(enO  \(enD_MINIX  \(enD_POSIX_SOURCE  \(enc  \*(St.c"
+.HS
+the dispatcher, \fIcc\fR, will need more memory.
+.SS "Recompiling GNU Sources"
+.PP
+Rebuilding the GNU programs is somewhat different from rebuilding the
+ordinary \*(Mx commands. This is mainly due to the size and the form of
+distribution of the GNU sources.
+.PP
+Some gcc and gas source files are so big, that
+.FI /usr/lib/cc1
+and
+.FI /usr/bin/as
+need more memory space to compile/assemble them. When compiling gcc or
+gas, it's best to temporarily increase the gap size of
+.FI /usr/lib/cc1
+to 1600000, and the gap size of
+.FI /usr/bin/as
+to 800000. This will be enough to compile the most demanding sources. To
+link the assembler object files,
+.FI /usr/bin/ld
+needs a slightly bigger gap of 150000 bytes. You should restore the gaps
+to their original sizes after you've finished recompiling gcc and gas to
+preserve memory space.
+.PP
+Distributed are original GNU source files, stored in the
+.FI Setup.dir
+directories, and the changes made to some source files in
+.FI cdiff
+files in the
+.FI Setup.fix
+directories. There are three GNU source directories,
+.FI gcc ,
+.FI gas
+and
+.FI binutils
+in the
+.FI /usr/src/gnu
+directory.
+.PP
+To compile, for instance,
+.FI gcc ,
+you should have installed the GNU sources via
+.FI /usr/setup_usr .
+You also should have booted \*(Ma with a root file system, big enough
+to hold the temporary files from
+.FI patch .
+The distribution 02.ROOT is not big enough. Use a root of at least 768 KB,
+created as shown in Step 4 of section 6.3.4. Log in and type:
+.HS
+.Cx "chmem  =1600000  /usr/lib/cc1"
+.br
+.Cx "chmem  =800000  /usr/bin/as"
+.br
+.Cx "cd  /usr/src/gnu/gcc"
+.br
+.Cx "make"
+.HS
+Now, the \*(Ma sources of the GNU C compiler are extracted and compiled,
+which may take a while, even on a fast computer like the SparcStation. The
+new \fIcc\fR, \fIcpp\fR and \fIcc1\fR can be tested and copied to
+\fI/usr/bin\fR and \fI/usr/lib\fR if they're all right. Afterwards, you
+should \fIchmem\fR \fIcc1\fR and \fIas\fR to their original gap sizes. If you
+do not, both of them will allocate an enormous amount of memory when run,
+which is almost never used.

@@ -1,0 +1,33 @@
+Command:        sz - send a file using the zmodem protocol
+Syntax:         sz [-+CLNabdefnopqruvy] [ci command] [Ll #] [t timeout]
+Flags:          -+      append to an existing file
+                -C #    set command retries to #
+                -L #    use n-byte packets
+                -N      overwrite if source is newer/longer
+                -T      test mode
+                -X      use XMODEM mode
+                -Y      @@@
+                -a      ASCII file mode
+                -b      binary file mode
+                -c      send command for execution
+                -d      convert dot to slash in names
+                -e      escape for all control characters
+                -f      send full path name
+                -i      send a command and exit
+                -l #    flow control every # packets
+                -n      overwrite destination if source is newer
+                -o      use old (16-bit) checksum
+                -p      protect file if it already exists
+                -q      quiet mode, overrides verbose
+                -r      resume interrupted file transfer
+                -t #    set timeout in tenths of a second
+                -u      unlink file after successful transmission
+                -v      verbose, more 'v's more info.
+                -y      yes, clobber existing files
+Examples:       sz file </dev/tty1 >/dev/tty1# Send file
+
+     Sz is a program that accepts a file sent from another computer using the
+zmodem protocol.  It is a highly complex program, which if called as sb or sx,
+operates in YMODEM (batch) or XMODEM mode.  See the description of rz, and the
+doc/sz.doc and doc/rz.doc files, for more information.
+

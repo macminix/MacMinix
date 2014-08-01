@@ -1,0 +1,14 @@
+Command:        uniq - delete consecutive identical lines in a file
+Syntax:         uniq [-cdu] [+#] [-#] [input [output]]
+Flags:          -#      skip the first # spaces when matching 
+                +#      skip the first # fields when matching
+                -c      give count of identical input lines
+                -d      write only duplicate lines to output
+                -u      write only unique lines to output
+Examples:       uniq +2 file            # Ignore first two fields in matching
+                uniq -d in out          # Write duplicate lines to file out
+
+     Uniq examines a file for consecutive lines that are identical.  All but 
+duplicate entries are deleted, and the file is written to output.  When both
+fields and spaces are being skipped, fields are skipped first. 
+

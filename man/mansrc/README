@@ -1,0 +1,22 @@
+Here is a reposting of my man(1) program, which works very much like the
+real Unix man; you need to build directories like
+
+	/usr/man/manx		- holds nroff'able mans for section x
+	/usr/man/catx		- holds cat'able mans for section x
+
+The program supports the MANPATH and PAGER environment variables. The
+first can be set to hold one or more directories which hold manuals; for
+example, my MANPATH looks like "/usr/local/man:/usr/man". The PAGER variable
+holds the man of the program used to page through the manual - I use "less".
+
+For each manual directory, you need to supply a `whatis' file for man(1) to
+find the manuals. Documentation on this is supplied. Also supplied is a
+patch to 1.5 nroff(1) to allow the output to less to be readable. Also
+supplied is a slightly changed tmac.an for nroff, which knows about some
+manual macros that the 1.5 tmac.an didn't.
+
+This version has been patched to work on the 680x0 versions of Minix.
+
+	Warren Toomey
+
+	wkt@csadfa.cs.adfa.oz.au

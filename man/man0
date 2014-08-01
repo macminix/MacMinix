@@ -1,0 +1,33 @@
+MINIX 1.5.0 Programmer's Manual, man(0) revision 1.1, by Will Rose.
+
+# INTRO
+
+The Minix Programmer's Manual is divided into seven numbered parts. For
+PC Minix 1.5.10 sections 0, 1, 1C, 1M, 2, 3C, 3S, 3X, 4, and 5 are available.
+
+Man 1 describes publicly-accessible commands, and has sub-sections:
+
+  (1)  Commands of general utility.  
+  (1C) Commands for communication with other systems.
+  (1G) Commands for graphics and CAD.
+  (1M) Commands for maintenance and administration.
+
+Man 2 describes Minix system calls and error numbers.
+
+Man 3 describes functions in various libraries, except for those that
+directly invoke the Minix system primitives; those are in Man 2.  The
+sub-sections are:
+
+  (3C) Functions that form the Standard C Library libc, which also includes
+       the functions of (3S) and Section 2. 
+  (3M) Functions forming the Math Library, searched with the -lm option.
+  (3S) Functions forming the stdio package, included in libc.
+  (3X) Various specialised libraries.
+
+Man 4 describes the format of various files.
+
+Man 5 describes miscellaneous facilities such as macro packages.
+
+Man 6 describes games.
+
+Man 7 describes special files.

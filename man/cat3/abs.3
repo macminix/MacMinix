@@ -1,0 +1,44 @@
+
+NAME
+	  abs -	return integer absolute	value
+SYNTAX
+	  int abs (i)
+	  int i;
+DESCRIPTION
+	  Abs returns the absolute value of its	integer	operand.
+BUGS
+	  In two's-complement representation, the absolute value of
+	  the negative integer with largest magnitude is undefined.
+	  Some implementations trap this error,	but others simply
+	  ignore it.
+SEE ALSO
+	  floor(3M).
+				  
+NAME
+	  abs, iabs, dabs, cabs, zabs -	FORTRAN	absolute value
+SYNTAX
+	  integer i1, i2
+	  real r1, r2
+	  double precision dp1,	dp2
+	  complex cx1, cx2
+	  double complex dx1, dx2
+	  r2 = abs(r1)
+	  i2 = iabs(i1)
+	  i2 = abs(i1)
+	  dp2 =	dabs(dp1)
+	  dp2 =	abs(dp1)
+	  cx2 =	cabs(cx1)
+	  cx2 =	abs(cx1)
+	  dx2 =	zabs(dx1)
+	  dx2 =	abs(dx1)
+DESCRIPTION
+	  Abs is the family of absolute	value functions.  Iabs returns
+	  the integer absolute value of	its integer argument.  Dabs
+	  returns the double-precision absolute	value of its double-
+	  precision argument.  Cabs returns the	complex	absolute value
+	  of its complex argument.  Zabs returns the double-complex
+	  absolute value of its	double-complex argument.  The generic
+	  form abs returns the type of its argument.
+SEE ALSO
+	  floor(3M).
+				  

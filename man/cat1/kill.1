@@ -1,0 +1,33 @@
+Command:        kill - send a signal to a process
+Syntax:         kill [-signal] process
+Flags:          (none)
+Examples:       kill 35                 # Send signal 15 to process 35
+                kill -9 40              # Send signal 9 (SIGKILL) to process 40
+                kill -2 0               # Send signal 2 to whole process group
+
+     A signal is sent to a given process.  By default signal 15 (SIGTERM) is 
+sent.  Process 0 means all the processes in the sender's process group.
+
+     Minix 1.5.10 supports the following signals:
+
+     SIGHUP            1        hangup
+     SIGINT            2        interrupt (DEL)
+     SIGQUIT           3        quit (ASCII FS)
+     SIGILL            4        illegal instruction
+     SIGTRAP           5        trace trap (not reset when caught)
+     SIGABRT           6        IOT instruction
+     SIGIOT            6        SIGABRT for people who speak PDP-11
+     SIGUNUSED         7        spare code
+     SIGFPE            8        floating point exception
+     SIGKILL           9        kill (cannot be caught or ignored)
+     SIGUSR1          10        user defined signal # 1
+     SIGSEGV          11        segmentation violation
+     SIGUSR2          12        user defined signal # 2
+     SIGPIPE          13        write on a pipe with no one to read it
+     SIGALRM          14        alarm clock
+     SIGTERM          15        software termination signal from kill
+     SIGSTKFLT        16        used by kernel to indicate stack fault
+
+     SIGEMT            7        obsolete
+     SIGBUS           10        obsolete
+

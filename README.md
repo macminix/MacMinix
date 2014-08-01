@@ -4,7 +4,11 @@ This is the source code as extracted from the MacMinix port of MINIX 1.5 to
 Apple's 68k Macs.
 
 I am in no way affiliated with the original developers, nor can I guarantee
-this is complete or unmodified.
+this archive is complete or unmodified.
+
+ * distrib/ - MacMinix distribution.
+ * docs/ - PDF/roff MacMinix documentation.
+ * man/ - Preformatted online manuals, man(1) implementation.
 
 For more information about MacMinix, including manuals, see Brad Pliner's
 helpful MacMinix Page:

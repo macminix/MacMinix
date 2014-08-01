@@ -1,0 +1,36 @@
+Command:        make - maintain large programs
+Syntax:         make [-f file] [-ikns] [option] ...  [target]
+Flags:          -a      try to guess undefined ambiguous macros (*,<)
+                -d      print debugging info
+                -e      environment macro defs. overwrite makefile defs.
+                -f      use file as the makefile
+                -i      ignore status returned by commands
+                -k      kill branch on error
+                -n      report, but do not execute
+                -p      print all macros and targets
+                -q      question up-to-date target. Return exit=1 if not.
+                -r      do not use inbuilt rules
+                -s      silent mode
+                -t      touch files instead of making them
+Examples:       make kernel             # Make kernel up to date
+                make -n -f file         # Tell what needs to be done
+
+     Make is a program that is normally used for developing large programs 
+consisting of multiple files.  It keeps track of which object files depend on 
+which source and header files.  When called, it does the minimum amount of 
+recompilation to bring the target file up to date.
+     The file dependencies are expected in makefile or Makefile, unless
+another file is specified with -f.  Make has some default rules built in, for 
+example, it knows how to make .s files from .c files.  Here is a sample 
+makefile (tabs are significant):
+        d=/user/ast                     # d is a macro
+        prog:   head.s tail.s           # 'prog' depends on these
+                cc -o program head.s tail.s     # tells how to generate 'prog'
+                echo prog done
+        head.s: $d/def.h head.c         # head.s depends on these
+        tail.s: $d/var.h tail.c         # tail.s depends on these 
+
+A complete description of make would require too much space here.  For more
+information, see Feldman (1979).  Many books on UNIX also discuss make, and
+the MINIX version is a fairly complete implementation.
+

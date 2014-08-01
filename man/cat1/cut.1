@@ -1,0 +1,16 @@
+Command:        cut - select out columns of a file
+Syntax:         cut [-i] [-carg] [-darg] [-farg]
+Flags:          -c      select by columns
+                -d      change the column delimiter to c
+                -f      select by fields
+                -i      runs of delimiters count as one
+Examples:  cut -f2 file                 # Extract field 2
+           cut -c1-2,5 file             # Extract character columns 1, 2, and 5
+           cut -c1-5,7- file            # Extract all columns except 6
+
+     Cut extracts one or more fields or columns from a file and writes them on
+standard output.  If the -f flag is used, the fields are separated by a
+delimiter character, normally a tab, but which can be changed using the -d
+flag. If the -c flag is used, specific columns can be selected. The -f and
+c flags are mutually exclusive.
+

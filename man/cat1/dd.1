@@ -1,0 +1,31 @@
+Command:        dd - disk dumper
+Syntax:         dd [option = value] ...
+Flags:          (none)
+Examples:       dd if=/dev/fd0 of=/dev/fd1      # Copy disk 0 to disk 1
+                dd if=x of=y bs=1w skip=4       # Copy x to y skipping 4 words
+                dd if=x of=y count=3            # Copy 3 512-byte blocks
+
+     This command is intended for copying partial files.  The block size,
+skip count, and number of blocks to copy can be specified.  The options are:
+        if = file       input file (default is standard input)
+        of = file       output file (default is standard output)
+        ibs = #         input block size (default 512 bytes)
+        obs = #         output block size (default 512 bytes)
+        bs = #          block size; sets ibs and obs (default 512 bytes)
+        skip = #        skip # input blocks before reading
+        seek = #        skip # output blocks before writing
+        count = #       copy only # input blocks
+        files = #       copy only # files from input
+        length =        precede the output with the string 'A.S.Tanenbaum'
+        conv = lcase    convert upper case letters to lower case
+        conv = ucase    convert lower case letters to upper case
+        conv = sync     pad every input record to ibs
+        conv = swab     swap every pair of bytes
+        conv = noerror  ignore errors and just keep going
+
+     Where sizes are expected, they are in bytes.  However, the letters w, b, 
+k, or x may be appended to the number to indicate words (2 bytes), blocks (512 
+bytes), or K (1024 bytes), respectively.  When dd is finished, it reports the 
+number of full and partial blocks read and written.  Multiple conversion
+operations can be separated by commas.
+

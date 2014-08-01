@@ -1,0 +1,18 @@
+Command:        at - execute commands at a later time
+Syntax:         at time [month day] [file]
+Flags:          (none)
+Examples:       at 2315 Jan 31 myfile   # Myfile executed Jan 31 at 11:15 pm
+                at 0900                 # Job input read from stdin
+                at 0711 4 29            # Read from stdin, exec on April 29
+
+     At prepares a file to be executed by atrun at the specified time.  It does
+this by creating a special file in /usr/spool/at.  The name of this file is
+is YY.DDD.HHMM.UU, where YY, DDD, HH, and MM give the time to execute the
+command and UU is a unique number.  Note that when the command runs, it 
+will not be able to use standard input or standard output unless specifically 
+redirected.  In the first example above, it might be necessary to put 
+>/dev/tty0 on some lines in the shell script myfile.  The same holds for the 
+commands typed directly to at.
+
+     Files used: /usr/spool/at/YY.DDD.HHMM.UU
+

@@ -1,0 +1,12 @@
+Command:        strings - print all the strings in a binary file
+Syntax:         strings [-] [-o] [-#] file ...
+Flags:          -        search whole file, not just data seg
+                -o       print octal offset of each string
+                -#       minimum length string # (default 4)
+Examples:       strings -5 a.out        # Print all strings >= 5 char in a.out
+                strings - /bin/sh       # Search entire shell file
+
+     Strings looks for sequences of printable characters followed by a null or
+newline.  These are usually strings.  This program is typically used to help
+identify unknown binary programs and to identify the source of eg. core dumps.
+

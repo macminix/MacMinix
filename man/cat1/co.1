@@ -1,0 +1,14 @@
+Command:        co - check out an SVC revision
+Syntax:         co [-l] [-r #] file
+Flags:          -l      place a lock on the SVC archive after checkout
+                -r #    check out revision # instead most recent revision
+Examples:       co -l Makefile          # Check out and lock Makefile
+                co -r 4 foo             # Check out version 4 of foo
+
+     Co checks the specified file out of its SVC archive.  If the archive
+".../file,S" does not exist, it is searched for in ".../SVC/file,S".
+     The specified revision will be checked out and placed in "file"; by
+default it will be non-writable.  If "-l" is specified, a lock will be
+placed on the archive and the file will be writable.
+     See also the descriptions of ci, svc, svclog.
+

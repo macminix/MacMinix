@@ -1,0 +1,13 @@
+Command:        badblocks - put a list of bad blocks in a file
+Syntax:         badblocks block_special [Up_to_7_blocks] 
+Flags:          (none)
+Examples:       badblocks /dev/fd1      # Handle bad blocks on /dev/fd1
+
+     If a device develops bad sectors, it is important to not have them 
+allocated to important files.  This program makes it possible to collect up
+to seven bad blocks into a file, so they will not be allocated for a "real"
+file.  When the program starts up, if it is not given a list of bad blocks
+it asks for them.  Then it creates a file whose name is of the form
+.Bad_xxxxx, where xxxxx is a pid.  The numbers of bad sectors can be obtained
+from the program diskcheck.
+

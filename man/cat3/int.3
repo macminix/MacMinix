@@ -1,0 +1,85 @@
+
+NAME
+	  int, ifix, idint, real, float, sngl, dble, cmplx, dcmplx,
+	  ichar, char -	explicit FORTRAN type conversion
+SYNTAX
+	  integer i, j
+	  real r, s
+	  double precision dp, dq
+	  complex cx
+	  double complex dcx
+	  character*1 ch
+	  i = int(r)
+	  i = int(dp)
+	  i = int(cx)
+	  i = int(dcx)
+	  i = ifix(r)
+	  i = idint(dp)
+	  r = real(i)
+	  r = real(dp)
+	  r = real(cx)
+	  r = real(dcx)
+	  r = float(i)
+	  r = sngl(dp)
+	  dp = dble(i)
+	  dp = dble(r)
+	  dp = dble(cx)
+	  dp = dble(dcx)
+	  cx = cmplx(i)
+	  cx = cmplx(i,	j)
+	  cx = cmplx(r)
+	  cx = cmplx(r,	s)
+	  cx = cmplx(dp)
+	  cx = cmplx(dp, dq)
+	  cx = cmplx(dcx)
+	  dcx =	dcmplx(i)
+	  dcx =	dcmplx(i, j)
+	  dcx =	dcmplx(r)
+	  dcx =	dcmplx(r, s)
+	  dcx =	dcmplx(dp)
+	  dcx =	dcmplx(dp, dq)
+	  dcx =	dcmplx(cx)
+	  i = ichar(ch)
+	  ch = char(i)
+DESCRIPTION
+	  These	functions perform conversion from one data type	to
+				  
+	  another.
+	  The function int converts to integer form its	real, double
+	  precision, complex, or double	complex	argument.  If the
+	  argument is real or double precision,	int returns the
+	  integer whose	magnitude is the largest integer that does not
+	  exceed the magnitude of the argument and whose sign is the
+	  same as the sign of the argument (i.e., truncation). For
+	  complex types, the above rule	is applied to the real part.
+	  ifix and idint convert only real and double precision
+	  arguments respectively.
+	  The function real converts to	real form an integer, double
+	  precision, complex, or double	complex	argument.  If the
+	  argument is double precision or double complex, as much
+	  precision is kept as is possible. If the argument is one of
+	  the complex types, the real part is returned.	 float and
+	  sngl convert only integer and	double precision arguments
+	  respectively.
+	  The function dble converts any integer, real,	complex, or
+	  double complex argument to double precision form.  If	the
+	  argument is of a complex type, the real part is returned.
+	  The function cmplx converts its integer, real, double
+	  precision, or	double complex argument(s) to complex form.
+	  The function dcmplx converts to double complex form its
+	  integer, real, double	precision, or complex argument(s).
+	  Either one or	two arguments may be supplied to cmplx and
+	  dcmplx . If there is only one	argument, it is	taken as the
+	  real part of the complex type	and an imaginary part of zero
+	  is supplied. If two arguments	are supplied, the first	is
+	  taken	as the real part and the second	as the imaginary part.
+	  The function ichar converts from a character to an integer
+	  depending on the character's position	in the collating
+	  sequence.
+	  The function char returns the	character in the ith position
+	  in the processor collating sequence where i is the supplied
+	  argument.
+	  For a	processor capable of representing n characters,
+	  ichar(char(i)) = i for 0 < i < n, and
+	  char(ichar(ch)) = ch for any representable character ch.
+ 

@@ -1,0 +1,12 @@
+Command:        unshar - extract files from a shell archive
+Syntax:         unshar [-tbv] [-xoutfile] [file] ...
+Flags:          -b      @@@
+                -t      list the names of the files in the shar file
+                -v      verbose mode
+                -xfn    extract file 'fn' from the shar file 
+Examples:       unshar -xsf file.shar   # extract sf from file.shar
+
+     Unshar is a quick method of extracting files from shell archives: much
+quicker than feeding an archive into a shell.  It will also extract single
+files from an archive.  It understands archives made with sed, gres and cat.
+

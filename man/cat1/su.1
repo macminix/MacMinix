@@ -1,0 +1,11 @@
+Command:        su - temporarily log in as super-user or another user
+Syntax:         su [name]
+Flags:          (none)
+Examples:       su                      # Become super-user
+                su ast                  # Become ast
+
+     Su can be used to temporarily login as another user.  It prompts for the 
+super-user password.  If the correct password is entered, su creates a shell 
+with the desired uid.  If no name is specified, root is assumed.  To exit the 
+temporary shell, type CTRL-D.
+

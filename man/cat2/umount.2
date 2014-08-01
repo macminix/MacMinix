@@ -1,0 +1,17 @@
+SYSTEM CALLS
+    umount(2)		- unmount a file system
+
+INVOCATION
+    umount( special )
+      char *special;
+
+EXPLANATION
+    The block special file <special> is unmounted. Only the
+    super-user may use umount(2).
+
+RESULTS
+     0 : Ok.
+    -1 : Error.
+
+REFERENCES
+    mount(2)

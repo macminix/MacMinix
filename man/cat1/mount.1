@@ -1,0 +1,13 @@
+Command:        mount - mount a file system
+Syntax:         /etc/mount [special_file file_name] [-r]
+Flags:          -r       file system is mounted read-only
+Examples:       mount                           # Print mounted file systems
+                /etc/mount /dev/fd1 /user       # Mount floppy disk 1 on /user
+                
+     The file system contained on the special file is mounted on filename.
+In the example above, the root directory of the file system in drive 1 can be 
+accessed as /user after the mount.  When the file system is no longer needed, 
+it must be unmounted before being removed from the drive.
+
+     Files used: /etc/mtab
+

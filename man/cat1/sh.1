@@ -1,0 +1,56 @@
+Command:        sh - shell
+Syntax:         sh [file]
+Flags:          -c str  execute the commands in str 
+                -e      quit on error
+                -i      interactive mode; ignore QUIT, TERMINATE, INTERRUPT
+                -k      look for name=value everywhere on command line
+                -n      do not execute commands
+                -q      change qflag from sig_ign to sig_del
+                -s      read commands from standard input
+                -t      exit after reading and executing one command
+                -v      echo input lines as they are read 
+                -x      trace
+                -u      unset variables
+Examples:       sh < script             # Run a shell script
+
+     Sh is the shell, which forms the user's main interface with the system.
+On startup, the shell reads /etc/profile and $HOME/.profile, if they exist,
+and executes any commands they contain.  The Minix shell has most of the
+features of the V7 (Bourne) shell, including redirection of input and output,
+pipes, magic characters, background processes, and shell scripts.  A few of
+the more common commands are listed below:
+
+date                    # Regular command
+sort <file              # Redirect input
+sort <file1 >file2      # Redirect input and output
+cc file.c 2>error       # Redirect standard error
+a.out >f 2>&1           # Combine standard output and standard error
+sort <file1 >>file2     # Append output to file2
+sort <file1 >file2 &    # Background job
+(ls -l; a.out) &        # Run two background commands sequentially
+sort <file | wc         # Two-process pipeline
+sort <f | uniq | wc     # Three-process pipeline
+ls -l *.c               # List all files ending in .c
+ls -l [a-c]*            # List all files beginning with a, b or c
+ls -l ?                 # List all one-character file names
+ls \?                   # List the file whose name is a question mark
+ls '???'                # List the file whose name is three question marks
+v=/usr/ast              # Set shell variable v
+ls -l $v                # Use shell variable v
+PS1='Hi!'               # Change the primary prompt to Hi!
+PS2='More:'             # Change the secondary prompt to More:
+ls -l $HOME             # List the home directory
+echo $PATH              # Echo the search path
+if...then...else...fi   # If statement
+for...do...done         # Iterate over argument list
+while...do...done       # Repeat while condition holds
+case...esac             # Select clause based on condition
+echo $?                 # Echo exit status of previous command
+echo $$                 # Echo shell's pid
+echo $#                 # Echo number of parameters (shell script)
+echo $2                 # Echo second parameter (shell script)
+echo $*                 # Echo all parameters (shell script)
+
+     Files used:  /etc/profile
+                  $HOME/.profile
+

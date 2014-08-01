@@ -1,0 +1,11 @@
+Command:        readall - read a device quickly to check for bad blocks
+Syntax:         readall file [-b] [-t]
+Flags:          -b      Output a shell script to mark all badblocks found
+                -t      Report the total number of blocks found
+Example:        readall /dev/hd0                # Read all of /dev/hd0
+                readall -t /dev/ram             # Print the ramdisk size
+
+     Readall reads all of the named device in large chunks.  It reports about 
+blocks that it cannot read.  Unlike diskcheck, it does not attempt to write on 
+the disk, making it safer to use when one is worried about a sick system.
+

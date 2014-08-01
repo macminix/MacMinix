@@ -1,0 +1,13 @@
+Command:        uncompress - decompress a file using modified Lempel-Ziv coding
+Syntax:         uncompress [flags] [file.Z] ...
+Flags:          -V      give version number and compression statistics 
+                -c      put output on standard output instead of on file
+                -q      quiet mode
+                -n      ignore header information (to decompress old files)
+                -v      give compression statistics
+Examples:       uncompress file.z       # Decompress file.Z to file 
+
+     Uncompress is a link to the file 'compress', qv., and is the same as
+'compress -d'; it decompresses a file to a file with the original filename.
+Similarly, a link to 'zcat' decompresses to standard output by default.
+

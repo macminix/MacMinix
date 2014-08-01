@@ -1,0 +1,15 @@
+Command:        paste - paste multiple files together
+Syntax:         paste [-s] [-dlist] file ...
+Flags:          -s      print files sequentially, file k on line k
+                -dlist  take delimiters used to mark columns from list
+Examples:       paste file1 file2       # Print file1 in col 1, file2 in col 2
+                paste -s f1 f2 f3 f4    # Print f1 on line 1, f2 on line 2, etc
+                paste -s -d'\t\n' f1    # Combine pairs of lines in file f1
+                ls | paste - - - -      # Print a directory in four columns
+     Paste displays multiple files in parallel.  Suppose a set of k files each 
+have one word per line.  Then the paste output will have k columns, with the 
+contents of file j in column j.  The columns are separate by tabs unless the 
+separator is changed with the -d flag.  If the -s flag is given, then the
+first file is on line 1, the second file on line 2, etc.  In effect, -s turns 
+the files sideways.
+

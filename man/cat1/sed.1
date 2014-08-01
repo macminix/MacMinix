@@ -1,0 +1,13 @@
+Command:        sed - stream editor 
+Syntax:         sed [-egn] [-f script_file] [edit_script] [file]
+Flags:          -e      accept multiple commands on the command line
+                -f fn   take edit script from file fn
+                -g      set global flag on all 's' commands
+                -n      output selected lines only
+Examples:       sed -f script <file             # Run a sed script on file
+                sed '/pig/s//hog/g' <file       # Replace pig by hog in file
+
+     Sed is a stream editor.  It takes an edit script either from its argument 
+or a file, and performs an edit session on a named file or stdin, producing 
+output on stdout.  Its commands are similar to those used in 'ed', qv.
+

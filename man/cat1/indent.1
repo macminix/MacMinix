@@ -1,0 +1,16 @@
+Command:        indent - indent and format C program source
+Syntax:         indent  [ input-file [ output-file ] ] [option] ...
+Flags:          (too many to count)
+Examples:       indent foo.c            # Indent foo.c using .indent.pro
+
+     Indent is a C program formatter.  It reformats the C program in the input-
+file according to the switches.  It has an enormous number of options which are
+listed in the file doc/indent.doc.
+     If you only specify an input-file, the formatting is done in-place, that
+is, the formatted file is written back into input-file and a backup copy of
+input-file is written in the current directory.  If input-file is named
+'/blah/blah/file', the backup file is named file.BAK.
+     You may set up your own profile of defaults to indent by creating a file
+called .indent.pro in either your login directory and/or the current directory
+and including whatever switches you like.
+

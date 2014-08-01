@@ -1,0 +1,50 @@
+Path: ccadfa!rodos2!wkt
+From: wkt@rodos2.cs.adfa.oz.au (Warren Toomey)
+Newsgroups: comp.os.minix
+Subject: [source] Man pages via ftp, plus man(1) source for same
+Keywords: manuals man source archive
+Message-ID: <2366@ccadfa.adfa.oz.au>
+Date: 17 Apr 91 02:15:50 GMT
+Sender: news@ccadfa.adfa.oz.au
+Lines: 232
+Archive-name: wktman.c.910417
+
+The on-line manual pages are now available via anonymous ftp from
+ccadfa.cc.adfa.oz.au [131.236.1.2] in the file Minix/mantar.Z. The file
+contains the section 1, 3 and 6 manuals that were posted for Minix 1.5, and
+the section 2 manual from a previous version (probably 1.4) - no, I've not
+seen sections 2 manuals for 1.5. Also included is the whatis file, see below.
+
+The manuals have been separated so that they can be accessed in a Unix
+convention. Herewith the program to do this (shar'd, compressed, uue'd).
+The README from the shar follows:
+
+
+Here is a reposting of my man(1) program, which works very much like the
+real Unix man; you need to build directories like
+
+	/usr/man/manx		- holds nroff'able mans for section x
+	/usr/man/catx		- holds cat'able mans for section x
+
+The program supports the MANPATH and PAGER environment variables. The
+first can be set to hold one or more directories which hold manuals; for
+example, my MANPATH looks like "/usr/local/man:/usr/man". The PAGER variable
+holds the man of the program used to page through the manual - I use "less".
+
+For each manual directory, you need to supply a `whatis' file for man(1) to
+find the manuals. Documentation on this is supplied. Also supplied is a
+patch to 1.5 nroff(1) to allow the output to less to be readable. Also
+supplied is a slightly changed tmac.an for nroff, which knows about some
+manual macros that the 1.5 tmac.an didn't.
+
+This version has been patched to work on the 680x0 versions of Minix.
+Bug reports etc. please. Also, if somebody would like to write a script
+of some sort to build a whatis file from the manuals I'd be very happy.
+
+	Warren Toomey
+	wkt@csadfa.cs.adfa.oz.au
+
+
+       Warren Toomey VK1XWT, slow kermiting.
+      Deep in the bowels of ADFA Comp Science.
+  `The key that I thought opened the door doesn't'

@@ -1,0 +1,14 @@
+Command:        look - look up words in a dictionary
+Syntax:         look [-f] prefix[/suffix] [dictionary] 
+Flags:          -f      fold upper case letters to lower case
+Examples:       look ard                # Print words starting with ard
+                look /bing              # Print words ending in bing
+                look -f f/ar            # Words starting with f, ending in ar
+
+     Look takes a prefix and/or suffix and searches /usr/lib/dictionary or the 
+specified dictionary for all words that match, which it then prints. The -f
+flag causes all upper case letters to be treated as lower case.  This program
+differs slightly from the UNIX look(1).
+
+     Files used: /usr/lib/dictionary
+

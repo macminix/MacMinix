@@ -1,0 +1,41 @@
+
+NAME
+	  crypt, encrypt - a one way hashing encryption	algorithm
+SYNTAX
+	  char *crypt (key, salt)
+	  char *key, *salt;
+	  void encrypt (block)
+	  char *block;
+DESCRIPTION
+	  Crypt	is the password	encryption function.  It is based on a
+	  one way hashing encryption algorithm with variations
+	  intended (among other	things)	to frustrate use of hardware
+	  implementations of a key search.
+	  Key is a user's typed	password.  Salt	is a two-character
+	  string chosen	from the set [a-zA-Z0-9./]; this string	is
+	  used to perturb the hashing algorithm	in one of 4096
+	  different ways, after	which the password is used as the key
+	  to encrypt repeatedly	a constant string.  The	returned value
+	  points to the	encrypted password.  The first two characters
+	  are the salt itself.
+	  There	is a character array of	length 64 containing only the
+	  characters with numerical value 0 and	1.  When this string
+	  is divided into groups of 8, the low-order bit in each group
+	  is ignored; this gives a 56-bit key which is set into	the
+	  machine by crypt.
+	  The encrypt entry provides (rather primitive)	access to the
+	  actual hashing algorithm.  The argument to the encrypt entry
+	  is a character array of length 64 containing only the
+	  characters with numerical value of 0 and 1.  The argument
+	  array	is modified in place to	a similar array	representing
+	  the bits of the argument after having	been subjected to the
+	  hashing algorithm using the key set by crypt.
+SEE ALSO
+	  getpass(3C), passwd(4).
+	  login(1), passwd(1) in the UNIX System V User	Reference
+	  Manual.
+BUGS
+	  The return value points to static data that are overwritten
+	  by each call.
+				  
+ 

@@ -1,0 +1,16 @@
+Command:        mkproto - make a mkfs prototype file
+Syntax:         mkproto [options] source_directory [prototype_file]
+Flags:          -b n    set the file system size to n blocks (default 360)
+                -d str  indent using str (default null)
+                -g n    set the gid of all files to n (default 1)
+                -i n    set the number of inodes to n (default 63)
+                -p nnn  set the mode of all files to nnn octal (default 555)
+                -s      use the same uid, gid and mode as the originals
+                -t path initial path prefix for each entry
+                -u n    use n as the uid on all files (default 2)
+Example:        mkproto /dev new_dev   # Make a prototype file for /dev
+
+     Mkproto looks at a current system and builds a correctly formed mkfs
+prototype file to match.  This is very useful when rebuilding systems, since
+it is a lot easier to edit a prototype file than write one from scratch.
+

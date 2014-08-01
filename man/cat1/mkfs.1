@@ -1,0 +1,45 @@
+Command:        mkfs - make a file system
+Syntax:         mkfs [-lodt] special prototype
+Flags:          -l      give a listing on standard output
+                -o      use a drive other than A and B (safety precaution)
+                -d      use the mod time of the mkfs binary for all files
+                -t      skip test of whether the file system fits on the medium
+Examples:       mkfs /dev/fd1 proto     # Make a file system on /dev/fd1
+                mkfs /dev/fd1 360       # Make empty 360 block file system
+
+     Mkfs builds a file system and copies specified files to it.  The 
+prototype file tells which directories and files to copy to it.  If the 
+prototype file cannot be opened, and its name is just a string of digits, an 
+empty file system will be made with the specified number of blocks.  A sample
+mkfs file is:
+
+    boot                                # boot block file (ignored)
+    360 63                              # blocks and i-nodes
+    d--755 1 1                          # root directory
+       bin    d--755 2 1                # /bin: mode (755), uid (2), gid (1)
+          sh     ---755 2 1 /user/ast/shell     # shell has mode rwxr-xr-x
+          mv     -u-755 2 1 /user/ast/mv        # u = SETUID bit
+          login  -ug755 2 1 /user/ast/login     # SETUID and SETGID
+       $                                # end of /bin
+       dev    d--755 2 1                # /dev: tty (char), fd0 (block)
+          tty    c--777 2 1 4 0         # uid=2, gid=1, major=4, minor=0
+          fd0    b--644 2 1 2 0 360     # uid, gid, major, minor, blocks
+       $                                # end of /dev
+       user   d--755 12 1               # /user: mode (755) uid (12), gid (1)
+          ast    d--755 12 1            # /user/ast
+       $                                # /user/ast is empty
+       $                                # end of /user
+    $                                   # end of root directory
+
+     Comments are not allowed in a real mkfs file.  The first entry on each
+line (except $ lines which close directories) is the name the file or
+directory will get on the new file system.  Next comes its mode, with the
+first character being -dbc for regular files, directories, block special files
+and character special files, respectively.  The next two characters are used
+to specify the SETUID and SETGID bits, as shown above.  The last three
+characters of the mode are the rwx protection bits.
+     Following the mode are the uid and gid.  For special files, the major and 
+minor devices are needed.  The size in blocks must also be specified for block 
+special files. (The MINIX block size is 1K; this can only be changed by 
+changing BLOCK_SIZE and then recompiling the operating system.)
+

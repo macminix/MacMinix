@@ -1,0 +1,69 @@
+README for ftp://minix1.hampshire.edu/pub/refman.1.5
+
+This directory contains selected parts of the Minix 1.5 Reference Manual. 
+
+ 1. Introduction
+
+ 2. IBM PC installation manual (obsolete)
+
+ 3. Atari installation manual
+
+ 4. Amiga installation manual
+
+ 5. MacIntosh installation manual
+
+ 6. Sun SPARC installation manual (obsolete)
+
+ 7. Using Minix (all platforms)
+
+ 8. Recompiling (all platforms)
+
+ 9. Manual pages (see note below) 
+
+10. Extended manual pages
+ 
+Note: The IBM and Sun SPARC chapters are obsolete, and are not included
+here because Minix 2.0 is now available for these platforms.  The
+standard man pages (Chap.  9) are not included here, but they can be
+found in /pub/minix.1.5/man on the minix1.hampshire.edu ftp site,
+converted into a form usable online with the Minix 1.5 man command.
+
+All *.nrf files are meant to be formatted with nroff, troff, or a similar
+formatter.  You will need the macros file to do this.  Please note that
+when written these chapters were formatted only for typesetting the
+printed manual, there was no intention that the raw files would be
+accessed by Minix users.  The version of nroff distributed with Minix
+1.5 will probably not be adequate to format them.  The freely available
+program groff is adequate, but to the best of my knowledge it has not
+yet been ported to any version of Minix.  Thus you may need to find a
+larger Unix system to properly display or print them.
+
+Most of the Extended Manual Pages material is now incorporated into the
+Minix 2.0 man pages, and can be found in man section 9.  Users of older
+versions of Minix may occasionally find "See Chapter 9" references in
+the ordinary man pages.  In the later versions of the Reference Manual,
+after addition of the chapter on installing on the Sun SPARC, this
+material was actually in Chapter 10, but it is still referred to as
+"Chapter 9".   
+
+I have formatted the orginal Chapter 10 nroff files into plain ASCII,
+creating separate files for each of the subtopics covered in the
+chapter.  These have all been combined into a shar archive, and the
+files be extracted on most Unix systems (including Minix).  In the
+process a number of errors in the original file were corrected.
+
+When and if time permits I would like to convert and correct the
+other files. If anyone else would like to do this for me, feel free.
+Let me know, and I will post the converted files here.
+
+asw 17.02.97
+
+
+
+
+
+
+
+
+
+

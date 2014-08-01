@@ -1,0 +1,9 @@
+Command:        gres - grep and substitute
+Syntax:         gres [-g] pattern string [file] ...
+Flags:          -g      change only the first occurrence on each line
+Examples:       gres bug insect         # Replace bug with insect
+                gres "^[A-Z]+$" CAPS    # Replace capitals-only lines with CAPS
+
+     Gres is a poor man's sed.  It looks for the same patterns as grep, and
+replaces each one by the given string.
+

@@ -1,0 +1,18 @@
+Command:        chip - identify a chip
+Syntax:         chip [chip_name]
+Flags:          (none)
+Example:        chip                # print chip type
+                chip intel          # return true if chip is 80x6 series
+
+     When executed without arguments, chip returns the chip name as found in
+minix/config.h.  If an argument is given, chip returns 0 if it matches
+(case-insensitively) the current chip name and 1 if it does not.  If the
+program is called as 'machine', the same processes are carried out for
+for machine names.  Machine and chip names are:
+
+    Machines:  Ibm_pc            Chips:  Intel
+               Sun_4                     M68000 
+               Atari                     Sparc
+               Amiga
+               Macintosh
+

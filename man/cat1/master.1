@@ -1,0 +1,16 @@
+Command:        master - control the creation of shervers
+Syntax:         master count uid gid command
+Flags:          (none)
+Example:        master 2 1 1 /usr/bin/sherver port # Start two shervers
+
+     If a machine is intended to be used as a server, its /etc/rc file should 
+have a command similar to the example above.  When the system is booted, 
+master runs and forks off the required number of shervers (shell servers), up 
+to a maximum of four.  They run with the indicated uid and gid, and listen to 
+the indicated port.  When an rsh is done on a client machine, the command is 
+given to one of the shervers for execution.  When the sherver is done it exits,
+and the master, which is always running, sees this and creates a new sherver.  
+Thus master is very similar to init, only it makes new shervers (usually) 
+instead of new login programs.  Master must run as root to be able to do  
+setuid and setgid.  
+

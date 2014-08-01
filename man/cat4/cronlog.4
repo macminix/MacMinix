@@ -1,0 +1,13 @@
+File:   cronlog - cron action log
+
+     /usr/adm/cronlog is an ASCII file in which cron records each occasion
+on which it executes a command from /usr/lib/crontab.  There is one entry
+per line, and each entry has the format:
+
+     execution_time    crontab_entry
+
+     A typical Minix /usr/lib/cronlog is:
+
+ 07/26-13:33     /usr/bin/date >/dev/tty0   # Print date every minute
+ 07/26-13:34     /usr/bin/date >/dev/tty0   # Print date every minute
+

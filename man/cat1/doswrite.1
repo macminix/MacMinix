@@ -1,0 +1,12 @@
+Command:        doswrite - write a file onto an MS-DOS diskette
+Syntax:         doswrite [-a] drive [path/]file
+Flags:          -a      ASCII file
+Examples:       doswrite B x/y <z       # Copy file ./z to MSDOS file B:\X\Y
+                doswrite A -a f         # Copy standard input to file A:\F
+
+     Doswrite writes its standard input to an MS-DOS diskette.  The diskette 
+must be formatted and have an MS-DOS file system already in place, including 
+all the directories leading up to the file.
+
+     This is used in the Intel versions of Minix only.
+

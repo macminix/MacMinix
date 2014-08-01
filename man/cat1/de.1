@@ -1,0 +1,18 @@
+Command:        de - disk editor
+Syntax:         de [-w] block_device
+                de -r file
+Flags:          -r      recover a file that has been removed
+                -w      enable writing, so device can be modified
+Examples:       de -r /usr/ast/prog.c   # Undo the command rm /usr/ast/prog.c
+                de -w /dev/fd0          # Edit /dev/fd0 for writing
+
+     De is a program for system administrators that allows disks to be
+inspected block by block.  A variety of display options and commands are
+available; for a summary, start the program and type h for help.  The program
+can also restore files that have just been removed by rm, provided that the
+i-node and blocks are still intact.  Another feature is searching disks for
+ASCII strings, to help locate files after a crash.  Finally, individual disk
+words can be changed, for example, the sizes of block special files.  The
+program is described in doc/de.doc.
+    See also the description of recover.
+ 

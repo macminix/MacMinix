@@ -1,0 +1,23 @@
+Command:        rz - receive a file using the zmodem protocol
+Syntax:         rz [-+Dabcepquvwy] [-t #]
+Flags:          -+      append to existing file
+                -D      do not actually transfer files
+                -a      receive next file as ASCII (CP/M to UNIX translation)
+                -b      receive next file as binary
+                -c      use 16-bit CRC in XMODEM
+                -e      escape for all control characters
+                -p      protect file if it already exists
+                -q      quiet, overrides verbose
+                -t #    set timeout in tenths of a second
+                -u      make received pathname upper case
+                -v      verbose, more 'v's more info. (uses rzlog.tmp)
+                -w      set Zmodem receive window size
+                -y      yes, clobber existing file if any
+Examples:       rz </dev/tty1 >/dev/tty1        # Receive a file - note file
+                                                # name not needed.
+
+     Rz is a program that accepts a file sent from another computer using the
+zmodem protocol.  It is a highly complex program, which if called as rb or rx,
+operates in YMODEM (batch) or XMODEM mode.  See the description of sz, and the
+doc/rz.doc and doc/sz.doc files, for more information.
+

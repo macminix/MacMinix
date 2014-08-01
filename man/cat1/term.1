@@ -1,0 +1,24 @@
+Command:        term - turn an IBM PC into a dumb terminal
+Syntax:         term [commdev] [baudrate] [parity] [bits_per_character]
+Flags:          (none)
+Examples:       term 2400               # Talk to modem at 2400 baud
+                term 1200 7 even        # 1200 baud, 7 bits/char, even parity
+                term /dev/tty2          # Use tty2 instead of tty1
+
+     Term allows MINIX to talk to a terminal or modem over an RS-232 port.  It
+uses /dev/tty1 as the default, which can be changed on the command line.  The
+program first sets the baudrate, parity and character length, and then forks.
+The parent sits in a loop copying from standard input (usually the console's
+keyboard), to the terminal or modem.  The child sits in a loop copying from
+the terminal or modem to standard output.  Thus when an RS-232 port is
+connected to a modem, every keystroke typed on the keyboard is sent to the
+modem, and every character arriving from the modem is displayed. Standard
+input and output may be redirected, to provide a primitive file transfer
+program, with no checking.
+     To use term, it is essential that /etc/ttys is configured so that there
+is no shell hanging on the tty device used.  If there is, both the shell and
+term will try to read from the tty, and nothing will work.  To exit term,
+press the middle button on the numeric pad on the IBM PC.
+
+     This is used in the Intel versions of Minix only.
+

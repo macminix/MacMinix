@@ -1,0 +1,11 @@
+Command:        diskcheck - check a disk for bad sectors
+Syntax:         diskcheck device start_block block_count
+Flags:          (none)
+Examples:       diskcheck /dev/at0 0 1200       # Check 1.2 MB floppy
+                diskcheck /dev/at0 100 1100     # Check floppy from block 100
+
+     Diskcheck checks a disk for bad sectors by reading in each sector, 
+writing a known bit pattern onto it, reading it back in and comparing with 
+what was written.  This check is then done a second time.  Bad sectors are 
+reported.  After each sector is tested, the original sector is restored.
+

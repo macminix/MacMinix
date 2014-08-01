@@ -1,0 +1,13 @@
+Command:        atrun - run commands for 'at'
+Syntax:         (none)
+Flags:          (none)
+Examples:       (none)
+
+     The program atrun should be started periodically, for example, every
+minute by cron, to run commands prepared by at.  Atrun checks to see if any 
+files in /usr/spool/at should now be run, and if so, it runs them and then 
+puts them in /usr/spool/at/past.  See the description of 'at'.
+
+     Files used: /usr/spool/at/YY.DDD.HHMM.UU
+                 /usr/spool/at/past/YY.DDD.HHMM.UU
+

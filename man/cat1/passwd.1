@@ -1,0 +1,16 @@
+Command:        passwd - change a login password
+Syntax:         passwd [name]
+Flags:          (none)
+Examples:       passwd          # Change current user's password
+                passwd ast      # Change ast's password (super-user only)
+
+     Passwd is used to change your password.  It prompts for the old and new 
+passwords.  It asks for the new password twice, to reduce the effect of a 
+typing error.  If /etc is in RAM, do not forget to copy the modified password
+file back to the root file system diskette, or the changes will be lost when
+the system is shutdown.  Note that there are problems with the Minix password
+encryption, which is not particularly secure.
+
+     Files used: /etc/passwd
+                 /etc/pwtemp
+

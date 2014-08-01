@@ -1,0 +1,8 @@
+Command:        update - write the buffer cache to disk regularly 
+Syntax:         update
+Flags:          (none)
+Examples:       /etc/update &   # Start a background flush of the cache
+
+     When the system is booted, update is started up in the background from
+/etc/rc to issue a 'sync' system call every 30 sec.
+

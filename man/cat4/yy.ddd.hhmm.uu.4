@@ -1,0 +1,15 @@
+File:   yy.ddd.hhmm.uu - spool files used by atrun
+
+     /usr/spool/at/yy.ddd.hhmm.uu is an ASCII file created by the program
+at and used by the program atrun to set up an environment and run a
+command.  The filename consists of the year, day, hour and minute that
+the command is to be run, together with a random number to avoid confusion
+between similar times.
+
+     Atrun is usually run once a minute by cron; each time it is run, it
+executes all pending commands and moves the files used to the directory
+/usr/spool/at/past.
+
+     A typical Minix yy.ddd.hh.mm file is 90.243.2300.13, which prints the
+working directory at 2300 on 1 September.
+

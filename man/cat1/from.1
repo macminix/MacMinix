@@ -1,0 +1,12 @@
+Command:        from - input half of a connection
+Syntax:         from port
+Flags:          (none)
+Examples:       from port | sort >x     # Fetch and sort an incoming file
+                from port | sh          # Primitive sherver
+
+     To and from are used together to provide connection-oriented service.  On 
+the sending machine, the last member of a pipeline is 'to port'.  On the 
+receiving machine, the first member of a pipe line is 'from port'.  The net 
+result is that the output of the sending pipeline goes into the input of the 
+receiving pipeline, making pipelines work across the network.
+

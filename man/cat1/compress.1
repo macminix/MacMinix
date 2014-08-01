@@ -1,0 +1,20 @@
+Command:        compress - compress a file using modified Lempel-Ziv coding
+Syntax:         compress [flags] [-b #] [file] ...
+Flags:          -C      generate output compatible with compress 2.0
+                -V      give version number and compression statistics 
+                -b #    limit the maximum number of bits/code to #
+                -c      put output on standard output instead of on file.Z
+                -d      decompress instead of compress
+                -f      force compressed output even if there is space saved
+                -q      quiet mode
+                -n      ignore header information (to decompress old files)
+                -v      give compression statistics
+Examples:       compress <infile >outfile       # Compress 1 file
+                compress x y z  # Compress 3 files to x.Z, y.Z, and z.Z
+
+     The listed files (or standard input, if none are given) are compressed
+using the Ziv-Lempel algorithm.  If the output is smaller than the input,
+the output is put on file.Z or standard output if no files are listed.  If
+compress is linked to 'uncompress', the latter is the same as "compress -d".
+Similarly, a link to 'zcat' decompresses to standard output by default.
+

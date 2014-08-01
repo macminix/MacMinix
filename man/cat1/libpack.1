@@ -1,0 +1,13 @@
+Command:        libpack - convert an ASCII assembly code file to packed form
+Syntax:         libpack
+Flags:          (none)
+Examples:       libpack <x.s >y.s       # Pack x.s
+
+     This program is a filter that reads an ASCII assembly code file from 
+standard input and writes the corresponding packed file on standard output.  
+The compiler libraries are archives of packed assembly code files, in which
+common assembly code strings are replaced by single-byte abbreviations.  All
+abbreviations have their high bit set.
+
+     This is used in the Intel versions of Minix only.
+

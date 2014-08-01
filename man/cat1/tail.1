@@ -1,0 +1,11 @@
+Command:        tail - print the last few lines of a file
+Syntax:         tail [+/-[number][lc]] [file] ...
+Flags:          +/-     amount to print
+                -l      count by lines
+                -c      count by characters 
+Examples:       tail -6         # Print last 6 lines of standard input
+                tail +6 file1   # Print all but the first 6 lines of file1
+
+     The last few lines or characters of one or more files are printed.  The
+default count is 10 lines.  The default file is standard input.
+

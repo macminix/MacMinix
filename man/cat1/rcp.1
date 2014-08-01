@@ -1,0 +1,9 @@
+Command:        rcp - remote copy
+Syntax:         rcp [mach1]!file1 [mach2]!file2
+Flags:          (none)
+Examples:       rcp file mach1!/usr/ast/x       # Local file to remote machine
+                rcp mach2!/usr/ast/x file       # Fetch remote file
+
+     Rcp is not a program.  It is a shell script that does remote copying.  It
+makes use of the programs 'to' and 'from'.
+

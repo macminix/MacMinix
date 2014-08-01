@@ -1,0 +1,374 @@
+Name: asld - info about the old Minix 8086 assembler (obsolete)
+
+(This is from Chapter 9, the Extended Manual Pages, of the Minix 1.5
+Reference Manual, very lightly edited and reformatted.  The information
+contained here may not be completely accurate when applied to the
+corresponding parts of Minix 1.7 or later versions.)
+
+10.1.  ASLD - ASSEMBLER-LOADER [IBM]
+
+   The assembly language expected by the MINIX assembler for the 8088,
+asld, is identical to that of PC-IX, the version of UNIX IBM originally
+supported on the PC.
+
+10.1.1.  Tokens, Numbers, Character Constants, and Strings
+
+   The syntax of numbers is the same as in C.  The constants 32, 040,
+and 0x20 all represent the same number, but are written in decimal,
+octal, and hex, respectively.  The rules for character constants and
+strings are also the same as in C.  For example, 'a' is a character
+constant.  A typical string is '' string''.
+
+10.1.2.  Symbols
+
+   Symbols contain letters and digits, as well as three special
+characters: dot, tilde, and underscore.  The first character may not be
+a digit or tilde.  Only the first 8 characters are significant.  Thus
+``hippopotamus'' and ``hippopotapig'' cannot both be defined as
+external symbols.
+   The names of the 8088 registers are reserved.  These are:
+   al, bl, cl, dl
+   ah, bh, ch, dh
+   ax, bx, cx, dx
+   si, di, bp, sp
+   cs, ds, ss, es
+   bx_si, bx_di, bp_si, bp_di
+The last group of 4 are used for base + index mode addressing, in which
+two registers are added to form the effective address.
+   Names of instructions and pseudo-ops are not reserved.  Alphabetic
+characters in opcodes and pseudo-ops must be in lower case.
+
+10.1.3.  Separators
+
+   Commas, blanks, and tabs are separators and can be interspersed
+freely between tokens, but not within tokens.  Commas are only legal
+between operands.
+
+10.1.4.  Comments
+
+   The comment character is ``|''.  The rest of the line is ignored.
+
+10.1.5.  Opcodes
+
+   The opcodes are listed below.  Notes: (1) Different names for the
+same instruction are separated by ``/''.  (2) Square brackets ([])
+indicate that 0 or 1 of the enclosed characters can be included.  (3)
+Curly brackets ({}) work similarly, except that one of the enclosed
+characters must be included.  Thus square brackets indicate an option,
+whereas curly brackets indicate that a choice must be made.
+
+Data Transfer
+  mov[b]    dest, source      | Move word/byte
+  mov{bw}   dest, source      | Move word/byte from source to dest
+  pop       dest              | Pop stack
+  push      source            | Push stack
+  xchg      op1, op2          | Exchange word/byte
+  xlat                        | Translate
+
+Input/Output
+  in[w]     source            | Input from source I/O port
+  in[w]                       | Input from DX I/O port
+  out[w]    dest              | Output to dest I/O port
+  out[w]                      | Output to DX I/O port
+
+Address Object
+  lds       reg,source        | Load reg and DS from source
+  les       reg,source        | Load reg and ES from source
+  lea       reg,source        | Load effect address of source to reg and DS
+  seg       reg               | Specify seg register for next instruction
+
+Flag Transfer
+  lahf                        | Load AH from flag register
+  popf                        | Pop flags
+  pushf                       | Push flags
+  sahf                        | Store AH in flag register
+
+Addition
+  aaa                         | Adjust result of BCD addition
+  add[b]    dest,source       | Add
+  adc[b]    dest,source       | Add with carry
+  daa                         | Decimal Adjust acc after addition
+  inc[b]    dest              | Increment by 1
+
+Subtraction
+  aas                         | Adjust result of BCD subtraction
+  sub[b]    dest,source       | Subtract
+  sbb[b]    dest,source       | Subtract with borrow from dest
+  das                         | Decimal adjust after subtraction
+  dec[b]    dest              | Decrement by one
+  neg[b]    dest              | Negate
+  cmp[b]    dest,source       | Compare
+  cmp{bw}   dest,source       | Compare
+
+Multiplication
+  aam                         | Adjust result of BCD multiply
+  imul[b]   source            | Signed multiply
+  mul[b]    source            | Unsigned multiply
+
+Division
+  aad                         | Adjust AX for BCD division
+  cbw                         | Sign extend AL into AH
+  cwb                         | Sign extend AX into DX
+  idiv[b]   source            | Signed divide
+  div[b]    source            | Unsigned divide
+
+Logical
+  and[b]    dest,source       | Logical and
+  not[b]    dest              | Logical not
+  or[b]     dest,source       | Logical inclusive or
+  test[b]   dest,source       | Logical test
+  xor[b]    dest,source       | Logical exclusive or
+
+Shift
+  sal[b]/shl[b]               dest,CL| Shift logical left
+  sar[b]    dest,CL           | Shift arithmetic right
+  shr[b]    dest,CL           | Shift logical right
+
+Rotate
+  rcl[b]    dest,CL           | Rotate left, with carry
+  rcr[b]    dest,CL           | Rotate right, with carry
+  rol[b]    dest,CL           | Rotate left
+  ror[b]    dest,CL           | Rotate right
+
+String Manipulation
+  cmp[b]                      | Compare
+  cmp{bw}                     | Compare
+  lod{bw}                     | Load into AL or AX
+  mov[b]                      | Move
+  mov{bw}                     | Move
+  rep                         | Repeat next instruction until CX=0
+  repe/repz                   | Repeat next instruction until CX=0 and ZF=1
+  repne/repnz                 | Repeat next instruction until CX!=0 and ZF=0
+  sca{bw}                     | Compare string element ds:di with AL/AX
+  sto{bw}                     | Store AL/AX in ds:di
+
+Control Transfer
+   Displacement is indicated by opcode; ``jmp'' generates a 16-bit
+displacement, and ``j'' generates 8 bits only.  The provision for
+``far'' labels is described below.
+   Asld accepts a number of special branch opcodes, all of which begin
+with ``b''.  These are meant to overcome the range limitations of the
+conditional branches, which can only reach to targets within - 126 to
++129 bytes of the branch (``near'' labels).  The special ``b''
+instructions allow the target to be anywhere in the 64K-byte address
+space.  If the target is close enough, a simple conditional branch is
+used.  Otherwise, the assembler automatically changes the instruction
+into a conditional branch around a "jmp".
+   The English translation of the opcodes should be obvious, with the
+possible exception of the unsigned operations, where ``lo'' means
+``lower,'' ``hi'' means ``higher,'' and ``s'' means ``or same''.
+   The ``call'', ``jmp'', and ``ret'' instructions can be either
+intrasegment or intersegment.  The intersegment versions are indicated
+with the suffix ``i''.
+
+Unconditional
+  br        dest              | jump, 16-bit displacement, to dest
+  j         dest              | jump, 8-bit displacement, to dest
+  call[i]   dest              | call procedure
+  jmp[i]    dest              | jump, 16-bit displacement, to dest
+  ret[i]                      | return from procedure
+
+Conditional with 16-bit Displacement
+  beq                         | branch if equal
+  bge                         | branch if greater or equal (signed)
+  bgt                         | branch if greater (signed)
+  bho                         | branch if higher (unsigned)
+  bhis                        | branch if higher or same (unsigned)
+  ble                         | branch if less or equal (signed)
+  blt                         | branch if less (signed)
+  blo                         | branch if lower (unsigned)
+  blos                        | branch if lower or same (unsigned)
+  bne                         | branch if not equal
+
+Conditional with 8-bit Displacement
+  ja/jnbe                     | if above/not below or equal (unsigned)
+  jae/jnb/jnc                 | if above or equal/not below/not carry (unsigned)
+  jb/jnae/jc                  | if not above nor equal/below/carry (unsigned)
+  jbe/jna                     | if below or equal/not above (unsigned)
+  jg/jnle                     | if greater/not less nor equal (signed)
+  jge/jnl                     | if greater or equal/not less (signed)
+  jl/jnqe                     | if less/not greater nor equal (signed)
+  jle/jgl                     | if less or equal/not greater (signed)
+  je/jz                       | if equal/zero
+  jne/jnz                     | if not equal/not zero
+  jno                         | if overflow not set
+  jo                          | if overflow set
+  jnp/jpo                     | if parity not set/parity odd
+  jp/jpe                      | if parity set/parity even
+  jns                         | if sign not set
+  js                          | if sign set
+
+Iteration Control
+  jcxz      dest              | jump if CX = 0
+  loop      dest              | Decrement CX and jump if CX != 0
+  loope/loopz                 dest| Decrement CX and jump if CX = 0 and ZF = 1
+  loopne/loopnz               dest| Decrement CX and jump if CX != 0 and ZF = 0
+
+Interrupt
+  int                         | Software interrupt
+  into                        | Interrupt if overflow set
+  iret                        | Return from interrupt
+
+Flag Operations
+  clc                          | Clear carry flag
+  cld                         | Clear direction flag
+  cli                         | Clear interrupt enable flag
+  cmc                         | Complement carry flag
+  stc                         | Set carry flag
+  std                         | Set direction flag
+  sti                         | Set interrupt enable flag
+
+External Synchronization
+  esc source                  | Put contents of source on data bus
+  hlt                         | Halt until interrupt or reset
+  lock                        | Lock bus during next instruction
+  wait                        | Wait while TEST line not active
+
+
+10.1.6.  Location Counter
+
+   The special symbol ``.'' is the location counter and its value is
+the address of the first byte of the instruction in which the symbol
+appears and can be used in expressions.
+
+10.1.7.  Segments
+
+   There are three different segments: text, data and bss.  The current
+segment is selected using the .text, .data or .bss pseudo-ops.  Note
+that the ``.'' symbol refers to the location in the current segment.
+
+10.1.8.  Labels
+
+   There are two types: name and numeric.  Name labels consist of a
+name followed by a colon (:).
+   Numeric labels consist of one or more digits followed by a dollar
+($).  Numeric labels are useful because their definition disappears as
+soon as a name label is encountered; thus numeric labels can be reused
+as temporary local labels.
+
+10.1.9.  Statement Syntax
+
+   Each line consists of a single statement.  Blank or comment lines
+are allowed.
+
+10.1.10.  Instruction Statements
+
+   The most general form of an instruction is
+   label: opcode operand1, operand2    | comment
+
+10.1.11.  Expression Semantics
+
+   The following operator can be used: + - * / & !  < (shift left) >
+(shift right) - (unary minus).  Sixteen-bit integer arithmetic is used.
+Division produces a truncated quotient.
+
+10.1.12.  Addressing Modes
+
+   Below is a list of the addressing modes supported.  Each one is
+followed by an example.
+  8-bit constant              mov ax, *2
+  16-bit constant             mov ax, #12345
+  direct access (16 bits)     mov ax, counter
+  register                    mov ax, si
+  index                       mov ax, (si)
+  index + 8-bit disp.         mov ax, *6(bp)
+  index + 16-bit disp.        mov ax, #400(bp)
+  base + index                movax, (bp_si)
+  base + index + 8-bit disp.  mov ax, *14(bp_si)
+  base + index + 16-bit disp. mov ax, #-1000(bp_si)
+
+Any the constant or symbol may be replaced by an expression.  Direct
+access, 16-bit constants and displacements may be any type of
+expression.  However, 8-bit constants and displacements must be
+absolute expressions.
+
+10.1.13.  Call and Jmp
+
+   With the ``call'' and ``jmp'' instructions, the operand syntax shows
+whether the call or jump is direct or indirect; indirection is
+indicated with an ``@'' before the operand.
+  call _routine               | Direct, intrasegment
+  call @subloc                | Indirect, intrasegment
+  call @6(bp)                 | Indirect, intrasegment
+  call (bx)                   | Direct, intrasegment
+  call @(bx)                  | Indirect, intrasegment
+  calli @subloc               | Indirect, intersegment
+  calli cseg, offs            | Direct, intersegment 
+
+Note that call (bx) is considered direct, though the register is not
+called, but rather the location whose address is in the register.  With
+the indirect version, the register points to a location which
+contains the location of the routine being called.
+
+
+10.1.14.  Symbol Assigment
+
+
+   Symbols can acquire values in one of two ways.  Using a symbol as a
+label sets it to ``.'' for the current segment with type relocatable.
+Alternative, a symbol may be given a name via an assignment of the form
+   symbol = expression
+in which the symbol is assigned the value and type of its arguments.
+
+
+10.1.15.  Storage Allocation
+
+
+   Space can be reserved for bytes, words, and longs using pseudo-ops.
+They take one or more operands, and for each generate a value whose
+size is a byte, word (2 bytes) or long (4 bytes).  For example:
+  .byte 2, 6                  | allocate 2 bytes initialized to 2 and 6
+  .word 3, 0x10               | allocate 2 words initialized to 3 and 16
+  .long 010                   | allocate a long initialized to 8
+  .zerow 20                   | allocates 20 words of zeroes
+allocates 10 (decimal) bytes of storage, initializing the first two
+bytes to 2 and 6, the next two words to 3 and 16, and the last 4 bytes
+to a long with value 8 (010 octal).
+
+10.1.16.  String Allocation
+
+   The pseduo-ops .ascii and .asciz take one string argument and
+generate the ASCII character codes for the letters in the string.  The
+latter automatically terminates the string with a null (0) byte.  For
+example,
+   .ascii "hello"
+   .asciz "world\n"
+
+10.1.17.  Alignment
+
+   Sometimes it is necessary to force the next item to begin at an even
+address.  The .even pseudo-op generates a null byte if the current
+location is odd, and nothing if it is even.
+
+10.1.18.  Segment Control
+
+   Every item assembled goes in one of the three segments: text, data,
+or bss.  By using the .text, .data and .bss pseudo-ops, the programmer
+can force the next items to go in a particular segment.
+
+10.1.19.  External Names
+
+   A symbol can be given global scope by including it in a .globl
+pseudo-op.  Multiple names may be listed, separate by commas.  It can
+be used for both exporting symbols defined in the current program, or
+importing names defined outside.
+
+10.1.20.  Common
+
+   The .comm pseudo-op declares storage that can be common to more than
+one module.  There are two arguments: a name and an absolute expression
+giving the size in bytes of the area named by the symbol.  The type of
+the symbol becomes external.  The statement can appear in amy segment.
+If you think this has something to do with FORTRAN, you are right.
+
+10.1.21.  Examples
+
+   In the kernel directory, there are several assembly code files that
+are worth inspecting as examples.  However, note that these files,
+ending with .x, are designed to first be run through the C
+preprocessor.  Thus they contain numerous constructs that are not pure
+assembler.  For true assembler examples, compile any C program provided
+with MINIX using the S flag.  This will result in packed assembly
+language.  The file can be unpacked using the libupack filter.
+
+

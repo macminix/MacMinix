@@ -1,0 +1,20 @@
+Command:        pr - print a file
+Syntax:         pr [-h hdr] [-llines] [+page] [-col] [-wwidth] [-Mbfnt] file...
+Flags:          -M      use Minix-style line numbering, as App. E of OS D & I
+                -b      do not allow for backspacing
+                -f      do not fold lines 
+                -h hdr  take next argument as page header
+                -l#     set page length to # lines (default 66)
+                -n      use Sys V line numbering
+                +#      start printing at page #
+                -#      print files in # columns (default 1)
+                -t      do not print 5 line page header or trailer
+                -w#     set page width to # columns (default 72)
+Examples:       pr -w132 -160 file      # Use 132 character line, 60 line page
+                pr -3 file              # List file 3 columns to a page
+                pr +4 file              # Start printing with page 4
+
+     Pr formats one or more files for printing.  If no files are specified, 
+standard input is printed.  Options can be changed between files on a command
+line.
+

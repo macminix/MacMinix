@@ -1,0 +1,78 @@
+# From: Peter Holzer <hp@junior.vmars.tuwien.ac.at>
+# > 
+# > The following nawk script will split normal Minix man pages into
+# >  indiviual man-pages and produce a whatis file from them:
+# > 
+# Here is a better version (It still doesn't handle multiline descriptions,
+# but multiline names are ok).
+#
+BEGIN {
+	firstrecord = 1
+}
+
+FILENAME != lastfilename {
+	print FILENAME
+	if (FILENAME ~ /^man/) {
+		section = substr (FILENAME, 4)
+	} else {
+		section = "unknown"
+	}
+	filename = "Header." section
+	lastfilename = FILENAME
+}
+
+/^# / {
+	close (filename)
+	gsub (/\)/, "", $2)
+	if (split ($2, f, "(") == 1) {
+		filename = $2 "." section
+		rsec = section
+	} else {
+		filename = f [1] "." f [2]
+		rsec = f [2]
+	}
+	print "\t" filename
+	printf "" > filename
+	next
+}
+
+{
+	print >> filename
+}
+
+$1 == "Command:" || $1 == "Name:" || $1 == "File:" {
+	for (i = 2; $i != "-"; i ++) {
+		printf "%s ", $i >> "whatis"
+		if (i == NF) {
+			getline
+			i = 0
+		}
+	}
+	printf ("(%d) -", rsec) >> "whatis"
+	for (i++; i <= NF; i ++) {
+		printf " %s", $i >> "whatis"
+	}
+
+	printf "\n" >> "whatis"
+}
+
+/^NAME$/ {
+	nextname = 1
+	next
+}
+
+nextname {
+	for (i = 1; $i != "-"; i ++) {
+		printf "%s ", $i >> "whatis"
+		if (i == NF) {
+			getline
+			i = 0
+		}
+	}
+	printf ("(%d) -", rsec) >> "whatis"
+	for (i++; i <= NF; i ++) {
+		printf " %s", $i >> "whatis"
+	}
+	printf "\n" >> "whatis"
+	nextname = 0
+}

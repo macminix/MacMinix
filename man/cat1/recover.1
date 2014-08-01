@@ -1,0 +1,16 @@
+Command:        recover - recover files that have been removed.
+Syntax:         recover file ...
+Flags:          (none)
+Examples:       rm x; recover x         # Unremove x
+                recover a b c           # Recover three files
+
+     MINIX allows files that have been deleted (eg. with rm) to be restored.
+The trick is that when a file is unlinked, its old i-node number is put in the 
+last two bytes of the old file name in the directory.  As long as the directory
+entry and disk blocks are not reused, the file can be recovered.  This program
+is actually just a front end for de, which must be installed and executable.
+Wildcards are not allowed in the filename(s), and only the first twelve
+characters of the name are significant.
+
+     Files used: /usr/bin/de
+

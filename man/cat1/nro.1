@@ -1,0 +1,13 @@
+
+Command:   nro - text formatter
+Syntax:    nro [-bv] [+n] [n] [mmacros] [pn] [file] ...
+Flags:     +n  First page to print
+           -n  Last page to print
+           -b  Output device can backspace
+           -m  Use /usr/lib/tmac/tmac.macros
+           -p  Shift each line n spaces right
+           -v  Print nro version number
+Examples:  nro infile >outfile          # Format infile
+           nro +3 -5 infile >outfile    # Only output pages 3-5
+   Nro is a text formatter patterned loosely on nroff, but much simpler.  Unlike
+roff, it accepts parametrized macros.  The commands are given in doc/nro.doc.

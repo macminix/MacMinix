@@ -1,0 +1,26 @@
+chap9.man.txt
+asw 31.01.96
+
+Kees got the OK from Andy to post the Minix 1.5 Reference Manual
+Extended Manual Pages chapter (referred to frequently in the section 
+0 man pages as Chapter 9, although actually Chapter 10 in later
+versions, after the release of Minix for the Sun SPARC). 
+
+I decided it would be nice to have the chapter 9 material accessible on
+line, so I edited the file into a collection of cat-style man pages. I
+think the right place for this is section 7. I put them in
+/usr/local/man/cat7. Here it is as a shar file, chap9.man.shar.
+
+I have suggested to Kees that these pages be included with 1.7.2 or
+later releases, I don't know if he will do that.  Many sections need
+at least a little revising, some are obsolete, and there is one (mdb)
+which is for 68000 platforms only.
+
+I didn't try to update, although here and there I made a comment. I did
+reformat it so it's readable on an 80 column screen, and in the process I
+found and corrected a surprising number of little errors that are for the
+most part also in the printed manual that came out with 1.5.  (P-H didn't
+put their best editors to work on this one, I guess). 
+
+awoodhull@hampshire.edu   
+----------------------------------------------------------------------------

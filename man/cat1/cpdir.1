@@ -1,0 +1,12 @@
+Command:        cpdir - copy a directory and its subdirectories
+Syntax:         cpdir [-msv] srcdir destdir
+Flags:          -m      merge - copy into an existing directory
+                -s      similar - preserves the full mode, uid, gid and times
+                -v      verbose - cpdir says what it is doing
+Examples:       cpdir dir1 dir2 # creat dir2 and copy dir1's files into it
+
+     Cpdir creates the target directory, goes into it, and copies all the 
+files in the source directory to it.  When it is done, the target directory
+contains the same files as the source directory.  Subdirectories are copied
+recursively.  Links and special files are ignored.
+

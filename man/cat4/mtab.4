@@ -1,0 +1,13 @@
+File:   mtab - mount table
+
+     /etc/mtab is an ASCII file which contains a list of currently-mounted
+devices and their mount points.  It is started in /etc/rc, and maintained by
+mount and umount.  It can be intialised by /bin/printroot, but this is not
+essential. 
+
+     A typical Minix /etc/mtab is:
+
+ /dev/ram is root device
+ /dev/hd4 is mounted on /usr
+ /dev/hd2 is mounted on /tmp
+

@@ -1,0 +1,22 @@
+Command:        ci - check in an SVC revision
+Syntax:         ci [-lu] file
+Flags:          -l      after checking in, check back out again and lock
+                -u      after checking in, do not delete the file
+Examples:       ci -u Makefile          # Check Makefile back in
+                ci -l newfile           # Create SVC file for newfile, relock
+
+     Ci checks the specified file into its SVC archive. If an SVC archive file
+did not exist, one is created with the name "file,S". (If a directory named
+"SVC" is present in the same directory as "file", the archive will be placed
+there instead.) 
+     A log message will be prompted for, and read from standard input; this
+may be several lines, terminated with "." on a line by itself or EOT. After
+the file has been checked in, the default action is to remove the source
+file. If "-u" is specified, the file will not be unlinked, but all write
+permissions will be removed. If "-l" is specified, a lock is placed on
+the SVC archive, and the file will remain writable by the owner. SVC archive
+files are always read-only.
+    Version numbers start at "1" and are incremented by one for each revision
+checked in.
+    See also the descriptions of co, svc, svclog.
+

@@ -1,0 +1,10 @@
+Command:        mknod - create a special file
+Syntax:         mknod file b/c major minor [size_in_blocks]
+Flags:          (none) 
+Examples:       mknod /dev/plotter c 7 0 # Create special file for plotter
+
+     Mknod creates a special file named file, with the indicated major and 
+minor device numbers.  The second argument specifies a block or character file;
+there is no default for this.  The argument giving the maximum size of the
+device is optional; MINIX is unlike Unix in having sized devices.
+

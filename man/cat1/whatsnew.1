@@ -1,0 +1,12 @@
+Command:        whatsnew - print a newly modified file, marking changes
+Syntax:         whatsnew [-#] file.c file.c.cdif
+Flags:          -#      set output line length to # (default 80)
+Examples:       whatsnew file.c file.c.cdif     # Print file.c marking changes
+                whatsnew -70 file.c file.c.cdif # As above, with 70 column line
+
+     It often occurs that cdifs are posted to USENET. After installing a cdif
+file, it is sometimes desirable to print out the new file, with the changes
+marked on it.  Whatsnew does precisely this, with the changes + and ! printed
+in the right-hand margin.  Output lines are forced to a standard length to
+make the symbols easy to find.
+

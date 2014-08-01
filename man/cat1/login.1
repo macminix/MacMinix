@@ -1,0 +1,23 @@
+Command:        login - log into the computer
+Syntax:         login [user]
+Flags:          (none)
+Examples:       login ast               # Login as ast
+
+     If login is given a username as an argument, it allows a logged in user
+to login as someone else without first logging out.  If a password is needed,
+login will prompt for it.  Login will time out after 30 seconds, and will
+delay after a bad username is entered.  If the file /etc/nologin exists, no
+logins will be permitted.  If the file /etc/motd exists, login will print it
+on the standard output immediately after a successful login. 
+
+     If /usr/adm/wtmp or /etc/utmp exist login will use them for accounting
+purposes, as will init.  (They will also be used by other programs such as
+write).  If these files do not exist, neither init nor login will create them.
+Note that the files, once created, will grow forever and eventually fill the
+disk unless they are manually truncated from time to time.
+
+     Files used: /usr/adm/wtmp
+                 /etc/utmp
+                 /etc/nologin
+                 /etc/motd
+

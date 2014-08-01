@@ -1,0 +1,15 @@
+Command:        uud - decode a binary file encoded with uue
+Syntax:         uud [-nd] [-s srcdir] [-t dstdir] file
+Flags:          -       take input from stdin
+                -d      debugging information
+                -n      do not verify checksums
+                -s dir  get .uue (source) file from directory dir
+                -t dir  put output in (target) directory dir
+Examples:       uud file.uue            # Re-create the original file
+                uud - <file.uue         # Take input from stdin
+
+     Uud decodes a file encoded with uue or UNIX uuencode.  The decoded file is
+given the name that the original file had.  The name information is part of the
+encoded file.  Mail headers and other junk before the encoded file are skipped.
+     See also the description of uue.
+

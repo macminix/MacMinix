@@ -1,0 +1,14 @@
+Command:        cgrep - grep and display context
+Syntax:         cgrep [-a #] [-b #] [-l #] [-w #] [-f] [-n] pattern [file] ...
+Flags:          -a      display # lines after the matching line (default 0)
+                -b      display # lines before the matching line (default 0)
+                -f      suppress file name in the output
+                -l      truncate lines to # columns before match (default 100)
+                -n      suppress line numbers in the output
+                -w      set window size to # (same as -a n -b n)
+Examples:       cgrep -w 3 hello file1  # Print 3 lines of context each way
+
+     Cgrep is a program like grep, except that it also can print a few lines 
+above and/or below the matching lines.  It also prints the line numbers of the 
+output.
+

@@ -1,0 +1,35 @@
+Command:        expr - evaluate an expression
+Syntax:         expr arg ...
+Flags:          (none)
+Example:        x=`expr $x + 1`         # Add 1 to shell variable x
+                expr $PATH : '.*'       # Returns the number of chars in $PATH
+
+     Expr computes the value of its argument and writes the result on standard 
+output.  Characters special to the shell must be escaped.  Parentheses are
+permitted and numbers may be preceded by a unary minus.  The valid operators
+are listed below in order of increasing precedence; those grouped by {...}
+have the same precedence.
+
+        expr1 | expr2
+            returns expr1 if it is neither null nor 0, otherwise expr2.
+        expr1 & expr2
+            returns expr1 if neither expr is null or 0, otherwise expr2.
+        expr1 {<, <=, =, !=, >=, >} expr2
+            returns the result of an integer comparison if both arguments
+            are integers, otherwise the result of a text comparison.
+        expr1 {+, -} expr2
+            returns the sum or difference of integer arguments.
+        expr1 {*, /, %}
+            returns the product or remainder of integer arguments.
+        expr1 : expr2
+            returns the number of characters matched on comparing expr1
+            with expr2.  Expr2 must be a regular expression of the syntax
+            used in ed(1).  All patterns are 'anchored', ie. begin with '^'.
+            0 is returned on failure, and the \(...\) pattern symbols can
+            be used to return part of expr1.
+
+     Expr returns the following exit values:
+        0 if the expression is neither null nor 0
+        1 if the expression is null or 0
+        2 for invalid expressions  
+     

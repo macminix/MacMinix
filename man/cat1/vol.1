@@ -1,0 +1,12 @@
+Command:        vol - split the standard input into diskette-sized volumes
+Syntax:         vol [-u] size block-special
+Flags:          -u      unsave from diskettes
+Examples:       tar c - . | vol 360 /dev/fd0    # Prompt for disk every 360K
+                vol -u 360 /dev/fd0 | tar x -   # Restore a saved file system
+
+     It occasionally happens that a program generates an output stream 
+intended for diskette but the stream is to large to fit on one diskette.  Vol 
+is a program that accepts a continuous stream, and pauses every 'size' blocks
+to request a new diskette to be inserted.  This makes it possible to save
+arbitrarily long streams on a series of diskettes, as shown above.
+

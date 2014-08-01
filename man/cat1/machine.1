@@ -1,0 +1,18 @@
+Command:        machine - identify a machine
+Syntax:         machine [machine_name]
+Flags:          (none)
+Example:        machine             # print machine type
+                machine IBM_PC      # return true if machine is IBM_PC
+
+     When executed without arguments, machine returns the machine name as
+found in minix/config.h.  If an argument is given, machine returns 0 if
+it matches (case-insensitively) the current machine name and 1 if it does
+not.  If the program is called as 'chip', the same processes are carried out
+for chip names.  Machine and chip names are:
+
+    Machines:  Ibm_pc            Chips:  Intel
+               Sun_4                     M68000 
+               Atari                     Sparc
+               Amiga
+               Macintosh
+

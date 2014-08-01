@@ -1,0 +1,12 @@
+Command:        date - print or set the date and time
+Syntax:         date [[MMDDYY]hhmm[ss]]
+Flags:          -q      read the date from standard input
+Examples:       date                    # Print the date and time
+                date 0221881610         # Set date to Feb 21, 1988 at 4:10 pm
+                date `readclock`        # Set the date from the system RTC 
+
+     Without an argument, date prints the current date and time.  With an 
+argument, it sets the date and time.  MMDDYY refers to the month, day, and
+year; hhmmss refers to the hour, minute and second.  Each of the six fields 
+must be two digits.
+

@@ -1,0 +1,13 @@
+Command:        treecmp - recursively list differences in two directory trees
+Syntax:         treecmp [-cv] dir1 dir2
+Flags:          -c      list the names of changed and new files only
+                -v      list all directories processed (verbose)
+Example:        treecmp -v /usr/ast/V1 /usr/ast/V2      # Compare two trees
+
+     Treecmp recursively descends the directory tree of the second argument
+and compares all files to those at the corresponding position in the first
+argument.  If the two trees are identical, i.e., all the corresponding 
+directories and files are the same, there is no output.  Otherwise, a list of 
+files missing from one of the trees or present in both but whose contents are 
+not identical in both are printed.
+

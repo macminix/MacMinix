@@ -1,0 +1,12 @@
+Command:        wc - count characters, words, and lines in a file
+Syntax:         wc [-clw] file ... 
+Flags:          -c       print character count
+                -l       print line count
+                -w       print word count
+Examples:       wc file1 file2          # Print all three counts for both files
+                wc -l file              # Print line count only
+
+     Wc reads each argument and computes the number of characters, words and 
+lines it contains.  A word is delimited by white space (space, tab, line feed
+or form feed).  The default is to print all three counts in the order l,w,c.
+

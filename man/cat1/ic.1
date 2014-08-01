@@ -1,0 +1,16 @@
+Command:        ic - integer calculator
+Syntax:         ic [expression]
+Flags:          (none)
+Examples:       ic              # Start the calculator
+                ic 250 300+     # Start calculator with 550 on the stack
+
+     Ic is a reverse Polish notation calculator that works on 32-bit integers.
+It starts out by computing the expression given as an argument, if any, and
+then expects keyboard input.  As an example, to compute `23+5' one first
+converts this to reverse Polish, `23 5+'.  After the calculator starts, type
+`23' followed by a carriage return.  Then type `5' and another carriage return.
+Finally type `+' to see the result, 28 displayed on the stack.  Other
+operations work the same way.  The calculator can use other radices for input
+and output, and has registers that can be stored and loaded.  The h command
+gives the help menu, and the program is described in doc/ic.doc.
+

@@ -1,0 +1,11 @@
+Command:        file - make a guess as to a file's type based on its contents
+Syntax:         file name ...
+Flags:          (none)
+Example:        file a.out /usr/include/ar.h    # Guess at types
+
+     File reads the first block of a file and tries to make an intelligent 
+guess about what kind of file it is.  It understands about directories,
+block and character special files, archives, object files, executable
+binaries, shell scripts, C programs, English text, and ASCII text.  Any file
+it can't recognise it calls 'data'.
+

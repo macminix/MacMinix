@@ -1,0 +1,12 @@
+File:   username - file used by mail
+
+     /usr/spool/mail/username is a collection of current messages kept
+by the program mail.  A separate file is kept for each user in the directory
+/usr/spool/mail.  Each entry in a user's file has the structure:
+
+ struct letter {
+   struct letter *prev, *next;	/* linked letter list */
+   int status;			/* letter status */
+   off_t location;		/* location within mailbox file */
+ };
+

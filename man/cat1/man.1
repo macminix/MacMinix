@@ -1,0 +1,22 @@
+Command:        man - display a manual page
+Syntax:         man [manual-directory] [#] [name] ...
+Flags:          (none)
+Examples:       man cdiff               # Display man page for cdiff(1)
+                man 2 fork              # Display man page for fork(2)
+                man 3                   # List the part 3 man pages
+
+     Man is a program that displays manual pages, which are stored in the
+directory /usr/man, one volume per file.  When called with just a program
+name, man displays the page for that program, if it can be found in the
+default volume (man1).  Man builds an index for each file in the /usr/man
+directory, and updates these whenever a man file becomes more recent than
+its current index file.
+     When the digit # is given as an argument, the volume /usr/man/man# is
+used instead of the default volume.  When no name is given (or just a digit),
+the list of pages in that volume is displayed.  The cursor keys can be used to
+select an entry, and <return> then displays the page selected.  Q or q leaves
+the program.  A directory name can be given to override the use of /usr/man.
+
+     Files used: /usr/man/man1, etc.
+                 /usr/man/._man1, etc. 
+ 

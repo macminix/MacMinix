@@ -1,0 +1,13 @@
+Command:        dosread - read a file from an MS-DOS diskette
+Syntax:         dosread drive [path/]file
+Flags:          -a      ASCII file
+Examples:       dosread B g/adv >adv    # Copy MSDOS file B:\G\ADV to ./adv
+                dosread A -a prog.c >x  # Copy ASCII file A:\PROG.C to ./x  
+
+     Dosread reads one file from an MS-DOS diskette and writes it on standard 
+output.  The file name should use slash, not backslash as a separator.  ASCII 
+files have the final CTRL-Z stripped, and carriage return plus line feed are 
+mapped to line feed only, the usual MINIX convention.
+
+     This is used in the Intel versions of Minix only.
+

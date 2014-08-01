@@ -1,0 +1,16 @@
+Command:        write - send a message to a logged-in user
+Syntax:         write [-cv] user [tty]
+Flags:          -c      use cbreak mode
+                -v      verbose mode
+Examples:       write ast               # Send a message to ast
+                write ast tty1          # Send a message to ast on tty0
+
+     Write lets a user send messages to another logged-in user.  Lines typed by
+the user appear on the other user's screen a line at a time (a character at a
+time in the case of cbreak mode).  The file /etc/utmp is searched to find out
+which tty to send the message to.  If the user is logged onto more than one
+terminal, the tty argument selects the terminal.  Type CTRL-D to terminate the
+command.  Use ! as a shell escape, except when in cbreak mode.
+
+    Files used: /etc/utmp
+

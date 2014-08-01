@@ -1,0 +1,12 @@
+Command:        svclog - print a log of SVC revisions
+Syntax:         svclog file
+Flags:          (none)
+Examples:       svclog foo              # Print out revision history for foo
+                svclog file,S           # Print out revision history for file
+
+   Svclog is a shell script that prints out the revision history of the
+specified file.  This information includes the revision numbers, dates, and
+log entries for each of the revisions, and indicates whether or not a lock on
+this file exists.  For simplicity, the output format is rather raw.  See also
+the descriptions of ci, co, and svc.
+

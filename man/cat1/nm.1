@@ -1,0 +1,18 @@
+Command:        nm - print a symbol table
+Syntax:         nm [options] [file] ...
+Flags:          -d      address in decimal
+                -g      print only external symbols
+                -n      sort numerically rather than alphabetically
+                -o      prepend file name to each line rather than once only
+                -p      print in symbol-table order without sorting
+                -r      sort in reverse order
+                -u      print only undefined symbols
+Examples:       nm -n a.out             # Print all symbols in numerical order
+                nm -g a.out             # Print global symbols alphabetically
+
+     Nm prints the symbol table of an executable file when it is available. If
+no filename is given, the symbols in a.out are used.  The format of the table
+is somewhat compatible with the one produced by asld when used with the -s 
+option.  The symbol table can be added with ast.  Archives are not supported,
+since assembly language files don't have symbol tables.
+

@@ -1,0 +1,13 @@
+Command:        spell - print the words in a file that are not in a dictionary
+Syntax:         spell file
+Flags:          (none)
+Example:        spell document          # Print the spelling errors on stdout
+
+     Spell is the MINIX spelling checker, a shell script.  First, the program
+prep strips off the roff, nroff, and troff control lines and the punctuation,
+listing each word on a separate line.  It then sorts the output and compares
+it to the dictionary.  Words present in the file but not present in the
+dictionary are written to stdout.  The dictionary is kept in /usr/lib.
+
+     Files used: /usr/lib/dictionary
+

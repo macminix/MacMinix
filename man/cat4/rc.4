@@ -1,0 +1,37 @@
+File:    rc - run commands at logon
+
+     /etc/rc is a shell script which is run by init at startup to set
+up the system.  Among other things, it can mount standard file systems,
+clear out scratch directories, and initialise devices.
+
+     A typical Minix /etc/rc is:
+
+ # Initialise mtab
+ /bin/printroot >/etc/mtab
+
+ # Mount the filesystem(s)
+ /bin/echo "Mounting file systems" 
+ /etc/mount /dev/hd4 /usr
+ /etc/mount /dev/hd2 /tmp
+
+ # Initialise the clock
+ /usr/bin/date `/usr/local/bin/rtc`
+
+ # Initialise the first RS232 line to 2400 baud
+ /bin/echo "Initialising tty1 to 2400 baud"
+ /usr/bin/stty 2400 </dev/tty1
+
+ # General clear-out
+ /bin/echo "Clearing spool directories"
+ /bin/rm -f /usr/spool/uucp/*
+ /bin/rm -f /usr/spool/at/past/*
+
+ # More initialisation 
+
+ >/etc/utmp
+ /bin/echo
+
+ # Display sign-on and start update
+ /usr/bin/cat /etc/message
+ /etc/update  &
+

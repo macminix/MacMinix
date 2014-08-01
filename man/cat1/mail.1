@@ -1,0 +1,37 @@
+Command:        mail - send and receive electronic mail
+Syntax:         mail [-dpqrv] [-f file] [user]
+Flags:          -d      force use of MAILER 
+                -f      use file instead of /usr/spool/mail/user as mailbox
+                -p      print all mail and then exit
+                -q      quit program if SIGINT received
+                -r      reverse print order, ie. print oldest first
+                -v      verbose mode
+Examples:       mail ast                # Send a message to ast
+                mail                    # Read your mail
+
+     Mail is an extremely simple electronic mail program.  It can be used to
+send or receive email on a single MINIX system, in which case it functions as
+user agent and local delivery agent.  If the MAILER is defined in mail.c, it
+can also call a transport agent to handle remote mail as well.
+     When called by user with no arguments, it examines the mailbox
+/usr/spool/mail/user, prints one message (depending on the -r flag), and waits
+for one of the following commands:
+        <newline>       go to the next message
+        -               print the previous message
+        !command        fork off a shell and execute command
+        CTRL-D          update the mailbox and quit (same as q)
+        d               delete the current message and go to the next one
+        q               update the mailbox and quit (same as CTRL-D)
+        p               print the current message again
+        s[file]         save message in the named file
+        x               exit without updating the mailbox
+
+    To send mail, the program is called with the name of the recipient as
+argument.  The mail is sent, along with a postmark line containing the date.
+For local delivery, a file named after the recipient in the directory
+/usr/spool/mail must be writable.
+
+    Files used: /usr/spool/mail/username
+                /usr/spool/mail/username.lock
+                /usr/lib/mail.help
+

@@ -1,0 +1,138 @@
+This directory contains the man files.  Man1 is "official" in the sense that 
+it is not expected to undergo many changes, other than bug fixes.  
+Man2 wass put together in an hour.  Someday a proper POSIX version of man2,
+as well as man3 (library), man4 (device drivers), man5 (file formats),
+and man6 (other) may appear.  Given the nature of MINIX systems and users,
+the distinction between part 1 (serious commands), part 6 (games), and
+part 8 (superuser commands) is very subtle.  I'll put all commands in Part 1.
+
+If there are any volunteers who want to write the descriptions for the POSIX 
+and ANSI functions, please let me know.  In any event, it is absolutely
+illegal to copy text from 4.3 BSD manuals, System V manuals, ANSI standards,
+IEEE standards, or any other copyrighted work.  You have to write your own.
+
+People writing man entries are requested to keep them short enough to fit on
+one screen (24 lines), where possible.  The original file should be in troff
+form, with the manX entries being the nroff output.
+I may include the man pages in the book again (see pages 384-409 in the book).
+To do this, I need input setup for typesetting.
+Below is a sample original entry.  All my man1 entries are in this form.
+P-H would not approve of my distributing the true input :-(  
+Please don't ask.  
+
+Note that I use \(en for the short dash.  
+True troff connoisseurs are concerned about the difference between:
+     -      \(en      \(em      \(mi      _      and      \(ru
+I have gotten artwork from P-H where they used - when I wanted \(en and
+I rejected the whole lot at no mean expense.
+
+
+.CD "backup \(en backup files"
+.SX "backup \fR[\fB\(endmnvz\fR]"
+.FL "\(end" "At top level, only directories are backed up"
+.FL "\(enj" "Do not copy junk: *.o, *.Z, *.bak, a.out core, etc"
+.FL "\(enm" "If device full, prompt for new diskette"
+.FL "\(enn" "Do not backup top-level directories"
+.FL "\(ens" "Do not copy *.s files"
+.FL "\(env" "Verbose; list files being backed up"
+.FL "\(enz" "Compress the files on the backup medium"
+.EX "backup -mz . /f0" "Backup current directory compressed"
+.EX "backup /bin /usr/bin" "Backup bin from RAM disk to hard disk"
+.PP
+\fIBackup\fR (recursively) backs up the contents of a given directory and its
+subdirectories to another part of the file system.
+It is two typical uses.
+First, some portion of the file system can be backed up onto 1 or more
+diskettes.
+When a diskette fills up, the user is prompted for a new one.
+The backups are in the form of mountable file systems.
+Second, a directory on RAM disk can be backed up onto hard disk.
+If the target directory is empty, the entire source directory is copied
+there, optionally compressed to save space.
+If the target directory is an old backup, only those files changed since
+the backup was made are copied.
+\fIBackup\fR uses times for this purpose, like \fImake\fR.
+
+
+For part 2 (will be the ca. 80 POSIX calls) and part 3 (other lib routines,
+hopefully most ANSI compatible), follow this example:
+
+.NA "fseek \(en seek on a file"
+.SX "fseek(FILE *stream, long int offset, int whence)"
+.DE
+\fIFseek\fR sets the file position for \fIstream\fR.
+The \fIoffset\fR parameter tells where to put it depending on \fIwhence\fR.
+\fIWhence\fR can take on one of three values: SEEK_SET (set the file position
+to \fIoffset\fR), SEEK_CUR (\fIoffset\fR is relative to the current position),
+or SEEK_END (\fIoffset\fR is relative to the end of the file).
+.DI
+On error, -1 is returned ...
+.SA
+lseek(2), fopen(3)
+.BU
+No known bugs
+
+
+The macros are as follows:
+
+.de CD
+.if t .ta 0.9i 1.15i 2.75i
+.if n .ta 11m 13m 40m
+.nr x 0 0
+.nr y 0 0
+.nr z 0 0
+.if n #\\$1
+.if n .br
+\\fBCommand:\&	\\$1\\fR
+.br
+..
+.de SX
+.if \\nx<=0 \\fBSyntax:\&	\\$1
+.if \\nx>0 \&	\\fB\\$1
+.nr x 1 1
+.br
+..
+.de FL
+.if \\ny<=0 \\fBFlags:\&	\\fB\\$1	\\fR\\$2
+.if \\ny>0 \& 	\\fB\\$1	\\fR\\$2
+.nr y 1 1
+.br
+..
+.de EX
+.br
+.nf
+.if \\nz<=0 \\fB\&Examples:	\\fR\\$1	\\fR# \\$2
+.if \\nz>0 \&	\\fR\\$1	\\fR# \\$2
+.nr z 1 1
+.br
+..
+.de EY
+.br
+.nf
+.if \\nz<=0 \\fB\&Example:	\\fR\\$1	\\fR# \\$2
+.if \\nz>0 \&	\\fR\\$1	\\fR# \\$2
+.nr z 1 1
+.br
+..
+.de NA
+.if \\fBName:\&	\\$1
+.br
+..
+.de DE
+\\fBDescription:\\fR
+.PP
+..
+.de DI
+Diagnostics:
+.PP
+..
+.de SA
+\\fBSee Also:\\fR
+.PP
+..
+.de BU
+\\fBBugs:\\fR
+..
+.de IN
+\\fBInclude files:\\fR
+..

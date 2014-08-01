@@ -1,0 +1,10 @@
+Command:        lpr - copy a file to the line printer
+Syntax:         lpr [file] ...
+Flags:          (none)
+Examples:       lpr file &              # Print file on the line printer
+                pr file | lpr &         # Print standard input (pr's output)
+
+     Each argument is interpreted as a file to be printed.  Lpr copies each 
+file to /dev/lp, without spooling.  It inserts carriage returns and expands 
+tabs.  Only one lpr at a time may be running.
+

@@ -1,0 +1,54 @@
+Command:        more - pager
+Syntax:         more [-dflpcsu] [-#] [+linenum | +/pattern] [file ...]
+Flags:          -d      display prompt message at each pause
+                -f      do not fold lines
+                -l      do not treat CTRL-L as form feed
+                -p      page mode - clear each page, do not scroll
+                -c      clear and redraw one line at a time
+                -s      suppress multiple blank lines
+                -u      use escape sequences for underlining
+                -#      use a window of size #
+                -line   start up at line
+                -patt   start up two lines before pattern  
+Examples:       more file               # Display file on the screen
+                more -p file1 file2     # Display two files in page mode
+                more -10 file           # Use a ten-line window  
+                more +/begin file       # Hunt for the string 'begin'
+
+     More is a pager that allows one to examine files.  This program was 
+originally produced at the University of California, Berkeley.  When more  
+starts up, it displays a screenful of information from the first file in its 
+list, and then pauses for one of the following commands.
+        #               integer, how many of something.
+        <space>         display next page
+        <return>        display next line
+        CTRL-B          go backward half a screenful
+        CTRL-D          go forward half a screenful
+        CTRL-L          redraw the screen
+        #<space>        go forward # lines
+        =               print current line number
+        .               repeat previous command
+        '               go back to start of last search (single quote)
+        !               escape to shell 
+        #/<expr>        go to #th occurrence of <expr>
+        :f              display current file name and line number
+        #:n             skip forward # files
+        #:p             skip backward # files
+        b               go backward half a screenful
+        d               go forward half a screenful
+        #f              skip # screenfulls
+        h               display /usr/lib/more.help
+        #n              go to #th occurrence of last <expr>
+        q               quit
+        Q               quit 
+        #s              skip # lines
+        v               execute /usr/bin/vi
+        #z              go forward # lines and set screen size to #
+
+    For the benefit of users who always want to use certain flags when calling 
+more, the shell variable MORE can be set to the desired default flags, e.g.  
+MORE="-p".  Note that the file more.help should be installed in /usr/lib. 
+
+    Files used: /usr/lib/more.help
+                /usr/bin/vi
+

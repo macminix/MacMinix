@@ -1,0 +1,33 @@
+Command:        ps - report the process status
+Syntax:         ps [-] [alxU] [kernel mm fs]
+                -a      print information on all processes except those not
+                        associated with a terminal
+                -l      print a long format report
+                -x      print information on processes not associated with
+                        a terminal 
+                -U      Create the ps database file 
+Example:        ps -ax          # report on processes within the kernel
+                ps -l           # long report on the current process group 
+
+     Ps is very similar to the V7 version, but cannot read memory from a core
+file.  It requires a database file /etc/psdatbase, or the inclusion of symbol
+tables when building in the kernel, mm, and fs.  Fields changed from V7 are
+CPU, NICE, and PRI which are missing, RECV which replaces WCHAN, and RUID
+and PGRP which are extras.
+
+     Fields displayed with the -l option are: 
+        F        process flags @@@ 
+        S        process state (Zombie, Waiting, Sleeping, Runnable, Trace) 
+        UID      UID of process owner
+        PID      PID of process
+        PPID     PID of parent process
+        PGRP     process group
+        ADDR     memory address of the process 
+        SZ       size in blocks of the core image
+        RECV     process from which messages will be accepted
+        TTY      controlling tty
+        TIME     cumulative (user + sys) time used by the process
+        CMD      command used to start the process
+
+     Files used: /etc/psdatabase
+

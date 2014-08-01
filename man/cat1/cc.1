@@ -1,0 +1,116 @@
+Command:        cc - C compiler
+Syntax:         cc [option] ...  file ...
+Flags:          -D      the flag -Dx=y defines a macro x with value y
+                -F      use a file instead of a pipe for preprocessor output
+                -I      -Idir searches dir for include files
+                -L      disable profiling
+                -LIB    produce a library module
+                -O      invoke the optimiser (option -p4 to cg)
+                -R      complain about all non Kernighan & Ritchie code
+                -S      stop after producing an assembly code file
+                -T      -Tdir tells cem to use dir for temporary files
+                -U      undefine a macro
+                -c      compile only, do not link (same as -S)
+                -i      use separate I & D space (64K + 64K)
+                -l      search a specific library of assembly routines
+                -o      put output on file named by next argument
+                -p      use mrtso.s as header
+                -v      verbose mode - print pass names
+                -w      suppress warning messages
+
+Examples:       cc -c file.c            # Compile file.c
+                cc -Di8088 file.c       # Treat the symbol i8088 as defined
+                cc -c -LIB file.c       # Make a module for the library
+                cc -R -o out file.c     # Check for K & R; output to out
+                cc file.c -lmodemcap    # Search library /usr/lib/libmodemcap.a
+					# before the standard library, libc.a
+
+     This is the C compiler.  It has five passes, as follows:
+
+     Program         Input   Output  Operation performed
+     /lib/cpp        prog.c  prog.i  Pre-processing
+     /lib/cem        prog.i  prog.k  Parsing and semantic analysis
+     /usr/lib/opt    prog.k  prog.m  Optimisation of the intermediate code 
+     /usr/lib/cg     prog.m  prog.s  Code generation
+     /usr/lib/asld   prog.s  a.out   Assembly and linking
+
+     Valid options for cpp are:
+
+     -D        define a macro
+     -I        set include file directory
+     -M        set minimum identifier length (fixed at 8 ?)
+     -P        do not add line control information to output
+     -U        undefine a macro
+
+     Valid options for cem are:
+
+     -D        ignored
+     -I        ignored
+     -L        suppress filename and line recording at hol0+4, hol0
+     -M        set minimum identifier length (fixed at 8 ?)
+     -N        do not move the EXP EM-codes to the head of the file (why ?)
+     -R        warn of non-K&R code
+     -T        set the temporary file directory
+     -U        ignored
+     -V        ignored
+     -n        do not use register variables
+     -p        include calls to _procenter, _procexit for profiling
+     -w        suppress warning messages
+
+
+     Valid options for opt.
+
+     -L        produce a library module
+     -n        suppress optimisation (completely ?)
+
+
+     Valid options for cg.
+
+     -p        no apparent effect, but cc -O generates cg -p4 (?)
+     -w        suppress warning messages (?)
+
+     The main program, cc, forks appropriately to call the passes, 
+transmitting flags and arguments.  The -v flag causes the passes to be listed 
+as they are called.
+     The -c or -S flags stop compilation when cg has produced an assembly code 
+file (in packed format) because the current assembler-loader expects that.
+The libraries are also archives of packed assembly code files, except that
+defined symbols must be declared by .define statements at the beginning.  To
+make modules for inclusion in the library, use the -c and -LIB options.  There
+is no way to get .o files; the packed assembly language files are used as a
+substitute.  They can be unpacked with the filter libupack.  Type .x files are
+assembler files that require to be run through the C-preprocessor.
+     The -R flag gives warnings about all constructions not permitted by 
+official Kernighan and Ritchie C.  The average garden-variety C program that 
+has been flawlessly acceptedly by most C compilers contains surprisingly many 
+illegal constructions.  Try it.
+     The compiler normally keeps cpp and cem in memory at the same time, 
+transferring the output of cpp to cem using a pipe.  However, if there is 
+insufficient memory available to hold both at once, the -F flag can be given 
+to cause these two passes to be run strictly sequentially, with the 
+preprocessor output being stored on a file in /tmp (unless -T is used).  When 
+available memory is very limited (e.g., a 512K machine), it may be necessary 
+to run chmem to reduce the sizes of the compiler passes that do not fit,
+typically cem.
+     The other passes, especially asld, can create large temporary files in 
+/tmp.  To compile very large programs, first type
+        cc -c *.c
+to get .s files.  Then remove /lib/cpp and /lib/cem and possibly other files
+from the RAM disk to make more space for /tmp.  Finally, type
+        cc *.s
+which results in
+        asld /usr/lib/crtso.s *.s /usr/lib/libc.a /usr/lib/end.s
+to produce the a.out file.  The files removed from the RAM disk can be 
+restored by mounting the root file system and copying them from there, or the 
+system can be shut down and rebooted.
+     If the compiler (or, in fact, almost any program) begins acting strange, 
+it is almost always due to its running out of space, either stack space or 
+scratch file space.  The relevant pass can be given more stack space using 
+chmem.  More space for scratch files can be obtained by removing other files 
+on the device.
+     The compiler is derived from the ACK system (Tanenbaum et al., 1983), not 
+from the AT&T portable C compiler.  It has been shoehorned onto the PC with 
+some loss of performance.
+
+     This compiler is used in the Intel versions of Minix only.
+

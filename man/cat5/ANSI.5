@@ -1,0 +1,18 @@
+The 1.5.10 PC Minix console supports the following ANSI escape sequences:
+
+     ESC [nA moves up n lines
+     ESC [nB moves down n lines
+     ESC [nC moves right n spaces
+     ESC [nD moves left n spaces
+     ESC [m;nH" moves cursor to (m,n)
+     ESC [J clears screen from cursor
+     ESC [K clears line from cursor
+     ESC [nL inserts n lines ar cursor
+     ESC [nM deletes n lines at cursor
+     ESC [nP deletes n chars at cursor
+     ESC [n@ inserts n chars at cursor
+     ESC [nm enables rendition n (0=normal, 4=bold, 5=blinking, 7=reverse)
+     ESC M scrolls the screen backwards if the cursor is on the top line
+
+If n and/or m are omitted, they default to 1.
+

@@ -1,0 +1,14 @@
+Command:        shar - shell archiver
+Syntax:         shar file ...
+Flags:          (none)
+Examples:       shar *.c >prog.sh       # Collect C programs in shell archive
+                sh <prog.sh             # Extract files from a shell archive
+
+     The named files are collected together into a shell archive written onto 
+standard output.  The individual files can be extracted by redirecting the 
+shell archive into the shell.  The advantage of shar over ar is that shar 
+archives can be read on almost any UNIX system, whereas numerous, incompatible 
+versions of ar are in widespread use.  Extracting the files from a shell 
+archive requires that gres is accessible.  In the distribution, gres is in 
+/user/bin rather than /usr/bin.
+

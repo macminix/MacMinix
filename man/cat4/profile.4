@@ -1,0 +1,11 @@
+File:   profile - set up general environment at login
+
+     /etc/profile is a shell script which is run by the shell on login to
+set up the general environment for every user, before the individual's
+$HOME/.profile is run.  
+
+     A typical Minix /etc/profile is:
+
+ # Set default file creation mask
+ umask 022
+

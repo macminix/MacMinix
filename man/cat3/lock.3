@@ -1,0 +1,28 @@
+
+While re-reading Advanced Unix Programming by Marc J. Rochkind, I ran
+across some routines that I thought others might find useful.
+------------------------------------------------------------------------------
+The lock and unlock functions can be used like this:
+	    if (lock("database")) {
+		... manipulate database...
+		unlock("database");
+	    }
+	    else
+		...couldn't obtain lock...
+The name "database" is abstract, it could have been called anything.
+If two or more processes are concurrentlyu executing this code, the lock will
+prevent them from simultaneously executing the protected section(manipulate
+database). All processes would have to call the lock function for this to
+work though.
+As an enhancement you could write the pid and time on the file so other
+processes could see who has it and for how long.(If this is done the permis-
+sions should be set to octal 444 instead of 0).
+------------------------------------------------------------------------------
+Statutil.c is a program that allows you to do several different functions on
+files;
+    change modification time, owner, permissions
+    display type of file(dir, ordinary, block, character)
+	    device number(major, minor), number of links to file,
+	    I-node number, Size, group id, owner, last mod. time
+All done interactively.
+ 

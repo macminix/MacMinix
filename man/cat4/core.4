@@ -1,0 +1,13 @@
+File:  core - image of aborted process
+
+     ./core is the file produced when a process is aborted and removed from
+the 'core'.  It is a partial image of the Minix system state.
+
+     When a process receives a signal that cannot or should not be caught,
+the memory manager tries to write an image out to disk before removing
+the process.  The image file is named 'core' and is written to the working
+directory of the process, if MM has the right permissions.
+
+     The first part of a core file is a memory map of all the segments,
+followed by the kernel process table, and then all the segments themselves.
+

@@ -1,0 +1,15 @@
+Command:        mv - move or rename a file
+Syntax:         mv file1 file2
+                mv file ... directory
+Flags:          (none)
+Examples:       mv oldname newname      # Move oldname to newname
+                mv file1 file2 /usr/ast # Move two files to /usr/ast
+
+     Mv moves one or more files from one place in the file system to another.  
+If the old path and new path are on the same device, it is done by linking and
+unlinking, otherwise by copying.  Move won't move '.' and '..'.  Move will
+allow the owner to move from a non-writable file, but not to one.  Target
+files are deleted when moving to a directory.
+
+     Files used: /usr/bin/cp
+

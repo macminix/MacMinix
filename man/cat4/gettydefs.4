@@ -1,0 +1,38 @@
+File:   gettydefs - speed and terminal settings used by getty
+
+     /etc/gettydefs is an ASCII file which contains information used by getty
+to set line parameters on login.  Each entry is followed by a blank line,
+and has the format:
+
+        label# initial_flags# final_flags# login_prompt #next_label
+
+     The field descriptions are:
+
+        label           string which getty tries to match with its argument.
+        initial_flags   ioctl settings until getty executes login.
+        final_flags     ioctl settings when getty executes login.
+        login_prompt    used as the login prompt.  Note that unlike the
+                             other fields, white space is significant.
+        next_label      if the user types <Break>, getty will search for this
+                             label and use its settings.
+
+     A typical Minix /etc/gettydefs is:
+
+ #
+ # MINIX version 1.5 /etc/gettydefs
+ #
+
+ 1200# SANE B1200# SANE B1200# Login: #2400
+
+ 2400# SANE B2400# SANE B2400# Login: #4800
+
+ 4800# SANE B4800# SANE B4800# Login: #9600
+
+ 9600# SANE B9600# SANE B9600# Login: #300
+
+ 300# SANE B300# SANE B300# Login: #1200
+
+ ETHER# SANE B115200# SANE B115200# Ethernet Login: #ETHER
+
+ CONSOLE# SANE B115200# SANE B115200#Console Login: #CONSOLE
+ 

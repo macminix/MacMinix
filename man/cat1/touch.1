@@ -1,0 +1,11 @@
+Command:        touch - update a file's time of last modification
+Syntax:         touch [-cf] file ...
+Flags:          -c      do not create the file
+                -f      Minix ignores this flag
+Examples:       touch *.h               # Make the .h files look recent
+
+     The time of last modification is set to the current time.  This command 
+is mostly used to trick make into thinking that a file is more recent than it 
+really is.  If the file being touched does not exist, it is created, unless 
+the -c flag is present.
+ 

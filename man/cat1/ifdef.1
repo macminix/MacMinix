@@ -1,0 +1,12 @@
+Command:        ifdef - remove unwanted ifdefs from C code
+Syntax:         ifdef [-t] [-Dsymb] [-dsymb] [-Usymb] [-Isymb] [file]
+Flags:          -t     # display a table of defined and undefined symbols
+                -D     # symbol can change from defined <-> undefined)
+                -d     # symbol cannot change from defined <-> undefined)
+                -U     # undefine the symbol
+                -I     # ignore the symbol
+Example:        ifdef -t ifdef.c        # show the defines in ifdef.c
+
+     Ifdef strips unwanted #defines from C code, making it easier to read,
+understand, and possibly compile.
+

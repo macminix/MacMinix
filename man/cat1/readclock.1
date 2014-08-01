@@ -1,0 +1,13 @@
+Command:        readclock - read the AT's real time clock
+Syntax:         readclock
+Flags:          (none)
+Example:        date `/usr/bin/readclock` </dev/tty     # Useful in /etc/rc
+
+     Readclock reads the AT's real time clock and prints the result in a form 
+useful to date, namely, MMDDYYhhmmss.  If the clock does not exist (e.g., on a 
+PC), it outputs "-q" to force 'date' to query the user for the time.  The
+example given above can be put in /etc/rc to load the real time.  On an AT,
+readclock uses a character device /dev/port, major 1 minor 4.
+
+     This is used in the Intel versions of Minix only.
+

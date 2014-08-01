@@ -1,0 +1,11 @@
+Command:        chown - change owner
+Syntax:         chown user file ...
+Flags:          (none)
+Examples:       chown ast file1 file2   # Make ast the owner of the files
+                chown ast.user file3    # Make ast the owner, user the group
+
+     The owner field of the named files is changed to user (ie., login name 
+specified).  Alternatively, a decimal uid may be specified instead of a user 
+name.  Only the super-user may execute this command.  This is the same program
+as chgrp.
+

@@ -1,0 +1,11 @@
+Command:        fold - fold long lines
+Syntax:         fold [-#] [file] ...
+Flags:          -#       set output line length to # columns (default 80)
+Examples:       fold -60                # Fold standard input to 60 characters
+                fold file               # Fold file to 80 character lines
+
+     Fold takes copies its input from the named file (or standard input, if
+none is specified) to standard output.  However, lines longer than the given
+maximum length are broken into multiple lines of the maximum length by
+inserting newline characters.
+

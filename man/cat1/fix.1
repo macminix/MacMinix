@@ -1,0 +1,16 @@
+Command:        fix - update a file from a difflist
+Syntax:         fix oldfile difflist >newfile
+Flags:          (none)
+Example:        fix old difflist >new   # Generate new from old and diffs
+
+     Fix accepts a diff listing produced by diff and reconstructs the new 
+file.  It is common for people to take a file, modify it, and then send the 
+diff listing between the old and new files to other people.  Using fix, the  
+old file, and the diff listing, it is possible to create the new file.  For 
+example:
+        diff oldfile newfile >difflist
+        fix oldfile difflist >new2
+
+will generate a file new2 that is identical to newfile.  A more sophisticated
+alternative to fix is patch.
+

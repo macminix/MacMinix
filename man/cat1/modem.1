@@ -1,0 +1,22 @@
+Command:        modem - put a modem into dial-in or dial-out mode
+Syntax:         modem [-d] [-g] [-o] [-i rings] line
+Flags:          -d      use debug mode
+                -g      set permanent dial-in mode (turn uugetty into getty)
+                -o      set dial out mode
+                -i n    set dial-in mode, and wait n rings before answering
+Example:        modem -i6 tty1         # Make tty1 dialin (6 rings)
+
+     Modem allows the same line to be used for dial-in and dial-out..  The -o
+flag suspends any getty process associated with the line, and set up the
+(Hayes) modem for dialout.  The -i flag restarts a suspended getty, and sets
+the modem to answer the phone after the given number of rings.  
+
+     Modem returns the following exit codes: 
+        1    ok
+        0    error, getty would not listen
+       -1    error in utmp file
+       -2    tty not found
+       -3    process not getty
+       -4    process busy
+       -5    unknown process type
+

@@ -1,0 +1,315 @@
+[ (1)			- test for a condition
+a.out (4)		- default assembler/loader output filename
+abs (3)			- return integer absolute value
+abs, iabs, dabs, cabs, zabs (3) - FORTRAN absolute value
+access (2)		- do I have access to a file
+alarm (2)		- send me a timeout signal in a while
+animals (1)		- twenty questions type guessing game about animals
+animals (4)		- animal game data base
+ar (1)			- archiver
+ascii (1)		- strip all the pure ASCII lines from a file
+ascii (6)		- the ASCII character set
+asld (1)		- assembler-loader
+ast (1)			- add symbol table to executable file
+at (1)			- execute commands at a later time
+atob (1)		- create a binary file from an archive
+atrun (1)		- run commands for 'at'
+backup (1)		- backup files
+badblocks (1)		- put a list of bad blocks in a file
+banner (1)		- print a banner
+banner (4)		- print a banner
+basename (1)		- strip off file prefixes and suffixes
+bawk (1)		- pattern matching language
+brk, sbrk (2)		- change data segment space allocation
+btoa (1)		- binary to ascii conversion
+cal (1)			- print a calendar
+cat (1)			- concatenate files and write them to standard output
+cc (1)			- C compiler
+cdiff (1)		- context diff
+cgrep (1)		- grep and display context
+chdir (2)		- change working directory
+chgrp (1)		- change group
+chip (1)		- identify a chip
+chmem (1)		- change memory allocation
+chmod (1)		- change access mode for files
+chmod (2)		- set the protection for a file
+chown (1)		- change owner
+chown (2)		- change owner and group of a file
+chroot (2)		- change the root directory
+ci (1)			- check in an SVC revision
+close (2)		- deallocate a descriptor
+clr (1)			- clear the screen
+cmp (1)			- compare two files
+co (1)			- check out an SVC revision
+comm (1)		- print lines common to two sorted files
+compress (1)		- compress a file using modified Lempel-Ziv coding
+core (4)		- image of aborted process
+cp (1)			- copy file
+cpdir (1)		- copy a directory and its subdirectories
+crc (1)			- print the checksum of the file data
+creat (2)		- create a new file or rewrite an existing one
+cron (1)		- clock daemon
+cronlog (4)		- cron action log
+crontab (4)		- cron instruction table
+crypt, encrypt (3)	- a one way hashing encryption algorithm
+ctermid (3)		- generate file name for terminal
+ctime, localtime, gmtime, asctime (3) - convert date and time to string
+cuserid (3)		- get character login name of the user
+cut (1)			- select out columns of a file
+date (1)		- print or set the date and time
+dd (1)			- disk dumper
+de (1)			- disk editor
+df (1)			- report on free disk space and i-nodes
+dhrystone (1)		- integer benchmark
+dictionary (4)		- American dictionary used by spell
+diff (1)		- print differences between two files
+directory(3)		- directory operations
+dis88 (1)		- disassembler
+diskcheck (1)		- check a disk for bad sectors
+dosdir (1)		- list an MS-DOS directory
+dosread (1)		- read a file from an MS-DOS diskette
+doswrite (1)		- write a file onto an MS-DOS diskette
+du (1)			- print disk usage
+dup (2)			- make another descriptor
+dup2 (2)		- make another descriptor
+echo (1)		- print the arguments
+ed (1)			- editor
+elle (1)		- ELLE Looks Like Emacs
+execl, execv, execle, execve, execlp, execvp (2) - execute a file
+execve (2) 		- load a process image from a file
+exit, _exit (2)		- terminate process
+expand (1)		- convert tabs to spaces
+expr (1)		- evaluate experession
+factor (1)		- factor an integer less than 2**31
+fclose, fflush (3)	- close or flush a stream
+fcntl (2)		- file control
+fdisk (1)		- partition a hard disk
+ferror, feof, clearerr, fileno (3) - stream status inquiries
+fgrep (1)		- fast grep
+file (1)		- make a guess as to a file's type based on contents
+find (1)		- find files meeting a given condition
+fix (1)			- generate new file from old one and diff listing
+fold (1)		- fold long lines
+fopen, freopen, fdopen (3) - open a stream
+fork (2)		- split into two processes
+fortune (1)		- print a fortune
+fortune.dat (4)		- a fortune cookie database used by fortune
+fread, fwrite (3)	- binary input/output
+from (1)		- input half of a connection
+fsck (1)		- perform file system consistency check
+fseek, rewind, ftell (3) - reposition a file pointer in a stream
+fstat (2)		- read an inode
+gather (1)		- gather up the files in a directory for transmission
+getarg (3)		- return FORTRAN command-line argument
+getc, getchar, fgetc, getw (3) - get character or word from a stream
+getdents(3) 		- get directory entries
+getegid (2)		- what is my effective group id
+getenv (3)		- return value for environment name
+geteuid (2)		- what is my effective user id
+getgid (2)		- what is my real group id
+getlf (1)		- wait until a line has been typed
+getopt (3)		- get option letter from argument vector
+getpass (3)		- read a password
+getpgrp (2) 		- who is my process group leader
+getpid (2)		- what is my process id
+getppid (2) 		- what is my parent's process id
+getpw (3)		- get name from UID
+gets, fgets (3)		- get a string from a stream
+getty (1)		- get the terminal line parameters for login
+gettydefs (4)		- speed and terminal settings used by getty
+getuid (2)		- what is my real user id
+getutent, getutid, getutline, pututline, setutent, endutent, utmpname (3) -
+			  access utmp file entry
+grep (1)		- search a file for lines containing a given pattern
+gres (1)		- grep and substitute
+group (4)		- group identity
+head (1)		- print the first few lines of a file
+help (1)		- give help about a command
+ic (1)			- integer calculator
+ichar, char (3)		- explicit FORTRAN type conversion  
+id (1)			- print the uid and gid
+ifdef (1)		- remove unwanted ifdefs from C code
+indent (1)		- indent and format C program source
+index (3)		- return location of FORTRAN substring
+inodes (1)		- print i-node information
+int, ifix, idint, real, float, sngl, dble, cmplx, dcmplx, ichar, char (3) -
+			  explicit FORTRAN type conversion
+intro (2)		- available system calls
+intro (3)		- introduction to subroutines and libraries
+ioctl (2)		- special functions for devices
+isalpha, isupper, islower, isdigit, isxdigit, isalnum, isspace, ispunct, isprint, isgraph, iscntrl, isascii (3) -
+			  classify characters
+isatty (2)	 	- does this descriptor refer to a terminal
+issue (4)		- system identification file
+kermit (1)		- transfer a file using the kermit protocol
+kill (1)		- send a signal to a process
+kill (2)		- signal a process
+last (1)		- display recent on-line session records
+leave (1)		- warn when it is time to go home
+lge, lgt, lle, llt (3)	- string comparison intrinsic functions
+libpack (1)		- pack an ASCII assembly code file
+libupack (1)		- convert a packed assembly code file to ASCII
+link (2)		- link a file
+ln (1)			- create a link to a file
+lockf (3)		- record locking on files
+login (1)		- log into the computer
+logname (3)		- return login name of user
+look (1)		- look up words in dictionary
+lorder (1)		- compute the order for library modules
+lpr (1)			- copy a file to the line printer
+lrand(3) 		- lehmer random number generator
+ls (1)			- list the contents of a directory
+lseek (2)		- seek to a new place in a file
+m4 (1)			- macro processor
+machine (1)		- identify a machine
+mail (1)		- send and receive electronic mail
+make (1)		- a program for maintaining large programs
+malloc, free, realloc, calloc (3) - main memory allocator
+man (1)			- display manual page
+man (4)			- manual for commands and system
+master (1)		- control the creation of shervers
+mined (1)		- MINIX editor
+mkdir (1)		- make a directory
+mkfs (1)		- make a file system
+mknod (1)		- create a special file
+mknod (2)		- make a directory, or a special or ordinary file
+mkproto (1)		- make a mkfs prototype file
+mktemp (3)		- make a unique file name
+modem (1)		- put a modem into dial-in or dial-out mode
+more (1)		- pager
+motd (4)		- message of the day
+mount (1)		- mount a file system
+mount (2)		- mount a new file system
+mref (1)		- make listing and cross reference map of MINIX
+mtab (4)		- mount table
+mv (1)			- move or rename a file
+nm (1)			- print name list
+nologin (4)		- login lock file
+nro (1)			- text formatter
+od (1)			- octal dump
+open (2)		- open a file descriptor
+passwd (1)		- change a login password
+passwd (4)		- user identity
+paste (1)		- paste multiple files together
+patch (1)		- patches up a file from the original and a diff
+pause (2)		- wait for a signal
+perror, errno, sys_errlist, sys_nerr (3) - system error messages
+pipe (2)		- create a pipe
+popen, pclose (3)	- initiate pipe to/from a process
+pr (1)			- print a file
+prep (1)		- prepare a text file for statistical analysis
+pretty (1)		- MINIX pretty printer
+printenv (1)		- print out the current environment
+printf, fprintf, sprintf (3) - print formatted output
+printroot (1)		- print the name of the root device on standard output
+profile (4)		- set up general environment at login
+ps (1)			- report the process status
+psdatabase (4)		- ps address database
+putc, putchar, fputc, putw (3) - put character or word on a stream
+putenv (3)		- change or add value to environment
+puts, fputs (3)		- put a string on a stream
+pwd (1)			- print working directory
+qsort (3)		- quicker sort
+rand(3)			- standard random number generator
+rc (4)			- run commands at logon
+rcp (1)			- remote copy
+read (2)		- read from a file
+readall (1)		- read a device quickly to check for bad blocks
+readclock (1)		- read the AT's real time clock
+readfs (1)		- read a MINIX file system
+recover (1)		- recover files that have been removed.
+regcmp, regexp (3)	- compile and execute regular expression
+rename (3)		- change the name of a file
+rev (1)			- reverse the characters on each line of a file
+rm (1)			- remove a file
+rmdir (1)		- remove a directory
+roff (1)		- text formatter
+rsh (1)			- remote shell for networking
+rz (1)			- receive a file using the zmodem protocol
+scanf, fscanf, sscanf (3) - convert formatted input
+sed (1)			- stream editor
+setbuf, setvbuf (3)	- assign buffering to a stream
+setgid (2)		- change my group id
+setjmp, longjmp (3)	- non-local goto
+setpgrp (2)		- set process group ID
+setuid, setgid (2)	- set user and group IDs
+sh (1)			- shell
+shar (1)		- shell archiver
+sherver (1)		- shell server
+signal (2)		- what should be done with signals
+signal (3)		- specify FORTRAN action on receipt of a system
+size (1)		- print text, data, and bss size of a program
+sleep (1)		- suspend execution for a given number of seconds
+sleep (3)		- suspend execution for interval
+sort (1)		- sort a file of ASCII lines
+spell (1)		- print all words in a file not found in the dictionary
+split (1)		- split a large file into several smaller files
+stat, fstat (2)		- get file status
+stdio (3)		- standard buffered input/output package
+stime (2)	 	- set the system clock
+strings (1)		- print all the strings in a binary file
+strip (1)		- remove symbol table from executable file
+stty (1)		- set terminal parameters
+su (1)			- temporarily log in as super-user or another user
+sum (1)			- compute the checksum and block count of a file
+svc (1)			- shell version control system
+svclog (1)		- print a log of SVC revisions
+sync (1)		- flush the cache to disk
+sync (2)		- copy file system buffers to disk
+sz (1)			- send a file using the zmodem protocol
+tail (1)		- print the last few lines of a file
+tar (1)			- tape archiver
+tee (1)			- divert standard input to a file
+term (1)		- turn PC into a dumb terminal
+termcap (1)		- print the current termcap entry
+termcap (4)		- terminal capability database
+test (1)		- test
+time (1)		- report how long a command takes
+time (2)		- what time is it
+times (2)		- get process and child process times
+to (1)			- output half of a connection
+toascii (3)		- convert to ASCII
+toascii, tolower, toupper, _tolower, _toupper (3) - translate characters
+tolower (3)		- convert to lower case
+touch (1)		- update a file's time of last modification
+toupper (3)		- convert to upper case
+tr (1)			- translate character codes
+traverse (1)		- print directory tree under the named directory
+treecmp (1)		- recursively list differences in two directory trees
+true (1)		- exit with the value true
+tset (1)		- set the $TERM variable
+tsort (1)		- topological sort
+ttt (1)			- tic tac toe
+tty (1)			- print the device name of this tty
+ttys (4)		- login requirement database
+ttytype (4)		- terminal name and device list
+umask (2)		- set the default file protection mask
+umount (1)		- unmount a mounted file system
+umount (2)		- unmount a file system
+unexpand (1)		- convert spaces to tabs
+uniq (1)		- delete consecutive identical lines in a file
+unlink (2)		- delete a link to a file
+unshar (1)		- extract files from a shell archive
+update (1)		- periodically write the buffer cache to disk
+username (4)		- file used by mail
+username.lock (4)	- lock file used by mail
+users (1)		- list the logged-in users
+utime (2)		- change a file's last modified time
+utmp (4)		- user accounting data
+utmpname (3)		- access utmp file entry
+uud (1)			- decode a binary file encoded with uue
+uue (1)			- encode a binary file to ASCII (e.g., for mailing)
+vol (1)			- split standard input into diskette-sized volumes
+wait (2)		- wait for a child to terminate
+wc (1)			- count characters, words, and lines in a file
+whatsnew (1)		- print a newly modified file, marking changes
+whereis (1)		- examine system directories for a given file
+which (1)		- examine $PATH to see which file will be executed
+who (1)			- print list of currently logged in users
+whoami (1)		- print current user name
+width (1)		- force all the lines of a file to a given width
+write (1)		- send a message to a logged-in user
+write (2)		- write to a file
+wtmp (4)		- user and machine accounting data
+yy.ddd.hhmm.uu (4)	- spool files used by atrun
+zcat (1)		- decompress a file using modified Lempel-Ziv coding

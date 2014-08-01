@@ -1,0 +1,10 @@
+Command:        rmdir - remove a directory
+Syntax:         rmdir directory ...
+Flags:          (none)
+Examples:       rmdir /usr/ast/foobar           # Remove directory foobar
+                rmdir /usr/ast/f*               # Remove 0 or more directories
+
+     The specified directories are removed.  Ordinary files are not removed,
+and nor are . and .. .  Directories must be empty.  If a directory that is on
+the path is removed, then the pathname is edited appropriately.
+

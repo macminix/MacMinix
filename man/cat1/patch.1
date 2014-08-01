@@ -1,0 +1,34 @@
+Command:        patch - update a file from the original and a diff
+Syntax:         patch [option] ... old_file diff_file
+Flags:          +       change flags between successive patches
+                -B pre  next argument is backup filename prefix
+                -D lbl  mark changes with "#ifdef...#endif", next arg is label
+                -F#     sets a maximum fuzz factor of # (default 2)
+                -N      ignore patches that are reversed or already applied
+                -R      patch created with old and new files swapped!
+                -S      ignore a patch
+                -b ext  next argument is backup extension, instead of .orig
+                -c      interpret the patch file as a context diff
+                -d dir  cd to the next arg (assumed a directory)
+                -e      interpret the patch file as an ed script
+                -f      forces patch to do its work without asking questions
+                -l      do matching loosely (all white space is equivalent)
+                -n      interpret the patch file as a normal diff
+                -o out  next argument is the output file name
+                -p#     sets the pathname strip count to #
+                -r fil  names the reject file as fil 
+                -v      print program version number
+                -s      silent mode
+                -x      used for debugging
+Example:        patch file difflist             # Fix up file with difflist
+                patch <patchfile                # Do it automatically
+
+     Patch takes an original file and a diff listing and recreates the new 
+file.  It is functionally similar to fix, but much more powerful.  Not only 
+can it handle normal diffs, but also context diffs produced by cdiff.  In 
+addition, it works even when the file being patched has other changes to it.  
+It deduces the type of difflist itself (unless given -c, -e, or -n).  The 
+normal usage is given in the example above.  In this case patch will modify 
+'file' to incorporate all the patches.  The original file is renamed 'file~'.
+The program is described in doc/patch.doc.
+

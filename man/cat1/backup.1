@@ -1,0 +1,26 @@
+Command:        backup - backup files
+Syntax:         backup [option] dir1 dir2
+Flags:          -d      at top level, only directories are backed up
+                -j      do not copy junk: *.o, *.Z, *.bak, a.out core, etc
+                -m      if device full, prompt for new diskette
+                -n      do not backup top-level directories
+                -s      do not copy *.s files
+                -t      preserve creation times
+                -v      verbose; list files being backed up
+                -z      compress the files on the backup medium
+Examples:       backup -mz . /f0        # Backup current directory compressed
+                backup /bin /usr/bin    # Backup /bin to /usr/bin
+
+     Backup (recursively) backs up the contents of a given directory and its
+subdirectories to another part of the file system.  It has two typical uses.
+First, some portion of the file system can be backed up onto 1 or more
+diskettes.  When a diskette fills up, the user is prompted for a new one.  The
+backups are in the form of mountable file systems.  Second, a directory on RAM
+disk can be backed up onto a hard disk.  If the target directory is empty, the
+entire source directory is copied there, optionally compressed to save space.
+If the target directory is an old backup, only those files changed since the
+backup was made are copied.  Backup uses times for this purpose, like make.
+Large scale backups can be most effectively run from a shell script. 
+
+     Files used: /usr/bin/compress
+

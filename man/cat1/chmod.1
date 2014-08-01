@@ -1,0 +1,33 @@
+Command:        chmod - change access mode for files
+Syntax:         chmod octal_number file ...
+                chmod [ugoa][+-=][rwxst] file ...
+Flags:          (none)
+Examples: chmod 755 file            # Owner: rwx Group: r-x Others: r-x
+          chmod +x file1 file2      # Make file1 and file2 executable
+          chmod a-w file            # Make file read only
+          chmod u+s file            # Turn on SETUID for file
+          chmod g=u                 # group perms set to same as user perms.
+
+     The given mode is applied to each file in the file list.  The mode can be 
+either absolute or symbolic.  Absolute modes are given as an octal number that 
+represents the new file mode.  The mode bits are defined as follows:
+        4000    Set effective user id on execution to file's owner id
+        2000    Set effective group id on execution to file's group id
+        0400    File is readable by the owner of the file
+        0200    File is writeable by owner
+        0100    File is executable by owner
+        0070    Same as above, for other users in the same group
+        0007    Same as above, for all other users
+
+     Symbolic modes modify the current file mode in a specified way.  They 
+take the form:  [who] op permissions { op permissions } The possibilities for 
+[who] are 'u', 'g', 'o', and 'a'; standing for user, group, other and all, 
+respectively.  If who is omitted, 'a' is assumed, but the current umask is 
+used.  The op can be '+', '-', or '='; '+' turns on the given permissions, '-' 
+turns them off; '=' sets the permissions exclusively for the given who.  For 
+example 'g=x' sets the group permissions to '--x'.
+     The possible permissions are 'r', 'w', 'x'; which stand for read, write, 
+and execute; 's' turns on the set effective user/group id bits.  'u', other 
+permission bits, respectively.  Only one of these may be used at a time.  
+Multiple symbolic modes may be specified, separated by commas.
+

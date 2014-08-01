@@ -1,0 +1,11 @@
+Command:        sherver - shell server
+Syntax:         sherver port
+Flags:          (none)
+Example:        sherver m1              # Start a sherver listening to port m1
+
+     The rsh command does its remote execution by doing a remote procedure 
+call to some sherver.  The sherver executes the command and then exits.  
+Usually a master will be running to start a new sherver.  Because shervers get 
+their input from a pipe, remote execution cannot handle signals and CTRL-D, 
+because they cannot be sent down a pipe.
+

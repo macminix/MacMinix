@@ -1,0 +1,54 @@
+Command:        asld - assembler-loader 
+Syntax:         asld [-d] [-s] [-o name] file ...
+Flags:          -D        define a macro
+                -L        produce a listing on standard output
+                -T        set the temporary file directory
+                -U        undefine a macro
+                -i        use separate I&D space (64K + 64K)
+                -l        search a specific library
+                -o        output goes to file named by next argument
+                -s        produce a symbol table on standard output
+                
+Examples: asld -s file.s                # Assemble file.s and list symbols
+          asld -o output file.s         # Assemble file.s, put binary on output
+          asld modem.s -lmodemcap       # Search /usr/lib/libmodemcap.a
+          asld -T. file1.s file2.s      # Use current directory for
+                                        # temporary file
+
+     Asld is the MINIX assembler and loader combined.  It accepts a language 
+similar to that accepted by the PC-IX assembler.  Symbols are made up of 
+letters, digits and underscores.  The machine instructions and addressing 
+modes are the same as those used by PC-IX, except that modes using multiple 
+registers are written like this example: mov ax,(bx_si).  Constant operands 
+are denoted by a number sign.  Local labels are permitted in the usual UNIX 
+style: the instruction jmp 1f jumps forward to the closest label 1: 
+     The pseudoinstructions accepted by the assembler are listed below:
+        .align n        Align to a multiple of n bytes
+        .ascii str      Assemble a string
+        .asciz str      Assemble a zero-terminated string
+        .bss            What follows goes in the bss segment
+        .byte n         Assemble one or more bytes
+        .data           What follows goes in the data segment
+        .define sym     Export sym from the file
+        .errnz n        Force error if n is non-zero
+        .even           Align to an even address
+        .extern sym     Declare sym external
+        .globl sym      Same as extern
+        .long n         Assemble n as a long
+        .org adr        Set address within current segment
+        .short n        Assemble n as a short
+        .space n        Skip n bytes
+        .text           What follows goes in the text segment
+        .word n         Assemble n as a word
+        .zerow n        Assemble n words of zeros
+
+     In the above pseudoinstructions, adr is an expression yielding a machine 
+address, n is a numeric expression, str is a quoted string, and sym is a 
+symbol.  The library /usr/lib/libc.a is a packed archive of assembly code.  To 
+see some examples of it, extract some files from the archive with ar and then 
+use the filter libupack to convert them to readable ASCII.  
+     MINIX does not use .o files.  Compiler output is packed assembly 
+language, as are the modules in an archive.  This scheme requires reassembling 
+archive modules all the time, but it saves precious diskette space.
+     Files of type .x are .s files that need C-preprocessing.
+

@@ -1,0 +1,23 @@
+Command:        grep - search a file for lines containing a given pattern
+Syntax:         grep [-ln] [-s] [-v] [-e] pattern [file] ...
+Flags:          -e      -e pattern is the same as pattern
+                -l      prints just file names, no lines (overrides -n)
+                -n      print line numbers
+                -s      give status only, and no printed output
+                -v      select lines that do not match the pattern
+Examples:       grep mouse file         # Find lines in file containing mouse
+                grep [0-9] file         # Print lines containing a digit 
+
+     Grep searches one or more files (by default, standard input) and selects 
+out all the lines that match the pattern.  All the regular expressions
+accepted by mined are allowed.  In addition, + can be used instead of * to 
+mean 1 or more occurrences, ? can be used to mean 0 or 1 occurrences, and | 
+can be used between two regular expressions to mean either one of them;
+parentheses can be used for grouping.  Grep returns the following exit status:
+       0 when a match is found. 
+       1 when no match is found
+       2 when an error is detected
+
+Note that when the -l and -v flags are used together, only the names of those
+files that do not contain the pattern anywhere are listed.
+

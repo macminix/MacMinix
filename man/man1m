@@ -1,0 +1,75 @@
+MINIX 1.5.0 Programmer's Manual, man(1m) version 1.1.
+
+# INTRO
+
+     Section 1m of the Minix Programmer's Manual should describe those
+commands used for system administration.  In practice, such commands are
+already covered in Section 1, and Section 1m is used for local additions.
+
+# ncheck
+Command:        ncheck - i-node to name converter
+Syntax:         ncheck [a] [-i #,#] [s] file_system
+Flags:           -a       List all files, even . and ..
+                 -i #[,#] List only the inodes whose numbers follow
+                 -s       List only special and setuid files
+Examples: ncheck -i 10,15 /dev/fd0        # List i-nodes 10 & 15 on /dev/fd0
+
+     Sometimes one knows about an i-node number and wants to find the file
+name that goes with it; this program makes that mapping.  The default is to
+list everything on the device, but the -i flag restricts the list to specified
+i-nodes and the -s flag restricts it to special files and setuid files (to
+look for possible security violations).
+# format
+Command:        format - format a floppy disk
+Syntax:         format [-q][-a][special [kbsize]][-v [dosvollabel]]
+Flags:          #       Format to size # KB
+		/dev    Format device name /dev
+                -q      Skip the "are you sure" prompt
+                -v[LB]  Volume label LB and MSDOS structures added
+                -a      sort interactive list alphabetically rather than by size.
+
+Examples: format /dev/at0                 # Format disk in /dev/at0
+          format /dev/at0 360             # Format disk to size 360KB
+          format /dev/dosA                # Format for MSDOS
+          format /dev/fd1 -v DOS_DISK     # Format and label MSDOS disk
+          format                          # Interactive mode formatting
+
+     Format allows the super user to format floppy disks.  If format is suid
+then anyone logged into the console can format disks.  Format understands all
+the eight disk/media combinations supported by PC-Minix.
+
+Drive type numbers:
+
+No. Drive  diskette  Sectors  Tracks  Rotation Data-rate  Comment
+0   360K    360K      9       40     300 RPM  250 kbps   Standard PC DSDD
+1   1.2M    1.2M     15       80     360 RPM  500 kbps   AT disk in AT drive
+2   720K    360K      9       40     300 RPM  250 kbps   Quad density PC
+3   720K    720K      9       80     300 RPM  250 kbps   Toshiba, et al.
+4   1.2M    360K      9       40     360 RPM  300 kbps   PC disk in AT drive
+5   1.2M    720K      9       80     360 RPM  300 kbps   Toshiba in AT drive
+6   1.44M   1.44M    18       80     300 RPM  500 kbps   PS/2, et al.
+7   1.44M   720K      9       80     300 RPM  250 kbps   PS/2, et al.
+
+Minor device numbers for automatic drive typing:
+
+Minor device: 0-3   4-7   8-11 12-15 12-15 16-19 16-19 20-23 24-27 28-31
+Drive type:    0     1     2     3     3     4     4     5     6     7
+Drive size:  auto  360K  1.2M  720K 1.44M  720K 1.44M  1.2M  1.2M 1.44M
+Media size:  auto  360K  1.2M  360K  360K  720K  720K  360K  720K 1.44M
+
+     Format expects special devices to have sizes; for minor devices 0-3
+(automatic) it will try to format to the device's size, if there is one.  If
+a size is specified on the command line, then it must agree with the actual
+size of the special device.
+
+     When given an MSDOS device name, or the -v option, format will add the
+standard (non-bootable) MSDOS filesystem structures.
+
+     If no special device is specified in the command line, format starts
+up in interactive mode.  This allows a device to be formatted even if it
+has a size of zero.
+
+     Note that formatting a disk in a drive of different capacity, or with
+unsuitable media, may give unreliable results.
+
+     This program is used in the Intel versions of Minix only.

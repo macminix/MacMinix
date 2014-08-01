@@ -1,0 +1,24 @@
+Command:        mref - make a listing and cross-reference map of MINIX
+                mref [-#] [dlmtsx] [p page] file ...
+Flags:          -#      print # lines per page (default 50)
+                -d      do not produce definition file (symbol table)
+                -l      do not produce listing
+                -m      multiple references on one line are listed only once
+                -p #    set initial page number to #
+                -t      generate troff macro call before each page
+                -s      suppress line numbering between procedures
+                -x      do not produce cross-reference map
+Examples:       mref *.[ch]             # List and cross reference files
+                mref -60 -t *.c         # Produce troff input at 60 lines/page
+                mref -dx -p 100 *.c     # Listing only, first page number 100
+
+     In default mode, mref produces three output files: a numbered listing of
+the input files (on standard output), a global symbol table (on symbol.out),
+and a cross reference map to the global symbols (on xref.out).  A global
+symbol in this context is one present in a #define, PUBLIC, PRIVATE, or SYMBOL
+statement (the latter being introduced to allow users to explicitly declare
+certain symbols as global). Any of the three outputs can be suppressed, or
+alternatively, be made suitable for input to troff for typesetting.
+
+     Files used: /usr/bin/sort
+

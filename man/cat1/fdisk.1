@@ -1,0 +1,24 @@
+Command:        fdisk - partition a hard disk
+Syntax:         fdisk [-hno_of_heads] [-sno_of_sectors] [device]
+Flags:          (none)
+Example:        fdisk                          # use default settings
+                fdisk -h4 -s17 /dev/hd0        # actual MINIX defaults
+
+     When fdisk starts up, it reads in the partition table and displays it.  
+It then presents a menu to allow the user to modify partitions, store the 
+partition table on a file, or load it from a file.  Partitions can be marked 
+as DOS or MINIX, and active or not.  The partition type 0x80 should be used
+for MINIX before version 1.4b, and 0x81 otherwise.  Where partitions start on
+even cylinder boundaries MINIX doesn't care what kind of partition it uses,
+except for partition 0. The fact that Minix cannot access the last sector on
+an odd-sized partition causes problems when using eg. dosread.  Avoid such
+partitions if possible.
+
+    For safety, the device is opened r/o if file permissions do not permit
+r/w mode, but be aware that repartitioning a disk may cause information on it
+to be lost.  Rebooting the system is mandatory after changing partition sizes.
+MINIX, XENIX, PC-IX, MS-DOS and CP/M have different ideas about how partitions
+are numbered, and fdisk understands some of them but not all. 
+
+     This is used in the Intel versions of Minix only.
+

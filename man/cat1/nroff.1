@@ -1,0 +1,26 @@
+Command:        nroff - text formatter
+Syntax:         nroff [options] [file] ...
+Flags:          -       take input from stdin
+                +#      start printing at page #
+                -#      stop printing at page #
+                -a      change font (not implemented in MINIX)
+                -b      output device can backspace
+                -d      set debug mode (debug output to nroff.dbg)
+                -l      output to printer
+                -mfile  use macros from /usr/lib/tmac/tmac.file
+                -o file set error log file (default is stderr)
+                -pl#    set page length n
+                -pn#    set initial page number to #
+                -po#    set page offset n spaces right   
+                -s      step through pages
+                -v      print version number to stdout
+Examples:  nroff infile >outfile          # Format infile
+           nroff +3 -5 infile >outfile    # Only output pages 3-5
+
+     Nroff is a text formatter based on the design in 'Software Tools'.  It
+has been modified to closely resemble the Unix nroff.  The program is
+described in doc/nroff.1.
+
+    Files used:  /lib/tmac/tmac.*
+                 nroff.dbg
+

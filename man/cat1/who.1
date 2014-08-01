@@ -1,0 +1,13 @@
+Command:        who - print a list of currently logged in users
+Syntax:         who [user | device | am i]
+Flags:          (none)
+Example:        who                     # Print user names, terminals and times
+                
+     Who prints a list of currently logged in users.  For each one, the user 
+name, terminal, and login time is printed.  By default, the program gets its
+information from the file /etc/utmp (if it exists), which is normally
+updated by init and login.  If the optional filename is given, the logins in
+that file will be printed.  Do not confuse whoami with 'who am i'.
+
+     Files used: /etc/utmp
+

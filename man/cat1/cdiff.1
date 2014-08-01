@@ -1,0 +1,9 @@
+Command:        cdiff - produce a context diff
+Syntax:         cdiff [-c#] old new
+Flags:          -c#     provide # lines of context (default 3)
+Examples:       cdiff old new >f        # Write context diff on f
+
+     Cdiff produces a context diff by first running 'diff' and then adding 
+context.  Some update programs, like patch, can use context diffs to update 
+files, even in the presence of other, independent changes. 
+

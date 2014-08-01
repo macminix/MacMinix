@@ -1,0 +1,22 @@
+Command:        tar - tape archiver
+Syntax:         tar [ctx] [ov] [F] [f] tarfile [file] ...
+Flags:          -       use stdin/stdout as appropriate
+                F       ignore errors
+                c       create a new archive
+                f       not implemented under Minix
+                o       chown/chgrp files (only if super user)
+                t       print a table listing the archive's contents
+                v       verbose mode
+                x       extract the named files from the archive
+Examples: tar c /dev/fd1 file1 file2    # Create a two-file archive
+          tar xv /dev/fd1 file1 file2   # Extract two files from the archive
+          (cd src; tar c -) | (cd dest; tar x -) # Move src tree to dest
+
+     Tar is an archiver in the style of the standard tape archiver, except 
+that it does not use tape.  It's primary advantage over ar is that the tar  
+format is somewhat more standardised than the ar format, making it 
+theoretically possible to transport MINIX files to another computer, but do 
+not bet on it.  If the target machine runs MS-DOS, try doswrite.
+
+     Files used: /usr/bin/mkdir
+

@@ -1,0 +1,12 @@
+Command:        bawk - pattern matching language
+Syntax:         bawk [-f] rules [file] ...
+Flags:          -f      read the rules from the following
+Examples:       bawk '{ print $0}' filename     # Print filename to stdout
+                bawk -f rules file       # Apply the program rules to file
+
+     Awk is a pattern matching language.  Programs are a sequence of pattern-
+action statements.  Input lines are scanned for a matching pattern, and if this
+is found the associated action is taken.  Bawk is Brodt's Awk, a near subset
+of the original.  The file name - can be used to designate standard input.
+The language is described in doc/bawk.doc. 
+

@@ -1,0 +1,12 @@
+Command:        tr - translate character codes
+Syntax:         tr [-cds] [string1] [string2]
+Flags:  -c      complement the set of characters in string1
+        -d      delete all characters specified in string1
+        -s      squeeze all runs of characters in string1 to one character
+Examples: tr '[a-z]' '[A-Z]' <x >y      # Convert lower case to upper case
+          tr -d '0123456789' <f1 >f2    # Delete all digits from f1
+
+     Tr performs simple character translation.  When no flag is specified, 
+each character in string1 is mapped onto the corresponding character in 
+string2.
+

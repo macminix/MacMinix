@@ -1,0 +1,27 @@
+File:   passwd - user identity
+
+     /etc/passwd is an ASCII file which contains a list of the system's users
+and the passwords (if any) they must use for access.  There is one entry per
+line, and each line has the format:
+
+        login_name:passwd:GID:UID:user_name:directory:shell
+
+     The field descriptions are:
+
+        login_name     the name of the user on the system, maximum 9 chars.
+        password       the (encrypted) user password.  If this field is
+                            empty, no password is needed.
+        GID            the numerical group ID for this user.
+        UID            the numerical user ID.
+        user_name      the (optional) comment field (often a full user name).
+        directory      the user's $HOME directory.
+        shell          the program to run at logon (if empty, use /bin/sh). 
+
+     A typical Minix /etc/passwd is:
+
+ root:dqWF|GXx4mAq0:0:0::/usr/zzz/root:
+ daemon:*:1:1::/etc:
+ bin:*:2:2::/bin:
+ guest::8:3::/usr/zzz/guest:
+ ast:4dn7KO7EG11Ay:8:3::/usr/zzz/ast:
+

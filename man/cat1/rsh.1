@@ -1,0 +1,17 @@
+Command:        rsh - remote shell for networking
+Syntax:         rsh port [-bei]
+Flags:          -b      start the rsh in the background
+                -e      keep stderr separate from stdout
+                -i      take input from the local process
+Examples:       rsh machine5 ls -l /usr/bin     # List remote bin directory
+                rsh abc cat /usr/doc/f >f       # Fetch remote file
+                rsh foobar                      # Log onto remote machine
+
+     The remote shell command is the way to have a distant server carry out a 
+command over the Ethernet.  The port given as the first argument can be any 
+string of up to 6 characters, but it must match the port used by some sherver.
+The command will be executed and the results returned on stdout.  Unless the 
+-e flag is given, the remote stderr and stdout are merged onto the local 
+stdout.  Giving rsh with just a port and no argument is the standard way to 
+log onto a remote machine.
+

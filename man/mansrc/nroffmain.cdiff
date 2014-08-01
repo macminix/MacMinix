@@ -1,0 +1,20 @@
+*** 1.5Amain.c	Sat Apr 28 17:08:05 1990
+--- main.c	Sat Apr 28 17:07:20 1990
+***************
+*** 303,309 ****
+  	dc.juval   = YES;
+  	dc.adjval  = ADJ_BOTH;
+  	dc.boval   = 0;
+! 	dc.bsflg   = FALSE;
+  	dc.prflg   = TRUE;
+  	dc.sprdir  = 0;
+  	dc.flevel  = 0;
+--- 303,310 ----
+  	dc.juval   = YES;
+  	dc.adjval  = ADJ_BOTH;
+  	dc.boval   = 0;
+! 	if (isatty(1)) dc.bsflg = FALSE;
+! 	else dc.bsflg = TRUE;
+  	dc.prflg   = TRUE;
+  	dc.sprdir  = 0;
+  	dc.flevel  = 0;

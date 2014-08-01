@@ -1,0 +1,12 @@
+Command:        ascii - strip all the pure ASCII lines from a file
+Syntax:         ascii [-n] [file]
+Flags:          -n      Extract the lines containing non-ASCII characters
+Examples:       ascii file >outf        # Write all the ASCII lines on outf
+                ascii -n <file >outf    # Write non-ASCII lines to outf
+
+     Sometimes a file contains some non-ASCII characters that are in the way.  
+This program allows the lines containing only ASCII characters to be extracted 
+from the file.  With the -n flag, the non-ASCII lines are extracted.  No matter
+whether the flag is used or not, the program returns an exit status of true if 
+the file is pure ASCII, and false otherwise.
+

@@ -1,0 +1,30 @@
+File:   ttys - login requirement database
+
+     /etc/ttys is an ASCII file that is used by init to determine which
+terminals need a login process.  There is one entry per line and  entries
+must be in minor device number order.  If the leading character of a line
+is not 0, 1, or 2 the line is discarded.  Sending init a SIGHUP (kill -1 1) 
+will force a re-read of /etc/ttys, but running gettys and logons will
+continue until specifically killed.  Each line in /etc/ttys has the format:
+
+        abc
+
+     The field descriptions are:
+
+        a = 0 gives line disabled = no shell)
+            1 gives line enabled = shell started
+            2 gives line enabled through a GETTY (/etc/getty must be present)
+        b = a-r defines UART paramers (baud, bits, parity), 0 for console
+        c = line number or line name. If c is a digit, the terminal will be
+            /dev/tty{c}, otherwise it will be /dev/{c}
+
+     A typical Minix /etc/ttys is:
+
+ 100
+ 0d1
+ 2f2
+
+    Line one starts a login on the console, line two puts nothing on tty1
+but sets it to 2400 8n1, and line three puts a getty on tty2 for logon
+at 9600 8n1.  No comments are allowed anywhere in the file.
+

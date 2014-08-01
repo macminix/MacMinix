@@ -1,0 +1,19 @@
+Command:        fsck - perform file system consistency check
+Syntax:         fsck [-options] [device] ...
+Flags:          -a      automatically repair inconsistencies
+                -c      check and list only the specified inodes
+                -i      check the file system, reporting the inodes specified
+                -l      list the files and directories in the filesytem
+                -r      prompt user for repairs if inconsistencies are found
+                -s      list the superblock of the file system
+                -z      check the file system, reporting the zones specified
+Examples:       fsck /dev/hd4           # Check file system on /dev/hd4
+                fsck -a /dev/at0        # Automatically fix errors on /dev/at0
+                fsck -l /dev/fd0        # List the contents of /dev/fd0
+                fsck -c 2 3 /dev/hd3    # Check and list /dev/hd3 inodes 2 & 3
+
+     Fsck performs consistency checks on the file systems which reside on the 
+specified devices.  It may also be used to list the contents of a file system 
+or repair a damaged file system.  In MINIX versions earlier than 1.5, fsck
+can be run from the startup menu. 
+

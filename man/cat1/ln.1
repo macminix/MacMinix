@@ -1,0 +1,11 @@
+Command:        ln - create a link to a file
+Syntax:         ln file [name]
+Flags:          (none)
+Examples:       ln file newname         # Make newname a synonym for file
+                ln /usr/games/chess     # Create a link called chess 
+
+     A directory entry is created for name.  The entry points to file.  
+Henceforth, name and file can be used interchangeably.  If name is not 
+supplied, the last component of file is used as the link name and the
+link is created in the current directory.
+

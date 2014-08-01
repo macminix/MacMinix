@@ -1,0 +1,190 @@
+Name: mdb - Minix debugger [68000]
+
+(This is from Chapter 9, the Extended Manual Pages, of the Minix 1.5
+Reference Manual, very lightly edited and reformatted.  The information
+contained here may not be completely accurate when applied to the
+corresponding parts of Minix 1.7 or later versions.)
+
+10.11.  MDB - MINIX DEBUGGER [68000]
+
+   Mdb provides a means of debugging MINIX programs on the 68000.  No
+IBM debugger is available at present.  Mdb supports symbolic debugging.
+The argument to mdb is a MINIX executable file.  This file defaults to
+a.out.
+   Once started, mdb will display an asterisk (*) as command prompt.  A
+command may be entered in the following form:
+
+     [<expression>][<command> [<argument>]]" 
+
+<expression> is a symbolic expression representing a location in memory
+or a register, and should be in the form:
+
+     [<value> [+|- <value>]]
+
+A <value> may be a symbol, a register, or a constant.  The symbol may
+be any external symbol found in the executable file, or start if the
+executable file is stripped.  _start represents the beginning address
+of the program.  A register is specified by a ``$'' followed by the
+register's name, while a constant may be either an octal, decimal or
+hex unsigned long integer expressed using standard C notation (no ``L''
+suffix should be used).  A character constant is represented by a
+single quote followed by the character.
+   Not all commands use an address, but those that do have a default
+value of the current program counter with the exception of the continue
+command: ``c'' and ``C''.  Not all commands use an argument list, but
+those that do default to an empty list.  If the argument contains a
+semi-colon (``;''), then except for the breakpoint command (``b'') the
+string following the semi-colon is assumed to be a new command.
+   Following is the list of valid commands.  When mdb is first started,
+no process is active.  Most of the following commands require an
+active process which may be created using the run (``r'') command.
+
+!
+  If the exclamation point begins the command line, then the MINIX
+program that follows it is executed.  The default command is /bin/sh.
+Note: full path names are required.
+       Example: * !vi mdb.c
+  If the expression preceding the exclamation point is a valid data
+address, then the arguments specify how to modify its contents.  The
+argument is to be in the form:
+       [<constant>] [<size>] [<expression>]
+  and are interpreted as: ``fill the data space starting at the
+specified address with <constant> values given by <expression> and are
+of size byte (b), half word (h, i.e.  short), or long word (l).'' The
+default value of constant is 1, of size is ``h'', and of expression is
+0.
+       Example: * _buf ! 20b ``a''
+
+T
+  This command prints the current active function in the program with
+its arguments.
+       Example: * T
+
+t
+  This command prints the current function invocation hierarchy with
+their arguments.
+       Example: * t
+
+/
+  This command prints the values starting at the address specified.
+The argument is to be in the form:
+       [<constant>][<size>][<format>]
+format may have the values:
+    a - Displays chars until a zero is found
+    c - Displays <constant> values as characters.
+    d - Displays <constant> values as signed decimal numbers.
+    i - Disassembles <constant> instructions (<size> ignored).
+    I - Disassembles <constant> instructions (<size> ignored).
+    o - Displays <constant> vlaues as octal numbers.
+    s - Displays string at the location specified
+    u - Displays <constant> vlaues as unsigned decimal numbers.
+    x - Displays <constant> vlaues as hexadecimal numbers.
+      Example: * $a6-2/hx
+
+x
+ This command prints the registers and the instructions starting at the
+specified address.  An optional constant argument limits the number of
+instructions printed to the value given by the final argument.
+      Example: * x
+
+X
+ This command prints the instructions starting at the specified
+address.  An optional constant argument limits the number of
+instructions printed to the value given by the final argument.
+      Example: * _start X 10
+
+R
+ This command starts a process using the executable given as mdb's
+first argument.  The process will have no arguments and will be stopped
+prior to executing any instructions.
+      Example: * R
+
+r
+ This command starts a process using the executable given as mdb's
+first argument.  The process will be given the arguments on the command
+line up to the first semi-colon.  If no arguments are specified, then
+the arguments supplied with the last ``r'' command are used.  The
+processes' standard input and output may be redirected.  The process
+will be stopped prior to executing any instructions.
+      Example: * r 3 <input >output
+
+C
+ This command results in the stopped process being restarted with a
+pending signal specified by the constant argument.  A breakpoint is
+placed at the address specified if one is not already there, and if
+placed it is deleted when the process stops for any reason.  No default
+address is assumed.
+      Example: * C 2
+
+c
+ This command results in the stopped process being restarted with all
+pending signals canceled.  A breakpoint is placed at the address
+specified if one is not already there, and if placed it is deleted when
+the process stops for any reason.  No default address is assumed.
+      Example: * _func+4 c
+
+I
+ This command results in the stopped process executing instructions in
+single step mode.  The number of instructions executed is given in the
+constant argument.  The signal that stopped the process will be sent
+when execution begins.
+      Example: * I 10
+i
+ This command results in the stopped process executing instructions in
+single step mode.  The number of instructions executed is given in the
+constant argu ment.  All pending signals are canceled before execution
+begins.
+      Example: * i 10
+
+M
+ This command results in the stopped process resuming execution until
+the long word at the location specified by the address is modified or
+until the number of instructions specified in the optional constant
+argument are executed.  The default number is 65,536.  Each executed
+instruction is displayed prior to execution.
+      Example: * _var M 100
+
+m
+ This command results in the stopped process resuming execution until
+the long word at the location specified by the address is modified or
+until the number of instructions specified in the obtional constant
+argument are executed.  The default number is 65,536.
+      Example: * _var m
+
+k
+ This command results in the current active process being terminated.
+      Example: * k
+
+B
+ This command results in all the currently active breakpoints being listed.
+      Example: * B
+
+b
+ This command results in a breakpoint being placed at the location
+specified by the address in program space.  The string that follows the
+command contains the command(s) that are executed when the breakpoint
+is hit.  It is recommended that breakpoints be placed at an offset of 4
+bytes from the function entry point to permit a valid frame to be set
+up for back-tracing.
+      Example: * _func+4 b t;_var/lx
+
+d
+ This command results in the breakpoint at the address specified being
+deleted.
+      Example: * _func+4 d
+
+D
+ This command results in all breakpoints being deleted.
+      Example: * D
+
+q
+ This command results in the currently active process being terminated
+and mdb exiting.
+      Example: * q
+
+10.11.1.  Author
+
+   Mdb was written by Bruce D. Szablak
+
+
+

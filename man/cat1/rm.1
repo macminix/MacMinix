@@ -1,0 +1,15 @@
+Command:        rm - remove a file
+Syntax:         rm [-fir] name ...
+Flags:          -f       forced remove with no questions asked
+                -i       interactive remove, ask before removing
+                -r       remove directories too
+Examples:       rm file                 # Remove file
+                rm -i *.c               # Remove .cf files, asking about each
+
+     Rm removes one or more files.  If a file has no write permission, rm asks 
+for permission (type 'y' or 'n') unless -f is specified.  If the file is a 
+directory, it will be recursively descended and removed if and only if the -r 
+flag is present.
+
+     Files used: /usr/bin/rmdir
+

@@ -1,0 +1,28 @@
+Command:        ar - archiver
+Syntax:         ar [dmpqrtx][abciluv] [posname] archive file ...
+Flags:          (none)
+Examples:       ar r libc.a sort.s      # Replace sort.s in libc.a
+                ar rb a.s libc.a b.s    # Insert b.s before a.s in libc.a
+
+     Ar allows groups of files to be put together into a single archive.  It 
+is normally used for libraries of compiled procedures.  The following keys are 
+allowed: 
+        d: delete.  Ar will delete the name members.
+        m: move named files.  Ar expects 'a', 'b', or 'i' to be specified.
+        p: print the named files (list them on standard output)
+        q: quickly append to the end of the archive file.
+        r: replace (append when not in archive).
+        t: print the archive's table of contents.
+        x: extract
+
+The keys may optionally concatencated with one or more of the following:
+        a: after 'posname'
+        b: before 'posname'
+        c: create (suppresses creation message)
+        i: before 'posname'
+        l: local temporary file for work instead of /tmp/ar.$$$$$
+        u: replace only if dated later than member in archive
+        v: verbose
+
+     This is used in the Intel versions of Minix only.
+ 

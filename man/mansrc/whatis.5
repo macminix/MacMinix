@@ -1,0 +1,49 @@
+.TH whatis 5
+.SH NAME
+whatis \- list the available online manuals
+.SH SYNTAX
+/usr/man/whatis
+.SH DESCRIPTION
+.B Whatis
+contains a list of all the available online manuals in the manual
+directory, and which section each manual is in. Each line in the file
+contains
+.PP
++ the name(s) of the manual
+.PP
++ the section it is in [in parentheses]
+.PP
++ a minus sign
+.PP
++ a short description about the manual
+.PP
+Each manual name must contain no whitespace, and have no leading whitespace.
+These names must be separated by whitespace, commas, or both.
+The section consists of open parenthesis, single digit (plus optional
+single uppercase letter \- to indicate subtype), close parenthesis,
+and is separated from the name and description by whitespace.
+The minus sign is used by
+.I man(1)
+and thus is necessary!
+The description of the manual is ignored, and can be anything. It may be
+multi-line, in which case the following lines should be indented, and must
+not contain lone minus signs.
+.SH EXAMPLE
+.TP 8
+whatis (5) \- the entry for this manual
+.TP 8
+man (1) \- an entry for the manual program
+.TP 8
+man (7) \- an entry for the manual macros
+.TP 8
+less (1L) \- the less pager, which is not standard
+.TP 8
+string, strchr, strlen, strcat, strcpy (3)	- various C routines for the
+handling of strings. These are all kept in the
+.I string.3
+file in
+.I /usr/man/man3
+or
+.I /usr/man/cat3
+.SH SEE ALSO
+man(1), nroff(1)

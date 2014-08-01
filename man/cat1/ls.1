@@ -1,0 +1,25 @@
+Command:        ls - list the contents of a directory 
+Syntax:         ls [options] name ...
+Flags:          -1      print in one-column format
+                -A      print all entries except . and .. (default for su)
+                -C      print in columnar format
+                -F      print '/' after directory names, '*' after executables
+                -R      recursively print each subdirectory
+                -a      print all entries including those starting with '.'
+                -c      use the file create time... not implemented in MINIX
+                -d      print named directories, not their contents
+                -f      force interpretation of 'file' as a directory
+                -g      print group id with user id in long listing format
+                -i      print the inode number with each file
+                -l      long listing of mode, links, owner, size and time
+                -r      reverse the sort order
+                -s      give size in blocks (including indirect blocks)
+                -t      sort by the file modification time, latest first
+                -u      use the file access time... not implemented in MINIX 
+Examples:       ls -l                   # List files in working directory
+                ls -lis                 # List with i-nodes and sizes
+
+     For each file argument, list it.  For each directory argument, list its 
+contents, unless -d is present.  When no argument is present, the working 
+directory is listed.
+

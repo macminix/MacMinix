@@ -1,0 +1,31 @@
+SYSTEM CALLS
+    execve(2)     	- load a process image from a file
+
+INVOCATION
+    execve( name, argv, envp )
+      char *name;
+      char *argv[];
+      char *envp[];
+
+EXPLANATION
+    <name> is the path name of the file which contains the process
+    image. <argv> points to a vector of pointers to strings which
+    are to be passed as arguments, the first argument is generally
+    the same the last component in <name>. <envp> points to the
+    environment, see environ(4).
+
+    The new process begins with the following, where <argc> is the
+    number of arguments in <argv>. The global variable <environ> is
+    the same as <envp>.
+
+        main( argc, argv, envp )
+          int  argc;
+          char **argv
+	  char **envp;
+
+RESULTS
+    o/w : Will not return.
+     -1 : Error.
+
+REFERENCES
+    fork(2), execl(3), environ(4)

@@ -1,0 +1,11 @@
+Command:        zcat - decompress a file using modified Lempel-Ziv coding
+Syntax:         zcat [flags] [file.Z] ...
+Flags:          -V      give version number and compression statistics 
+                -q      quiet mode
+                -n      ignore header information (to decompress old files)
+                -v      give compression statistics
+Examples:       zcat file.Z >outfile       # Decompress file to stdout
+
+     Zcat is a link to the file 'compress', qv., and is the same as
+'compress -c'.  Similarly, a link to 'uncompress' decompresses to a file with
+the same name as the original.
